@@ -1,5 +1,4 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-
 interface SignOptions {
   expiresIn?: string | number;
 }

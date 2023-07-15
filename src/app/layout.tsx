@@ -1,10 +1,17 @@
 "use client";
+import PageWrapper from "../components/ui/PageWrapper";
 import AppProvider from "../utils/app-provider/AppProvider";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  fallback: ["system-ui", "arial"],
+});
+
+export const revalidate = 30;
 
 export const metadata = {
   title: "Link-App",
@@ -21,7 +28,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionProvider>
           <AppProvider>
-            <main>{children}</main>
+            <PageWrapper>{children}</PageWrapper>
           </AppProvider>
         </SessionProvider>
       </body>

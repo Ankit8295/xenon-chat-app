@@ -23,7 +23,8 @@ const authOptions: NextAuthOptions = {
           }),
         });
         const user = await res.json();
-        if (user) return user;
+
+        if (user.status === 200) return user;
         else {
           return null;
         }
@@ -40,7 +41,7 @@ const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/auth/signIn",
+    signIn: "/",
   },
 };
 const handler = NextAuth(authOptions);
