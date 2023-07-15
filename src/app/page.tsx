@@ -1,19 +1,30 @@
-export default function Home() {
+"use client";
+import { signIn, useSession, signOut } from "next-auth/react";
+
+export default function Page() {
+  const { status, data } = useSession();
+  console.log(data?.user);
   return (
-    <form className="flex flex-col gap-5 items-center py-10">
-      <h1>Log in or sign up</h1>
-      <label>
-        <input type="text" placeholder="Email" />
-      </label>
-      <label>
-        <input type="text" placeholder="Password" />
-      </label>
-      <label>
-        <input type="text" placeholder="Confirm password" />
-      </label>
-      <button type="submit" className="border px-2 hover:bg-black/60">
-        Continue
-      </button>
-    </form>
+    <div className="flex justify-evenly bg-black/40">
+      {data?.user && (
+        <div className="flex gap-5 items-center">
+          <div
+            onClick={() => signOut()}
+            className="px-2 bg-white text-black cursor-pointer"
+          >
+            Sign Out
+          </div>
+          <div>{data.user.name}</div>
+        </div>
+      )}
+      {!data?.user && (
+        <div
+          onClick={() => signIn()}
+          className="px-2 bg-white text-black cursor-pointer"
+        >
+          Sign In
+        </div>
+      )}
+    </div>
   );
 }
