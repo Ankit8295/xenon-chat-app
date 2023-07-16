@@ -1,6 +1,9 @@
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
 import { getServerSession } from "next-auth";
+import userImg from "@/public/userProfile.webp";
+import Image from "next/image";
+import HamburgerMenu from "./HamburgerMenu";
 
 export default async function FriendsList({ email }: { email: string }) {
   const session = await getServerSession(authOptions);
@@ -21,18 +24,36 @@ export default async function FriendsList({ email }: { email: string }) {
   }).then((res) => res.json())) as FriendsListType;
 
   return (
-    <div className="flex flex-col w-1/5 gap-5 bg-gray-600 py-2">
-      <span className="text-center w-full">Friends-list</span>
-      <div>
-        {friendsList?.map((list, i) => (
-          <div
-            className="bg-white/20 hover:bg-white/50 cursor-pointer flex items-center gap-1 pl-5 py-2"
-            key={i}
-          >
-            <span>{i + 1 + "."}</span>
-            {list.name}
-          </div>
-        ))}
+    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-[#212121] p-2 overflow-hidden ">
+      <div className="pl-3 pr-10 flex gap-5 items-center w-full">
+        <HamburgerMenu />
+        <input
+          type="search"
+          className="w-full py-2 outline-none border border-transparent rounded-2xl hover:border-white/40 focus:border-blue-500 px-3 bg-[#181818] transition-colors duration-200"
+          placeholder="search"
+        />
+      </div>
+      <div className="flex flex-col items-start gap-2 w-full">
+        <h2 className="ml-3 px-3 pt-2 rounded-md border-b-2 w-max border-b-blue-500 cursor-pointer hover:bg-[#2b2b2b]">
+          Chats
+        </h2>
+        <div className="flex flex-col items-start w-full">
+          {friendsList?.map((list, i) => (
+            <div
+              className=" hover:bg-[#2b2b2b] w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg"
+              key={i}
+            >
+              <Image
+                src={userImg}
+                alt="user_profile_img"
+                width={70}
+                height={60}
+                className="rounded-[50%]"
+              />
+              {list.name}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

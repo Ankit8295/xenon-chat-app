@@ -13,9 +13,9 @@ export default async function layout({ children }: Props) {
   const name = user?.username;
   const email = user?.email;
   return (
-    <div className="w-full h-full flex">
+    <div className="w-full h-full flex max-w-[1300px]">
       <FriendsList email={email!} />
-      <div className="flex flex-col items-start w-full">
+      <div className="flex  flex-[5] flex-col items-start w-full">
         <Header name={name!} />
         {children}
       </div>
