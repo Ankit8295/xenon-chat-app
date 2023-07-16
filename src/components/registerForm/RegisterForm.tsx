@@ -1,10 +1,10 @@
+"use client";
 import { RegisterFormSchema } from "@/src/utils/types/loginForm";
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import React, { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../form-input/FormInput";
+import { redirect } from "next/navigation";
 import PrimaryButton from "../ui/button/PrimaryButton";
+import Link from "next/link";
 
 type Props = {};
 
@@ -27,7 +27,7 @@ export default function RegisterForm({}: Props) {
         password: data.password,
       }),
     });
-    console.log(await res.json());
+    redirect("/login");
   };
   return (
     <form
@@ -38,7 +38,7 @@ export default function RegisterForm({}: Props) {
       <FormInput
         type="text"
         register={register}
-        registerValue="name"
+        registerValue="username"
         placeholder="Full Name"
         registerReq={true}
       />
@@ -57,6 +57,13 @@ export default function RegisterForm({}: Props) {
         placeholder="password"
       />
       <PrimaryButton type="submit">Continue</PrimaryButton>
+      <div>
+        already have an account ?
+        <Link href={"/login"} className="px-2 text-blue-600 cursor-pointer">
+          log in
+        </Link>
+        here
+      </div>
     </form>
   );
 }

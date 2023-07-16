@@ -41,7 +41,7 @@ export default function FormInput({
           </p>
         )}
         <textarea
-          className="border shadow-md text-base flex-1 w-full rounded p-2 active:outline-hero focus:outline-hero"
+          className="border shadow-md text-base text-black  flex-1 w-full rounded p-2 active:outline-hero focus:outline-hero"
           rows={row}
           style={{ resize: "none" }}
           {...register(registerValue, {
@@ -64,7 +64,7 @@ export default function FormInput({
         </p>
       )}
       <input
-        className="border border-hero text-base flex-1 w-full rounded p-2 active:outline-hero focus:outline-hero"
+        className="border border-hero text-base text-black flex-1 w-full rounded p-2 active:outline-hero focus:outline-hero"
         type={type}
         {...register(registerValue, {
           required: registerReq,
