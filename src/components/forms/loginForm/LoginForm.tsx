@@ -2,10 +2,10 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import PrimaryButton from "../ui/button/PrimaryButton";
+import PrimaryButton from "../../ui/button/PrimaryButton";
 import { LoginFormSchema } from "@/src/utils/types/loginForm";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormInput from "../form-input/FormInput";
+import FormInput from "../components/form-input/FormInput";
 import Link from "next/link";
 
 type Props = {};

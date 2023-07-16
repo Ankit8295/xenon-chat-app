@@ -1,9 +1,9 @@
 "use client";
 import { RegisterFormSchema } from "@/src/utils/types/loginForm";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormInput from "../form-input/FormInput";
+import FormInput from "../components/form-input/FormInput";
 import { redirect } from "next/navigation";
-import PrimaryButton from "../ui/button/PrimaryButton";
+import PrimaryButton from "../../ui/button/PrimaryButton";
 import Link from "next/link";
 
 type Props = {};
@@ -14,9 +14,8 @@ export default function RegisterForm({}: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormSchema>();
-
   const submitForm: SubmitHandler<RegisterFormSchema> = async (data) => {
-    const res = await fetch("http://localhost:3000//api/register", {
+    return await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +26,6 @@ export default function RegisterForm({}: Props) {
         password: data.password,
       }),
     });
-    redirect("/login");
   };
   return (
     <form

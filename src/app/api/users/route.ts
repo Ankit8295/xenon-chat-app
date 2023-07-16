@@ -3,7 +3,7 @@ import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-  const jwt = request.headers.get("jwtToken");
+  const jwt = request.headers.get("authorization");
   if (!jwt) {
     return NextResponse.json({
       status: 401,
