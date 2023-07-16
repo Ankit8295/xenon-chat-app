@@ -2,7 +2,6 @@
 import { RegisterFormSchema } from "@/src/utils/types/loginForm";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../components/form-input/FormInput";
-import { redirect } from "next/navigation";
 import PrimaryButton from "../../ui/button/PrimaryButton";
 import Link from "next/link";
 
@@ -21,8 +20,8 @@ export default function RegisterForm({}: Props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: data.username,
         email: data.email,
+        username: data.username,
         password: data.password,
       }),
     });
@@ -30,7 +29,7 @@ export default function RegisterForm({}: Props) {
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
-      className="flex flex-col gap-10 items-center  py-10 w-80"
+      className="flex flex-col gap-10 items-center py-10 w-80"
     >
       <h1>Register Your Account</h1>
       <FormInput
