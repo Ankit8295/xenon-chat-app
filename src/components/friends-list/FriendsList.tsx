@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import userImg from "@/public/userProfile.webp";
 import Image from "next/image";
 import HamburgerMenu from "./HamburgerMenu";
+import Link from "next/link";
+import { encHex } from "@/src/lib/encryptDecrypt";
 
 export default async function FriendsList({ email }: { email: string }) {
   const session = await getServerSession(authOptions);
@@ -39,19 +41,18 @@ export default async function FriendsList({ email }: { email: string }) {
         </h2>
         <div className="flex flex-col items-start w-full">
           {friendsList?.map((list, i) => (
-            <div
+            <Link
+              href={`/home/${encHex(list.email, process.env.ENCRYPTION_KEY)}`}
               className=" hover:bg-[#2b2b2b] w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg"
               key={i}
             >
               <Image
                 src={userImg}
                 alt="user_profile_img"
-                width={70}
-                height={60}
-                className="rounded-[50%]"
+                className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
               />
               {list.name}
-            </div>
+            </Link>
           ))}
         </div>
       </div>
