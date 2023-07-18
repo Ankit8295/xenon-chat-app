@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import HamburgerMenu from "../friends-list/HamburgerMenu";
+import { signOut } from "next-auth/react";
 
 type Props = {};
 
@@ -20,13 +21,29 @@ export default function UserMenu({}: Props) {
         <div
           id="dropDown"
           className={`${
-            active ? "" : "hidden"
-          } absolute transition-all duration-300 left-5 top-full bg-bg_dark p-5`}
+            active
+              ? "absolute transition-all duration-200 origin-top-left left-5 top-[110%] flex flex-col text-xs bg-bg_dark rounded-md"
+              : "hidden"
+          } `}
         >
-          <p>item</p>
-          <p>item</p>
-          <p>item</p>
-          <p>item</p>
+          <span
+            onClick={() => setActive(false)}
+            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+          >
+            Profile
+          </span>
+          <span
+            onClick={() => setActive(false)}
+            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+          >
+            Settings
+          </span>
+          <span
+            onClick={() => signOut()}
+            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+          >
+            Log Out
+          </span>
         </div>
       </div>
       <input
