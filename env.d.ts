@@ -4,6 +4,7 @@ namespace NodeJS {
     NEXTAUTH_URL: string;
     MONGODB_URI: string;
     JWT_SECRET: string;
+    API_KEY: string;
     ENCRYPTION_KEY: string;
   }
 }

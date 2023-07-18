@@ -2,14 +2,12 @@ import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
 
-type RequestBody = {
-  searchFriendEmail: string;
-};
-
 export async function GET(request: Request) {
   const jwt = request.headers.get("authorization");
 
-  const { searchFriendEmail } = (await request.json()) as RequestBody;
+  const url = new URL(request.url);
+
+  const userId = url.searchParams.get("userId");
 
   const dataBase = await db();
 
@@ -30,10 +28,9 @@ export async function GET(request: Request) {
       reason: "access token is not valid",
     });
   }
+  const user = await dataBase.collection("userIds").findOne({ userId: userId });
 
-  const user = await dataBase
-    .collection("userIds")
-    .findOne({ userId: searchFriendEmail });
   if (user) return NextResponse.json({ status: 200, data: user });
+
   return NextResponse.json({ status: 404, data: "No User found" });
 }
