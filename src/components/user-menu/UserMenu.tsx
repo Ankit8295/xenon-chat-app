@@ -28,19 +28,19 @@ export default function UserMenu({}: Props) {
         >
           <span
             onClick={() => setActive(false)}
-            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+            className="px-7 py-3 hover:bg-hover_color cursor-pointer"
           >
             Profile
           </span>
           <span
             onClick={() => setActive(false)}
-            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+            className="px-7 py-3 hover:bg-hover_color cursor-pointer"
           >
             Settings
           </span>
           <span
             onClick={() => signOut()}
-            className="px-10 py-3 hover:bg-hover_color cursor-pointer"
+            className="px-7 py-3 hover:bg-hover_color cursor-pointer"
           >
             Log Out
           </span>

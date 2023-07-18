@@ -4,7 +4,9 @@ import { getServerSession } from "next-auth";
 import userImg from "@/public/userProfile.webp";
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 import UserMenu from "../user-menu/UserMenu";
+import FriendLink from "./ListLink";
 
 export default async function FriendsList({ email }: { email: string }) {
   const session = await getServerSession(authOptions);
@@ -12,6 +14,9 @@ export default async function FriendsList({ email }: { email: string }) {
   const { user } = session!;
 
   const token = user?.jwtToken;
+
+  const header = headers();
+  console.log(header.get("url"));
 
   const friendsList = await fetch("http://localhost:3000/api/get-friends", {
     method: "POST",
@@ -25,6 +30,7 @@ export default async function FriendsList({ email }: { email: string }) {
   });
 
   const list = (await friendsList.json()) as FriendsListType[];
+
   if (list.length)
     return (
       <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-[#212121] p-2 overflow-hidden ">
@@ -35,18 +41,7 @@ export default async function FriendsList({ email }: { email: string }) {
           </h2>
           <div className="flex flex-col items-start w-full">
             {list?.map((list, i) => (
-              <Link
-                href={`/home/${list.email}`}
-                className=" hover:bg-[#2b2b2b] w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg"
-                key={i}
-              >
-                <Image
-                  src={userImg}
-                  alt="user_profile_img"
-                  className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
-                />
-                {list.name}
-              </Link>
+              <FriendLink email={list.email} name={list.name} key={i} />
             ))}
           </div>
         </div>
