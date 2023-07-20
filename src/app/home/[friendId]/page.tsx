@@ -3,6 +3,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import FriendMenu from "@/src/components/friendMenu/FriendMenu";
 import MessageArea from "@/src/components/messageArea/MessageArea";
 import Sender from "@/src/components/messageSender/MessageSender";
+import { useEffect } from "react";
 
 type Params = {
   params: {

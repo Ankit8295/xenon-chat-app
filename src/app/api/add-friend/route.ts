@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       reason: "access token is not found",
     });
   }
+
   const verifyToken = verifyJwt(jwt);
 
   if (!verifyToken) {
