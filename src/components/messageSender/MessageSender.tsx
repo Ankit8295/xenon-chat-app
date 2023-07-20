@@ -1,43 +1,47 @@
 "use client";
-import { io as ClientIO } from "socket.io-client";
+import { io } from "socket.io-client";
 import MessageArea from "../messageArea/MessageArea";
-import { useEffect } from "react";
+import { MessageType } from "./MessageType";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 type Props = {
   userId: string;
   friendId: string;
-  message?: unknown;
+  message?: MessageType;
 };
 
 export default function MessageSender({ friendId, userId }: Props) {
-  // const newSocket = io("http://localhost:3001");
-  // newSocket.on("msg", (data) => {
-  //   console.log(data);
-  // });
-  useEffect((): any => {
-    const socket = ClientIO("http://localhost:3000");
+  const [message, setMessage] = useState<string>("");
+  const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
+  const socket = io("http://localhost:3001");
 
-    // log socket connection
-    socket.on("connect", () => {
-      console.log("SOCKET CONNECTED!", socket.id);
-    });
+  socket.on("msgToClient", (data) => {
+    console.log(data);
+    setReceivedMsg(data as MessageType[]);
+  });
 
-    // update chat on new message dispatched
-    // socket.on("message", (message: IChatMessage) => {
-    //   chatMessages.push(message);
-    //   setChatMessages([...chatMessages]);
-    // });
-
-    // socket disconnet onUnmount if exists
-    if (socket) return () => socket.disconnect();
-  }, []);
-  const submitHandler = (e: any) => {
+  const submitHandler = (e: FormEvent) => {
     e.preventDefault();
+    const finalMessage: MessageType = {
+      messageId: Math.random().toString(),
+      messageBy: userId,
+      messageTo: friendId,
+      messageText: message,
+      messageTime: Date.now(),
+      messageType: "text",
+    };
+    socket.emit("msgByClient", finalMessage);
+    setMessage("");
   };
+
   return (
     <>
       <div className="bg-bg_dark h-full overflow-y-scroll px-16">
-        <MessageArea friendId={friendId} userId={userId} />
+        <MessageArea
+          friendId={friendId}
+          userId={userId}
+          message={receivedMsg as any}
+        />
       </div>
 
       <form
@@ -45,9 +49,13 @@ export default function MessageSender({ friendId, userId }: Props) {
         className="bg-primary  flex justify-center items-center"
       >
         <input
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setMessage(e.target.value)
+          }
           className=" my-3  w-[550px] rounded-lg  py-2 outline-none border border-transparent  hover:border-white/40 focus:border-blue-500 px-3 bg-[#181818] transition-colors duration-200"
           type="text"
           placeholder="type a message"
+          value={message}
         />
         <button type="submit">
           <svg width="50px" height="40px" viewBox="0 -0.5 25 25" fill="none">
