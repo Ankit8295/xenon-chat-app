@@ -16,7 +16,7 @@ export default function FriendLink({ email, name, key }: Props) {
     <Link
       href={`/home/${email}`}
       className={`${
-        pathname.includes(email) ? "bg-blue-500" : "hover:bg-[#2b2b2b] "
+        pathname.includes(email) ? "bg-purple-400" : "hover:bg-[#2b2b2b] "
       }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
       key={key}
     >

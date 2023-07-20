@@ -3,7 +3,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import FriendMenu from "@/src/components/friendMenu/FriendMenu";
 import MessageArea from "@/src/components/messageArea/MessageArea";
 import Sender from "@/src/components/messageSender/MessageSender";
-import { useEffect } from "react";
+import MessageSender from "@/src/components/messageSender/MessageSender";
 
 type Params = {
   params: {
@@ -37,10 +37,7 @@ export default async function page({ params }: Params) {
           <span className="capitalize">{data?.data?.username}</span>
           <FriendMenu />
         </div>
-        <div className="bg-bg_dark h-full overflow-y-scroll px-16">
-          <MessageArea friendId={friendId} userId={userId} />
-        </div>
-        <Sender />
+        <MessageSender friendId={friendId} userId={userId} />
       </div>
     );
   else return <h2>error</h2>;
