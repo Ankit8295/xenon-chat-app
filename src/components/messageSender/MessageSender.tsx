@@ -19,7 +19,7 @@ export default function MessageSender({ friendId, userId }: Props) {
 
   socket.on("private_message", (data) => {
     console.log(data);
-    setReceivedMsg(data as MessageType[]);
+    setReceivedMsg((prev) => [...prev, data]);
   });
 
   const submitHandler = (e: FormEvent) => {
