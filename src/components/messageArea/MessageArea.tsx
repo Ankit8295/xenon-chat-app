@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function MessageArea({ friendId, userId, message }: Props) {
-  console.log(friendId);
+  console.log(message);
   return (
     <div className="flex w-full flex-col gap-5 py-5 items-start">
       {message?.map((msg, i) =>

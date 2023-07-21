@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const { email, password, username } = credentials as any;
 
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
+        const res = await fetch(`http://localhost:3000/api/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         const user = await res.json();
-
+        console.log("result" + user);
         if (user.status === 200) return user.data;
         else {
           return null;

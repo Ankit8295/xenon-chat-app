@@ -2,7 +2,7 @@
 import { io } from "socket.io-client";
 import MessageArea from "../messageArea/MessageArea";
 import { MessageType } from "./MessageType";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
 type Props = {
   userId: string;
@@ -11,11 +11,13 @@ type Props = {
 };
 
 export default function MessageSender({ friendId, userId }: Props) {
-  const [message, setMessage] = useState<string>("");
+  const messageRef = useRef<HTMLInputElement>(null);
   const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
   const socket = io("http://localhost:3001");
 
-  socket.on("msgToClient", (data) => {
+  socket.emit("join", userId);
+
+  socket.on("private_message", (data) => {
     console.log(data);
     setReceivedMsg(data as MessageType[]);
   });
@@ -25,13 +27,12 @@ export default function MessageSender({ friendId, userId }: Props) {
     const finalMessage: MessageType = {
       messageId: Math.random().toString(),
       messageBy: userId,
-      messageTo: friendId,
-      messageText: message,
+      messageTo: decodeURIComponent(friendId),
+      messageText: messageRef.current?.value!,
       messageTime: Date.now(),
       messageType: "text",
     };
-    socket.emit("msgByClient", finalMessage);
-    setMessage("");
+    socket.emit("private_message", finalMessage);
   };
 
   return (
@@ -49,13 +50,10 @@ export default function MessageSender({ friendId, userId }: Props) {
         className="bg-primary  flex justify-center items-center"
       >
         <input
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setMessage(e.target.value)
-          }
+          ref={messageRef}
           className=" my-3  w-[550px] rounded-lg  py-2 outline-none border border-transparent  hover:border-white/40 focus:border-blue-500 px-3 bg-[#181818] transition-colors duration-200"
           type="text"
           placeholder="type a message"
-          value={message}
         />
         <button type="submit">
           <svg width="50px" height="40px" viewBox="0 -0.5 25 25" fill="none">
