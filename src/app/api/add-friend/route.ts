@@ -8,7 +8,7 @@ type RequestBody = {
 };
 
 export async function POST(request: Request) {
-  const jwt = request.headers.get("jwtToken");
+  const jwt = request.headers.get("authorization");
 
   const { friendEmail, userEmail } = (await request.json()) as RequestBody;
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
-      reason: "access token is not found",
+      reason: "access token  not found",
     });
   }
 
@@ -34,11 +34,11 @@ export async function POST(request: Request) {
 
   const userDetails = await dataBase
     .collection("users")
-    .findOne({ email: userEmail });
+    .findOne({ userId: userEmail });
 
   const isFriendExistedInDb = await dataBase
     .collection("users")
-    .findOne({ email: friendEmail });
+    .findOne({ userId: friendEmail });
 
   if (!isFriendExistedInDb)
     return NextResponse.json({
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     });
 
   const areTheyFriends = userDetails!.friends.find(
-    (friend: { email: string; name: string }) => friend.email === friendEmail
+    (friend: { userId: string; name: string }) => friend.userId === friendEmail
   )
     ? true
     : false;
@@ -61,19 +61,22 @@ export async function POST(request: Request) {
 
   if (isFriendExistedInDb && !areTheyFriends) {
     const addFriendToUser = await dataBase.collection("users").updateOne(
-      { email: userEmail },
+      { userId: userEmail },
       {
         $push: {
-          friends: { email: friendEmail, name: isFriendExistedInDb.username },
+          friends: { userId: friendEmail, name: isFriendExistedInDb.username },
         },
       }
     );
 
     const addUserToFriend = await dataBase.collection("users").updateOne(
-      { email: friendEmail },
+      { userId: friendEmail },
       {
         $push: {
-          friends: { email: userEmail, name: userDetails!.username },
+          friends: {
+            userId: userEmail,
+            name: userDetails!.username,
+          },
         },
       }
     );

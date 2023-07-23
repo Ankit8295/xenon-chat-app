@@ -1,8 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import FriendMenu from "@/src/components/friendMenu/FriendMenu";
-import MessageArea from "@/src/components/messageArea/MessageArea";
-import Sender from "@/src/components/messageSender/MessageSender";
 import MessageSender from "@/src/components/messageSender/MessageSender";
 
 type Params = {
@@ -18,7 +16,7 @@ export default async function page({ params }: Params) {
 
   const token = user?.jwtToken;
 
-  const userId = user?.email;
+  const userId = user?.userId;
 
   const friendId = params.friendId;
 

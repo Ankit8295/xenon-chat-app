@@ -3,7 +3,7 @@ import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
 
 type RequestBody = {
-  userEmail: string;
+  userId: string;
 };
 
 export async function POST(request: Request) {
@@ -26,13 +26,13 @@ export async function POST(request: Request) {
     });
   }
 
-  const { userEmail } = (await request.json()) as RequestBody;
+  const { userId } = (await request.json()) as RequestBody;
 
   const dataBase = await db();
 
   const userDetails = await dataBase
     .collection("users")
-    .findOne({ email: userEmail });
+    .findOne({ userId: userId });
 
   if (userDetails) {
     if (userDetails?.friends.length > 0)

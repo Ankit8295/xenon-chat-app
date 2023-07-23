@@ -23,9 +23,9 @@ export default function LoginForm({}: Props) {
   } = useForm<LoginFormSchema>();
 
   const submit: SubmitHandler<LoginFormSchema> = async (data) => {
-    if (data.email && data.password) {
+    if (data.userId && data.password) {
       return await signIn("credentials", {
-        email: data.email,
+        userId: data.userId,
         password: data.password,
         redirect: true,
         callbackUrl: url,
@@ -41,14 +41,16 @@ export default function LoginForm({}: Props) {
       <FormInput
         type="email"
         register={register}
-        registerValue="email"
+        registerValue="userId"
         placeholder="Enter Your Email"
+        error={errors.userId?.message}
       />
       <FormInput
         type="text"
         register={register}
         registerValue="password"
         placeholder="Enter Your Password"
+        error={errors.password?.message}
       />
       <PrimaryButton type="submit">
         {paramError

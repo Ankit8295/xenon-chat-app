@@ -1,1 +1,1 @@
-export type FriendsListType = { email: string; name: string };
+export type FriendsListType = { userId: string; name: string };

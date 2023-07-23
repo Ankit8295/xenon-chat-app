@@ -2,9 +2,7 @@ import { DefaultSession, DefaultUser } from "next-auth";
 
 interface IUser extends DefaultUser {
   jwtToken: string;
-  email: string;
-  password: string;
-  username: string;
+  userId: string;
 }
 declare module "next-auth" {
   interface User extends IUser {}

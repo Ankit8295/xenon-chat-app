@@ -1,3 +1,4 @@
+import { encodeEmail } from "@/src/lib/encryptDecrypt";
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
@@ -28,9 +29,13 @@ export async function GET(request: Request) {
       reason: "access token is not valid",
     });
   }
-  const user = await dataBase.collection("userIds").findOne({ userId: userId });
 
-  if (user) return NextResponse.json({ status: 200, data: user });
+  if (userId) {
+    const user = await dataBase
+      .collection("users")
+      .findOne({ userId: encodeEmail(userId) });
 
+    if (user) return NextResponse.json({ status: 200, data: user });
+  }
   return NextResponse.json({ status: 404, data: "No User found" });
 }

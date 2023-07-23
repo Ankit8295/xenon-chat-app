@@ -1,11 +1,14 @@
 "use client";
-import { Provider } from "react-redux";
-import { store } from "./store/Store";
 
-export default function AppProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <Provider store={store}>{children}</Provider>;
+import QueryProvider from "./QueryProvider";
+import ContextProvider from "./state-provider/ContextProvider";
+
+type Props = { children: React.ReactNode };
+
+export default function Provider({ children }: Props) {
+  return (
+    <QueryProvider>
+      <ContextProvider>{children}</ContextProvider>
+    </QueryProvider>
+  );
 }

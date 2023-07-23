@@ -20,7 +20,7 @@ export default function RegisterForm({}: Props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: data.email,
+        userId: data.userId,
         username: data.username,
         password: data.password,
       }),
@@ -42,7 +42,7 @@ export default function RegisterForm({}: Props) {
       <FormInput
         type="email"
         register={register}
-        registerValue="email"
+        registerValue="userId"
         registerReq={true}
         placeholder="Email"
       />
