@@ -31,9 +31,7 @@ export async function GET(request: Request) {
   }
 
   if (userId) {
-    const user = await dataBase
-      .collection("users")
-      .findOne({ userId: encodeEmail(userId) });
+    const user = await dataBase.collection("users").findOne({ userId: userId });
 
     if (user) return NextResponse.json({ status: 200, data: user });
   }

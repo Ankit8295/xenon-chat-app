@@ -1,19 +1,18 @@
+"use client";
 import SideBar from "@/src/components/friends-list/SideBar";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import useQueryFunction from "@/src/lib/useQueries";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default async function Layout({ children }: Props) {
-  const session = await getServerSession(authOptions);
-  const { user } = session!;
-  const userId = user?.userId;
-  if (user)
+export default function Layout({ children }: Props) {
+  const { userId } = useQueryFunction();
+
+  if (userId)
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
-        <SideBar userId={userId!} />
+        <SideBar />
         <div className="flex  flex-[5] h-full flex-col items-start w-full bg-transparent">
           {children}
         </div>

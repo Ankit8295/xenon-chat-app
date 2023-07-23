@@ -8,9 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../components/form-input/FormInput";
 import Link from "next/link";
 
-type Props = {};
-
-export default function LoginForm({}: Props) {
+export default function LoginForm() {
   const searchParams = useSearchParams();
   const url = searchParams?.get("callbackUrl") || "/home";
   const [loginError, setLoginError] = useState("");

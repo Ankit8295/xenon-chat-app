@@ -29,7 +29,6 @@ export async function POST(request: Request) {
     username,
     friends: [],
   };
-  console.log(encodedEmail, encryptPass);
   const createdUser = await dataBase.collection("users").insertOne(user);
 
   const createdUserIds = await dataBase

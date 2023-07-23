@@ -18,7 +18,6 @@ export default function MessageSender({ friendId, userId }: Props) {
   socket.emit("join", userId);
 
   socket.on("private_message", (data) => {
-    console.log(data);
     setReceivedMsg((prev) => [...prev, data]);
   });
 

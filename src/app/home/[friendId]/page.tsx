@@ -1,7 +1,8 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+"use client";
 import FriendMenu from "@/src/components/friendMenu/FriendMenu";
 import MessageSender from "@/src/components/messageSender/MessageSender";
+import { useQuery } from "@tanstack/react-query";
+import useQueryFunction from "@/src/lib/useQueries";
 
 type Params = {
   params: {
@@ -9,34 +10,28 @@ type Params = {
   };
 };
 
-export default async function page({ params }: Params) {
-  const session = await getServerSession(authOptions);
+export default function Page({ params }: Params) {
+  const { searchFriend, userId } = useQueryFunction();
 
-  const { user } = session!;
+  const { data, isLoading } = useQuery({
+    queryKey: [params.friendId],
+    queryFn: () => searchFriend(params.friendId),
+  });
 
-  const token = user?.jwtToken;
-
-  const userId = user?.userId;
-
-  const friendId = params.friendId;
-
-  const data = await fetch(
-    `http://localhost:3000/api/user?friendId=${decodeURIComponent(friendId)}`,
-    {
-      headers: {
-        authorization: `${token}`,
-      },
-    }
-  ).then((res) => res.json());
-  if (data && userId)
+  if (isLoading)
+    return <h2 className="w-full text-center m-auto">Loading User Data...</h2>;
+  if (data)
     return (
       <div className="h-full w-full flex flex-col justify-between">
         <div className="bg-primary py-3 px-4 ml-1 flex items-center justify-between">
-          <span className="capitalize">{data?.data?.username}</span>
+          <span className="capitalize">{data.data.username}</span>
           <FriendMenu />
         </div>
-        <MessageSender friendId={friendId} userId={userId} />
+        <MessageSender friendId={params.friendId} userId={userId!} />
       </div>
     );
-  else return <h2>error</h2>;
+  else
+    return (
+      <h2 className="w-full text-center m-auto">Something Went Wrong....</h2>
+    );
 }
