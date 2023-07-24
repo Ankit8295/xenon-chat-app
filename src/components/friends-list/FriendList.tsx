@@ -15,6 +15,7 @@ export default function FriendList() {
     queryKey: ["userFriends"],
     queryFn: () => getFriends(),
   });
+
   if (isLoading)
     return (
       <h2 className="flex items-center gap-5 flex-col w-full py-5">

@@ -38,7 +38,7 @@ export default function UserMenu() {
           <div
             onClick={() => {
               dispatch({ type: "SET_SearchFriend", payload: "" });
-              queryClient.removeQueries(["searchFriend"], { exact: true });
+              // queryClient.removeQueries(["searchFriend"], { exact: true });
               dispatch({ type: "SET_ShowAddFriendTab", payload: false });
             }}
             className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-200 ${
@@ -92,7 +92,7 @@ export default function UserMenu() {
         <input
           type="search"
           className="w-full py-2 outline-none bg-transparent"
-          placeholder="search"
+          placeholder="Search Friends"
           autoComplete="off"
           value={friendUserName}
           required

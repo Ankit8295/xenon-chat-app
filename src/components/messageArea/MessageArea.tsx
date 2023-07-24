@@ -1,5 +1,6 @@
 "use client";
-import { MessageType } from "../messageSender/MessageType";
+
+import { MessageType } from "@/src/utils/types/types";
 
 type Props = {
   userName: string;

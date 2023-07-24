@@ -1,16 +1,17 @@
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
+import { FriendsDb } from "@/src/utils/types/types";
 import { NextResponse } from "next/server";
 
 type RequestBody = {
-  friendEmail: string;
-  userEmail: string;
+  friendUserName: string;
+  userName: string;
 };
 
 export async function POST(request: Request) {
   const jwt = request.headers.get("authorization");
 
-  const { friendEmail, userEmail } = (await request.json()) as RequestBody;
+  const { friendUserName, userName } = (await request.json()) as RequestBody;
 
   const dataBase = await db();
 
@@ -33,22 +34,10 @@ export async function POST(request: Request) {
   }
 
   const userDetails = await dataBase
-    .collection("users")
-    .findOne({ userId: userEmail });
+    .collection("friends")
+    .findOne<FriendsDb>({ userName: userName });
 
-  const isFriendExistedInDb = await dataBase
-    .collection("users")
-    .findOne({ userId: friendEmail });
-
-  if (!isFriendExistedInDb)
-    return NextResponse.json({
-      status: 404,
-      data: "friend not found",
-    });
-
-  const areTheyFriends = userDetails!.friends.find(
-    (friend: { userId: string; name: string }) => friend.userId === friendEmail
-  )
+  const areTheyFriends = userDetails!.friends.includes(friendUserName)
     ? true
     : false;
 
@@ -59,27 +48,20 @@ export async function POST(request: Request) {
     });
   }
 
-  if (isFriendExistedInDb && !areTheyFriends) {
-    const addFriendToUser = await dataBase.collection("users").updateOne(
-      { userId: userEmail },
-      {
-        $push: {
-          friends: { userId: friendEmail, name: isFriendExistedInDb.username },
-        },
-      }
-    );
+  if (!areTheyFriends) {
+    const addFriendToUser = await dataBase
+      .collection("friends")
+      .updateOne(
+        { userName: userName },
+        { $push: { friends: friendUserName } }
+      );
 
-    const addUserToFriend = await dataBase.collection("users").updateOne(
-      { userId: friendEmail },
-      {
-        $push: {
-          friends: {
-            userId: userEmail,
-            name: userDetails!.username,
-          },
-        },
-      }
-    );
+    const addUserToFriend = await dataBase
+      .collection("friends")
+      .updateOne(
+        { userName: friendUserName },
+        { $push: { friends: userName } }
+      );
 
     if (addFriendToUser && addUserToFriend) {
       return NextResponse.json({

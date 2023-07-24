@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/src/lib/mongodb";
 import { encrypt } from "@/src/lib/encryptDecrypt";
 import { ObjectId } from "mongodb";
+import { UserDb } from "@/src/utils/types/types";
 
 interface RequestBody {
   emailId: string;
@@ -9,14 +10,6 @@ interface RequestBody {
   fullName: string;
   password: string;
 }
-
-type User = {
-  emailId: string;
-  userName: string;
-  fullName: string;
-  photo?: string;
-  about?: string;
-};
 
 export async function POST(request: Request) {
   const { emailId, fullName, password, userName } =
@@ -26,7 +19,7 @@ export async function POST(request: Request) {
 
   const dataBase = await db();
 
-  const user: User = {
+  const user: UserDb = {
     emailId,
     fullName,
     userName,

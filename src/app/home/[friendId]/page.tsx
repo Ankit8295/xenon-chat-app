@@ -3,6 +3,7 @@ import FriendMenu from "@/src/components/friendMenu/FriendMenu";
 import MessageSender from "@/src/components/messageSender/MessageSender";
 import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
+import { UserDb } from "@/src/utils/types/types";
 
 type Params = {
   params: {
@@ -14,22 +15,23 @@ export default function Page({ params }: Params) {
   const { searchFriend, userName } = useQueryFunction();
 
   const { data, isLoading } = useQuery({
-    queryKey: [params.friendId],
-    queryFn: () => searchFriend(params.friendId),
+    queryKey: [decodeURIComponent(params.friendId)],
+    queryFn: () => searchFriend(decodeURIComponent(params.friendId)),
   });
 
   if (isLoading)
     return <h2 className="w-full text-center m-auto">Loading User Data...</h2>;
+
   if (data)
     return (
       <div className="h-full w-full flex flex-col justify-between">
         <div className="bg-primary py-3 px-4 ml-1 flex items-center justify-between">
-          <span className="capitalize">{data.data.username}</span>
+          <span className="capitalize">{data.data.fullName}</span>
           <FriendMenu />
         </div>
         <MessageSender
-          friendUserName={params.friendId}
-          userName={userName as string}
+          friendUserName={decodeURIComponent(params.friendId)}
+          userName={userName!}
         />
       </div>
     );

@@ -1,8 +1,8 @@
 "use client";
 import { io } from "socket.io-client";
 import MessageArea from "../messageArea/MessageArea";
-import { MessageType } from "./MessageType";
 import { FormEvent, useRef, useState } from "react";
+import { MessageType } from "@/src/utils/types/types";
 
 type Props = {
   userName: string;
@@ -17,7 +17,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
   socket.emit("join", userName);
 
-  socket.on("private_message", (data) => {
+  socket.on("private_message", (data: MessageType) => {
     setReceivedMsg((prev) => [...prev, data]);
   });
 

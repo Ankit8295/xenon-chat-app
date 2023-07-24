@@ -8,7 +8,7 @@ export default function useQueryFunction() {
 
   async function searchFriend(friendUserName?: string) {
     const res = await axios({
-      url: "http://localhost:3000/api/user",
+      url: "http://localhost:3000/api/search-friend",
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -16,6 +16,7 @@ export default function useQueryFunction() {
       },
       params: {
         friendUserName: friendUserName,
+        userName: userName,
       },
     });
     return { status: res.data.status, data: res.data.data };
@@ -31,7 +32,7 @@ export default function useQueryFunction() {
         userName: userName,
       }),
     });
-    return { status: res.status, data: res.data };
+    return { status: res.status, data: res.data.data };
   }
   async function addFriend(friendUserName: string) {
     const res = await axios("http://localhost:3000/api/add-friend", {
