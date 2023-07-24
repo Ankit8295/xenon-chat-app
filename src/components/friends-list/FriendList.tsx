@@ -21,7 +21,7 @@ export default function FriendList({ Friends, isLoading }: Props) {
               href={`/home/${list.userId}`}
               className={`${
                 pathname.includes(list.userId)
-                  ? "bg-purple-400"
+                  ? "bg-blue-500"
                   : "hover:bg-[#2b2b2b] "
               }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
               key={list.userId}
