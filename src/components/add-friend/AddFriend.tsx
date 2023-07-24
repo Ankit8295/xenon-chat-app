@@ -17,7 +17,7 @@ export default function AddFriend() {
   }>(["searchFriend"]);
 
   const { mutate } = useMutation({
-    mutationFn: () => addFriend(searchFriendData?.data?.userId),
+    mutationFn: () => addFriend(searchFriendData?.data?.userName),
   });
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
 
@@ -32,7 +32,7 @@ export default function AddFriend() {
             alt="user_profile_img"
             className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
           />
-          {searchFriendData?.data?.username}
+          {searchFriendData?.data?.fullName}
         </div>
         <button className="border p-2" onClick={() => mutate()}>
           Add

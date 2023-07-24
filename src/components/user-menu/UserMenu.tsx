@@ -3,7 +3,6 @@ import { useState } from "react";
 import ArrowIcon from "../icons/Icons";
 import { signOut } from "next-auth/react";
 import useQueryFunction from "@/src/lib/useQueries";
-import { encodeEmail } from "@/src/lib/encryptDecrypt";
 import HamburgerMenu from "../friends-list/HamburgerMenu";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -16,23 +15,22 @@ export default function UserMenu() {
 
   const queryClient = useQueryClient();
 
-  const { searchFriend } = useQueryFunction();
+  const { searchFriend, userName } = useQueryFunction();
 
   const [active, setActive] = useState<boolean>(false);
 
-  const { showAddFriendTab, searchFriend: friendId } = useAppState();
+  const { showAddFriendTab, searchFriend: friendUserName } = useAppState();
 
   const { refetch } = useQuery({
     queryKey: ["searchFriend"],
-    queryFn: () => searchFriend(encodeEmail(friendId)),
+    queryFn: () => searchFriend(friendUserName),
     enabled: false,
   });
 
   const submitForm = (e: any) => {
     e.preventDefault();
-    refetch();
+    if (friendUserName !== userName) refetch();
   };
-
   return (
     <div className="px-4 flex justify-between gap-5 items-center w-full relative">
       <div className="relative">
@@ -96,7 +94,7 @@ export default function UserMenu() {
           className="w-full py-2 outline-none bg-transparent"
           placeholder="search"
           autoComplete="off"
-          value={friendId}
+          value={friendUserName}
           required
           onFocus={() => {
             setActive(false);

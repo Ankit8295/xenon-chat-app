@@ -2,20 +2,20 @@
 import { io } from "socket.io-client";
 import MessageArea from "../messageArea/MessageArea";
 import { MessageType } from "./MessageType";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 type Props = {
-  userId: string;
-  friendId: string;
+  userName: string;
+  friendUserName: string;
   message?: MessageType;
 };
 
-export default function MessageSender({ friendId, userId }: Props) {
+export default function MessageSender({ friendUserName, userName }: Props) {
   const messageRef = useRef<HTMLInputElement>(null);
   const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
   const socket = io("http://localhost:3001");
 
-  socket.emit("join", userId);
+  socket.emit("join", userName);
 
   socket.on("private_message", (data) => {
     setReceivedMsg((prev) => [...prev, data]);
@@ -25,8 +25,8 @@ export default function MessageSender({ friendId, userId }: Props) {
     e.preventDefault();
     const finalMessage: MessageType = {
       messageId: Math.random().toString(),
-      messageBy: userId,
-      messageTo: decodeURIComponent(friendId),
+      messageBy: userName,
+      messageTo: decodeURIComponent(friendUserName),
       messageText: messageRef.current?.value!,
       messageTime: Date.now(),
       messageType: "text",
@@ -38,8 +38,8 @@ export default function MessageSender({ friendId, userId }: Props) {
     <>
       <div className="bg-bg_dark h-full overflow-y-scroll px-16">
         <MessageArea
-          friendId={friendId}
-          userId={userId}
+          friendUserName={friendUserName}
+          userName={userName}
           message={receivedMsg as any}
         />
       </div>

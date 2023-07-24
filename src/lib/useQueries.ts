@@ -4,9 +4,9 @@ import { useSession } from "next-auth/react";
 export default function useQueryFunction() {
   const { data } = useSession();
   const token = data?.user?.jwtToken || "";
-  const userId = data?.user?.userId;
+  const userName = data?.user?.userName;
 
-  async function searchFriend(friendId?: string) {
+  async function searchFriend(friendUserName?: string) {
     const res = await axios({
       url: "http://localhost:3000/api/user",
       method: "GET",
@@ -15,7 +15,7 @@ export default function useQueryFunction() {
         authorization: token,
       },
       params: {
-        friendId: friendId,
+        friendUserName: friendUserName,
       },
     });
     return { status: res.data.status, data: res.data.data };
@@ -28,12 +28,12 @@ export default function useQueryFunction() {
         authorization: `${token}`,
       },
       data: JSON.stringify({
-        userId: userId,
+        userName: userName,
       }),
     });
     return { status: res.status, data: res.data };
   }
-  async function addFriend(friendId: string) {
+  async function addFriend(friendUserName: string) {
     const res = await axios("http://localhost:3000/api/add-friend", {
       method: "POST",
       headers: {
@@ -41,15 +41,15 @@ export default function useQueryFunction() {
         authorization: `${token}`,
       },
       data: JSON.stringify({
-        friendEmail: friendId,
-        userEmail: userId,
+        friendUserName: friendUserName,
+        userName: userName,
       }),
     });
     return { status: res.status, data: res.data };
   }
 
   return {
-    userId,
+    userName,
     token,
     searchFriend,
     getFriends,

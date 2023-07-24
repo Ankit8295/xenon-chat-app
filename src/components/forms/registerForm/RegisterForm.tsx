@@ -1,30 +1,42 @@
 "use client";
-import { RegisterFormSchema } from "@/src/utils/types/loginForm";
+import {
+  RegisterFormSchema,
+  registerValidation,
+} from "@/src/utils/types/loginForm";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../components/form-input/FormInput";
 import PrimaryButton from "../../ui/button/PrimaryButton";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
-type Props = {};
-
-export default function RegisterForm({}: Props) {
+export default function RegisterForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<RegisterFormSchema>();
-  const submitForm: SubmitHandler<RegisterFormSchema> = async (data) => {
-    return await fetch("/api/register", {
+  } = useForm<RegisterFormSchema>({
+    resolver: zodResolver(registerValidation),
+  });
+  const submitForm: SubmitHandler<RegisterFormSchema> = (data) => {
+    return fetch("/api/register", {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: data.userId,
-        username: data.username,
+        emailId: data.emailId,
+        fullName: data.fullName,
+        userName: data.userName,
         password: data.password,
       }),
-    });
+    })
+      .then((res) => {
+        reset();
+        return res;
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <form
@@ -35,16 +47,26 @@ export default function RegisterForm({}: Props) {
       <FormInput
         type="text"
         register={register}
-        registerValue="username"
-        placeholder="Full Name"
+        registerValue="userName"
+        placeholder="create username"
         registerReq={true}
+        error={errors.userName?.message}
+      />
+      <FormInput
+        type="text"
+        register={register}
+        registerValue="fullName"
+        placeholder="Name"
+        registerReq={true}
+        error={errors.fullName?.message}
       />
       <FormInput
         type="email"
         register={register}
-        registerValue="userId"
+        registerValue="emailId"
         registerReq={true}
         placeholder="Email"
+        error={errors.emailId?.message}
       />
       <FormInput
         type="text"
@@ -52,6 +74,7 @@ export default function RegisterForm({}: Props) {
         registerValue="password"
         registerReq={true}
         placeholder="password"
+        error={errors.password?.message}
       />
       <PrimaryButton type="submit">Continue</PrimaryButton>
       <div>

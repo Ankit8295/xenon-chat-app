@@ -1,15 +1,15 @@
 import { db } from "@/src/lib/mongodb";
 import { createJwt } from "@/src/lib/jwt";
 import { NextResponse } from "next/server";
-import { decrypt, encodeEmail, encrypt } from "@/src/lib/encryptDecrypt";
+import { decrypt } from "@/src/lib/encryptDecrypt";
 
 interface RequestBody {
-  userId: string;
+  userName: string;
   password: string;
 }
 
 type User = {
-  userId: string;
+  userName: string;
   exp: number;
   iat: number;
   jti: string;
@@ -19,13 +19,15 @@ type User = {
 };
 
 export async function POST(request: Request) {
-  const { userId, password: inputPass } = (await request.json()) as RequestBody;
-
+  const { userName, password: inputPass } =
+    (await request.json()) as RequestBody;
+  console.log(userName, inputPass);
   const dataBase = await db();
 
   const user = (await dataBase
-    .collection("userIds")
-    .findOne({ userId: encodeEmail(userId) })) as unknown;
+    .collection("idPass")
+    .findOne({ userName: userName })) as unknown;
+
   if (user) {
     const jwtToken = createJwt(user);
 

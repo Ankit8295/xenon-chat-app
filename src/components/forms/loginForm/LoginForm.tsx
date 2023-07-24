@@ -3,32 +3,32 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import PrimaryButton from "../../ui/button/PrimaryButton";
-import { LoginFormSchema } from "@/src/utils/types/loginForm";
+import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormInput from "../components/form-input/FormInput";
 import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const url = searchParams?.get("callbackUrl") || "/home";
-  const [loginError, setLoginError] = useState("");
   const paramError = searchParams?.get("error");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormSchema>();
+  } = useForm<LoginFormSchema>({
+    resolver: zodResolver(loginValidation),
+  });
 
   const submit: SubmitHandler<LoginFormSchema> = async (data) => {
-    if (data.userId && data.password) {
-      return await signIn("credentials", {
-        userId: data.userId,
-        password: data.password,
-        redirect: true,
-        callbackUrl: url,
-      });
-    } else setLoginError("Please enter valid credentials");
+    return await signIn("credentials", {
+      userName: data.userName,
+      password: data.password,
+      redirect: true,
+      callbackUrl: url,
+    });
   };
   return (
     <form
@@ -37,11 +37,11 @@ export default function LoginForm() {
     >
       <h1 className="">Log in to your account</h1>
       <FormInput
-        type="email"
+        type="text"
         register={register}
-        registerValue="userId"
-        placeholder="Enter Your Email"
-        error={errors.userId?.message}
+        registerValue="userName"
+        placeholder="Enter Username"
+        error={errors.userName?.message}
       />
       <FormInput
         type="text"
@@ -51,11 +51,7 @@ export default function LoginForm() {
         error={errors.password?.message}
       />
       <PrimaryButton type="submit">
-        {paramError
-          ? "Retry with Valid Credentials"
-          : loginError
-          ? loginError
-          : "Continue"}
+        {paramError ? "Retry with Valid Credentials" : "Continue"}
       </PrimaryButton>
       <div>
         don&apos;t have an account ?

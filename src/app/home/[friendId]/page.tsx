@@ -11,7 +11,7 @@ type Params = {
 };
 
 export default function Page({ params }: Params) {
-  const { searchFriend, userId } = useQueryFunction();
+  const { searchFriend, userName } = useQueryFunction();
 
   const { data, isLoading } = useQuery({
     queryKey: [params.friendId],
@@ -27,7 +27,10 @@ export default function Page({ params }: Params) {
           <span className="capitalize">{data.data.username}</span>
           <FriendMenu />
         </div>
-        <MessageSender friendId={params.friendId} userId={userId!} />
+        <MessageSender
+          friendUserName={params.friendId}
+          userName={userName as string}
+        />
       </div>
     );
   else

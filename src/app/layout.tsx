@@ -1,7 +1,7 @@
 "use client";
+import "./globals.css";
 import PageWrapper from "../components/ui/PageWrapper";
 import AppProvider from "../utils/app-provider/AppProvider";
-import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 

@@ -7,13 +7,12 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
 
       credentials: {
-        username: { label: "Username", type: "text" },
-        userId: { label: "userId", type: "email" },
+        userName: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials, req) {
-        const { userId, password, username } = credentials as any;
+        const { userName, password } = credentials as any;
 
         const res = await fetch(`http://localhost:3000/api/login`, {
           method: "POST",
@@ -21,9 +20,8 @@ export const authOptions: NextAuthOptions = {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userId: userId,
-            username: username,
-            password: password,
+            userName,
+            password,
           }),
         });
 

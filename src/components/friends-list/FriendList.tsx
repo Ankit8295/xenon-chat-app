@@ -4,34 +4,43 @@ import Link from "next/link";
 import userImg from "@/public/userProfile.webp";
 import { usePathname } from "next/navigation";
 import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
+import useQueryFunction from "@/src/lib/useQueries";
+import { useQuery } from "@tanstack/react-query";
 
-type Props = {
-  Friends: FriendsListType[];
-  isLoading: boolean;
-};
+export default function FriendList() {
+  const { getFriends } = useQueryFunction();
 
-export default function FriendList({ Friends, isLoading }: Props) {
   const pathname = usePathname();
-  if (Friends)
+  const { data, isLoading } = useQuery({
+    queryKey: ["userFriends"],
+    queryFn: () => getFriends(),
+  });
+  if (isLoading)
+    return (
+      <h2 className="flex items-center gap-5 flex-col w-full py-5">
+        Loading Friends...
+      </h2>
+    );
+  if (data?.data)
     return (
       <>
-        {Friends?.length ? (
-          Friends?.map((list) => (
+        {data?.data?.length ? (
+          data?.data?.map((list: FriendsListType) => (
             <Link
-              href={`/home/${list.userId}`}
+              href={`/home/${list.userName}`}
               className={`${
-                pathname.includes(list.userId)
+                pathname.includes(list.userName)
                   ? "bg-blue-500"
                   : "hover:bg-[#2b2b2b] "
               }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
-              key={list.userId}
+              key={list.userName}
             >
               <Image
                 src={userImg}
                 alt="user_profile_img"
                 className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
               />
-              {list.name}
+              {list.fullName}
             </Link>
           ))
         ) : (
@@ -41,12 +50,7 @@ export default function FriendList({ Friends, isLoading }: Props) {
         )}
       </>
     );
-  if (isLoading)
-    return (
-      <h2 className="flex items-center gap-5 flex-col w-full py-5">
-        Loading Friends...
-      </h2>
-    );
+
   return (
     <h2 className="flex items-center gap-5 flex-col w-full py-5">
       Something went wrong...

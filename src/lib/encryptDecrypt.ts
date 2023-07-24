@@ -12,11 +12,11 @@ export function decrypt(encryptedPassword: string) {
   );
   return decrypted;
 }
-export function encodeEmail(email: string) {
-  return Buffer.from(email).toString("base64");
+
+export function encodeString(string: string) {
+  return Buffer.from(string).toString("base64");
 }
 
-// Function to decode a Base64 encoded email
-export function decodeEmail(encodedEmail: string) {
-  return Buffer.from(encodedEmail, "base64").toString("utf8");
+export function decodeString(encodedString: string) {
+  return Buffer.from(encodedString, "base64").toString("utf8");
 }

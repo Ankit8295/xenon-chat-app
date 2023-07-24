@@ -1,4 +1,3 @@
-import { encodeEmail } from "@/src/lib/encryptDecrypt";
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";

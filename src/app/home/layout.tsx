@@ -7,9 +7,9 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userId } = useQueryFunction();
+  const { userName } = useQueryFunction();
 
-  if (userId)
+  if (userName)
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
         <SideBar />

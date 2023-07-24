@@ -1,19 +1,11 @@
 "use client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UserMenu from "../user-menu/UserMenu";
 import FriendList from "./FriendList";
-import useQueryFunction from "@/src/lib/useQueries";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import AddFriend from "../add-friend/AddFriend";
 
 export default function SideBar() {
-  const { getFriends } = useQueryFunction();
   const { showAddFriendTab } = useAppState();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["userFriends"],
-    queryFn: () => getFriends(),
-  });
 
   return (
     <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-[#212121] p-2 overflow-hidden ">
@@ -30,7 +22,7 @@ export default function SideBar() {
               Chats
             </h2>
             <div className="flex flex-col items-start w-full">
-              <FriendList Friends={data?.data} isLoading={isLoading} />
+              <FriendList />
             </div>
           </>
         )}
