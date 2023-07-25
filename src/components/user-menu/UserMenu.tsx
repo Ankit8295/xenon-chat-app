@@ -29,7 +29,8 @@ export default function UserMenu() {
 
   const submitForm = (e: any) => {
     e.preventDefault();
-    if (friendUserName !== userName) refetch();
+    if (friendUserName !== userName)
+      refetch().then((res) => queryClient.invalidateQueries(["userFriends"]));
   };
   return (
     <div className="px-4 flex justify-between gap-5 items-center w-full relative">
@@ -38,7 +39,6 @@ export default function UserMenu() {
           <div
             onClick={() => {
               dispatch({ type: "SET_SearchFriend", payload: "" });
-              // queryClient.removeQueries(["searchFriend"], { exact: true });
               dispatch({ type: "SET_ShowAddFriendTab", payload: false });
             }}
             className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-200 ${
