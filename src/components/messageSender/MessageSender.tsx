@@ -1,8 +1,14 @@
 "use client";
-import { io } from "socket.io-client";
 import MessageArea from "../messageArea/MessageArea";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { MessageType } from "@/src/utils/types/types";
+import {
+  useAppDispatch,
+  useAppState,
+} from "@/src/utils/app-provider/state-provider/ContextProvider";
+import useQueryFunction from "@/src/lib/useQueries";
+import { io } from "socket.io-client";
+import { Socket } from "socket.io";
 
 type Props = {
   userName: string;
@@ -13,13 +19,21 @@ type Props = {
 export default function MessageSender({ friendUserName, userName }: Props) {
   const messageRef = useRef<HTMLInputElement>(null);
   const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
-  const socket = io("http://localhost:3001");
+  const dispatch = useAppDispatch();
+  const { socket: clientSocket } = useAppState();
 
-  socket.emit("join", userName);
+  useEffect(() => {
+    console.log("run");
+    const socket = io("http://localhost:3001");
 
-  socket.on("private_message", (data: MessageType) => {
-    setReceivedMsg((prev) => [...prev, data]);
-  });
+    dispatch({ type: "SET_Socket", payload: socket });
+
+    socket.emit("join", userName);
+
+    socket.on("private_message", (data: MessageType) => {
+      setReceivedMsg((prev) => [...prev, data]);
+    });
+  }, []);
 
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -31,7 +45,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
       messageTime: Date.now(),
       messageType: "text",
     };
-    socket.emit("private_message", finalMessage);
+    clientSocket?.emit("private_message", finalMessage);
   };
 
   return (

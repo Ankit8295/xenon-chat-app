@@ -1,3 +1,3 @@
-export default async function page() {
+export default function Page() {
   return;
 }

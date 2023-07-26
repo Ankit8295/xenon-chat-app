@@ -21,7 +21,7 @@ type User = {
 export async function POST(request: Request) {
   const { userName, password: inputPass } =
     (await request.json()) as RequestBody;
-  console.log(userName, inputPass);
+
   const dataBase = await db();
 
   const user = (await dataBase

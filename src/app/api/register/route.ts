@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     about: "",
     photo: "",
   };
+
   const createdUser = await dataBase.collection("users").insertOne(user);
 
   const saveIdPass = await dataBase
