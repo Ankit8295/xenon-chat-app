@@ -1,12 +1,8 @@
 "use client";
 import SideBar from "@/src/components/friends-list/SideBar";
+import { socket } from "@/src/lib/socket";
 import useQueryFunction from "@/src/lib/useQueries";
-import {
-  useAppDispatch,
-  useAppState,
-} from "@/src/utils/app-provider/state-provider/ContextProvider";
 import { useEffect } from "react";
-import { io } from "socket.io-client";
 
 type Props = {
   children: React.ReactNode;
@@ -14,6 +10,13 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const { userName } = useQueryFunction();
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   if (userName)
     return (

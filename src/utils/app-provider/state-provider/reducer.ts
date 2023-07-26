@@ -6,8 +6,7 @@ function reducer(state: State, action: Action): State {
   switch (type) {
     case "SET_ShowAddFriendTab":
       return { ...state, showAddFriendTab: payload };
-    case "SET_Socket":
-      return { ...state, socket: payload };
+
     case "SET_SearchFriend":
       return { ...state, searchFriend: payload };
     default:

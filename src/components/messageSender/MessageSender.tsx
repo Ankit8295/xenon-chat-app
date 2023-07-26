@@ -2,13 +2,7 @@
 import MessageArea from "../messageArea/MessageArea";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { MessageType } from "@/src/utils/types/types";
-import {
-  useAppDispatch,
-  useAppState,
-} from "@/src/utils/app-provider/state-provider/ContextProvider";
-import useQueryFunction from "@/src/lib/useQueries";
-import { io } from "socket.io-client";
-import { Socket } from "socket.io";
+import { socket } from "@/src/lib/socket";
 
 type Props = {
   userName: string;
@@ -19,23 +13,23 @@ type Props = {
 export default function MessageSender({ friendUserName, userName }: Props) {
   const messageRef = useRef<HTMLInputElement>(null);
   const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
-  const dispatch = useAppDispatch();
-  const { socket: clientSocket } = useAppState();
 
   useEffect(() => {
-    console.log("run");
-    const socket = io("http://localhost:3001");
-
-    dispatch({ type: "SET_Socket", payload: socket });
-
     socket.emit("join", userName);
+  }, []);
 
+  useEffect(() => {
     socket.on("private_message", (data: MessageType) => {
       setReceivedMsg((prev) => [...prev, data]);
     });
+
+    return () => {
+      socket.off("private_message");
+    };
   }, []);
 
   const submitHandler = (e: FormEvent) => {
+    console.log("form-run");
     e.preventDefault();
     const finalMessage: MessageType = {
       messageId: Math.random().toString(),
@@ -45,7 +39,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
       messageTime: Date.now(),
       messageType: "text",
     };
-    clientSocket?.emit("private_message", finalMessage);
+    socket.emit("private_message", finalMessage);
   };
 
   return (
