@@ -10,25 +10,7 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userName, getMessages } = useQueryFunction();
-
-  const { data, fetchStatus } = useQuery({
-    queryKey: ["Messages"],
-    queryFn: () => getMessages(),
-    enabled: !!userName,
-    retry: 0,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  useEffect(() => {
-    sessionStorage.setItem(
-      "messages",
-      JSON.stringify(data ? data?.data.messages : {})
-    );
-  }, [data]);
-
-  console.log(data, fetchStatus);
+  const { userName } = useQueryFunction();
   useEffect(() => {
     socket.connect();
 
@@ -36,8 +18,7 @@ export default function Layout({ children }: Props) {
       socket.disconnect();
     };
   }, []);
-
-  if (data)
+  if (userName)
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
         <SideBar />

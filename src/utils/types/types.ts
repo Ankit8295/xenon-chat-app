@@ -11,6 +11,10 @@ export type FriendsDb = {
   userName: string;
   friends: string[];
 };
+export type MessagesDb = {
+  userName: string;
+  messages: any;
+};
 export type UserDb = {
   emailId: string;
   userName: string;

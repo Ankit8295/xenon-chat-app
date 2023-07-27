@@ -3,6 +3,8 @@ import MessageArea from "../messageArea/MessageArea";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { MessageType } from "@/src/utils/types/types";
 import { socket } from "@/src/lib/socket";
+import useQueryFunction from "@/src/lib/useQueries";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   userName: string;
@@ -11,28 +13,32 @@ type Props = {
 };
 
 export default function MessageSender({ friendUserName, userName }: Props) {
+  const roomUser = friendUserName + "+" + userName;
   const messageRef = useRef<HTMLInputElement>(null);
 
-  // const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
   const [allMessages, setAllMessages] = useState<MessageType[]>([]);
 
-  useEffect(() => {
-    const msg = sessionStorage.getItem("messages");
+  const { getMessages } = useQueryFunction();
 
-    const userMsg = JSON.parse(msg!);
-
-    const nmsg = userMsg?.[friendUserName];
-    if (nmsg) {
-      setAllMessages((prev) => nmsg);
-    }
-  }, [friendUserName]);
-
-  useEffect(() => {
-    socket.emit("join", userName);
-  }, [userName]);
+  const { data } = useQuery({
+    queryKey: [`${friendUserName}-messages`],
+    queryFn: () => getMessages(friendUserName),
+    enabled: !!userName,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
-    socket.on("private_message", (data: MessageType) => {
+    socket.emit("join", roomUser);
+  }, [roomUser]);
+
+  useEffect(() => {
+    const friendMessages = data?.data || [];
+    setAllMessages(() => friendMessages);
+  }, [data]);
+
+  useEffect(() => {
+    socket.on("recieve_message", (data: MessageType) => {
       setAllMessages((prev) => [...prev, data]);
     });
 
@@ -42,7 +48,6 @@ export default function MessageSender({ friendUserName, userName }: Props) {
   }, []);
 
   const submitHandler = (e: FormEvent) => {
-    console.log("form-run");
     e.preventDefault();
     const finalMessage: MessageType = {
       messageId: Math.random().toString(),
@@ -52,7 +57,8 @@ export default function MessageSender({ friendUserName, userName }: Props) {
       messageTime: Date.now(),
       messageType: "text",
     };
-    socket.emit("private_message", finalMessage);
+
+    socket.emit("private_message", { finalMessage, roomUser });
   };
 
   return (

@@ -3,6 +3,8 @@ import FriendMenu from "@/src/components/friendMenu/FriendMenu";
 import MessageSender from "@/src/components/messageSender/MessageSender";
 import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
+import { useEffect } from "react";
+import { socket } from "@/src/lib/socket";
 
 type Params = {
   params: {
@@ -12,10 +14,15 @@ type Params = {
 
 export default function Page({ params }: Params) {
   const { searchFriend, userName } = useQueryFunction();
+
   const { data, isLoading } = useQuery({
     queryKey: [decodeURIComponent(params.friendId)],
     queryFn: () => searchFriend(decodeURIComponent(params.friendId)),
+    enabled: !!params.friendId,
+    refetchOnWindowFocus: false,
   });
+
+
 
   if (isLoading)
     return <h2 className="w-full text-center m-auto">Loading User Data...</h2>;

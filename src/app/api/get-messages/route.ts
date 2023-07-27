@@ -1,12 +1,13 @@
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
-import { FriendsDb } from "@/src/utils/types/types";
+import { FriendsDb, MessagesDb } from "@/src/utils/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
 
   const userName = url.searchParams.get("userName");
+  const friendName = url.searchParams.get("friendName");
 
   const jwt = request.headers.get("authorization");
 
@@ -27,19 +28,26 @@ export async function GET(request: Request) {
       data: "access token is not valid",
     });
   }
+  if (friendName && userName) {
+    const dataBase = await db();
 
-  const dataBase = await db();
+    const userMessages = await dataBase
+      .collection("messages")
+      .findOne<MessagesDb>({ userName: userName });
 
-  const userMessages = await dataBase
-    .collection("messages")
-    .findOne<FriendsDb>({ userName: userName });
-  if (userMessages) {
+    const friendMsg = userMessages?.messages?.[friendName];
+
+    if (friendMsg) {
+      return NextResponse.json({
+        status: 200,
+        data: friendMsg,
+      });
+    }
     return NextResponse.json({
       status: 200,
-      data: userMessages,
+      data: [],
     });
   }
-
   return NextResponse.json({
     status: 500,
     data: "something went wrong",

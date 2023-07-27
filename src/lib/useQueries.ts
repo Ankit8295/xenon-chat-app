@@ -53,7 +53,7 @@ export default function useQueryFunction() {
     return { status: res.status, data: res.data };
   }
 
-  async function getMessages() {
+  async function getMessages(friendName: String) {
     const res = await axios("http://localhost:3000/api/get-messages", {
       method: "GET",
       headers: {
@@ -61,6 +61,7 @@ export default function useQueryFunction() {
       },
       params: {
         userName: userName,
+        friendName: friendName,
       },
     });
     return { status: res.data.status, data: res.data.data };
