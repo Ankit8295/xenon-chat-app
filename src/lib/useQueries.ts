@@ -3,7 +3,9 @@ import { useSession } from "next-auth/react";
 
 export default function useQueryFunction() {
   const { data } = useSession();
+
   const token = data?.user?.jwtToken || "";
+
   const userName = data?.user?.userName;
 
   async function searchFriend(friendUserName?: string) {
@@ -21,6 +23,7 @@ export default function useQueryFunction() {
     });
     return { status: res.data.status, data: res.data.data };
   }
+
   async function getFriends() {
     const res = await axios("http://localhost:3000/api/get-friends", {
       method: "POST",
@@ -32,8 +35,9 @@ export default function useQueryFunction() {
         userName: userName,
       }),
     });
-    return { status: res.status, data: res.data.data };
+    return { status: res.data.status, data: res.data.data };
   }
+
   async function addFriend(friendUserName: string) {
     const res = await axios("http://localhost:3000/api/add-friend", {
       method: "POST",
@@ -49,11 +53,25 @@ export default function useQueryFunction() {
     return { status: res.status, data: res.data };
   }
 
+  async function getMessages() {
+    const res = await axios("http://localhost:3000/api/get-messages", {
+      method: "GET",
+      headers: {
+        authorization: `${token}`,
+      },
+      params: {
+        userName: userName,
+      },
+    });
+    return { status: res.data.status, data: res.data.data };
+  }
+
   return {
     userName,
     token,
     searchFriend,
     getFriends,
     addFriend,
+    getMessages,
   };
 }

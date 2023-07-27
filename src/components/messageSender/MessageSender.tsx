@@ -12,15 +12,28 @@ type Props = {
 
 export default function MessageSender({ friendUserName, userName }: Props) {
   const messageRef = useRef<HTMLInputElement>(null);
-  const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
+
+  // const [receivedMsg, setReceivedMsg] = useState<MessageType[]>([]);
+  const [allMessages, setAllMessages] = useState<MessageType[]>([]);
+
+  useEffect(() => {
+    const msg = sessionStorage.getItem("messages");
+
+    const userMsg = JSON.parse(msg!);
+
+    const nmsg = userMsg?.[friendUserName];
+    if (nmsg) {
+      setAllMessages((prev) => nmsg);
+    }
+  }, [friendUserName]);
 
   useEffect(() => {
     socket.emit("join", userName);
-  }, []);
+  }, [userName]);
 
   useEffect(() => {
     socket.on("private_message", (data: MessageType) => {
-      setReceivedMsg((prev) => [...prev, data]);
+      setAllMessages((prev) => [...prev, data]);
     });
 
     return () => {
@@ -48,7 +61,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
         <MessageArea
           friendUserName={friendUserName}
           userName={userName}
-          message={receivedMsg as any}
+          message={allMessages as any}
         />
       </div>
 
