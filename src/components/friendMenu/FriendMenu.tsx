@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function FriendMenu() {
@@ -30,12 +31,12 @@ export default function FriendMenu() {
         >
           Friend Info
         </span>
-        <span
-          onClick={() => setActive(false)}
+        <Link
+          href={"/home"}
           className="px-5  w-full py-3 hover:bg-primary cursor-pointer"
         >
-          Close Chat
-        </span>
+          <span onClick={() => setActive(false)}>Close Chat</span>
+        </Link>
         <span
           onClick={() => setActive(false)}
           className="px-5 w-full py-3 hover:bg-primary cursor-pointer"

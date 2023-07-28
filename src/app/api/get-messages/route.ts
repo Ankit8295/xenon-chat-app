@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
-      data: "access token is not found",
+      reason: "access token is not found",
     });
   }
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
-      data: "access token is not valid",
+      reason: "access token is not valid",
     });
   }
   if (friendName && userName) {
@@ -50,6 +50,6 @@ export async function GET(request: Request) {
   }
   return NextResponse.json({
     status: 500,
-    data: "something went wrong",
+    reason: "something went wrong",
   });
 }

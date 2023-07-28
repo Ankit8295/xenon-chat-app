@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import MessageArea from "../messageArea/MessageArea";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { MessageType } from "@/src/utils/types/types";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { MessageType, MessagesDb } from "@/src/utils/types/types";
 import { socket } from "@/src/lib/socket";
 import useQueryFunction from "@/src/lib/useQueries";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   userName: string;
@@ -13,32 +14,37 @@ type Props = {
 };
 
 export default function MessageSender({ friendUserName, userName }: Props) {
-  const messageRef = useRef<HTMLInputElement>(null);
+  const [message, setMessage] = useState<string>("");
 
-  const [allMessages, setAllMessages] = useState<MessageType[]>([]);
+  const [allMessages, setAllMessages] = useState<MessageType[]>([
+    {
+      messageId: "",
+      messageBy: "",
+      messageTo: "",
+      messageText: "",
+      messageTime: 0,
+      messageType: "text",
+    },
+  ]);
 
-  const { getMessages } = useQueryFunction();
+  const queryClient = useQueryClient();
 
-  const { data } = useQuery({
-    queryKey: [`${friendUserName}-messages`],
-    queryFn: () => getMessages(friendUserName),
-    enabled: !!userName,
-    retry: 0,
-    refetchOnWindowFocus: false,
-  });
+  useEffect(() => {
+    const friendMessages = queryClient.getQueryData<{
+      status: number;
+      data: MessageType[];
+    }>([`${friendUserName}-messages`]);
+    if (friendMessages) {
+      setAllMessages((prev) => friendMessages?.data || prev);
+    }
+  }, []);
 
   useEffect(() => {
     socket.emit("join", [friendUserName, userName].sort().join("-"));
   }, []);
 
   useEffect(() => {
-    const friendMessages = data?.data || [];
-    setAllMessages(() => friendMessages);
-  }, [data]);
-
-  useEffect(() => {
     socket.on("recieve_message", (data: MessageType) => {
-      console.log(data);
       setAllMessages((prev) => [...prev, data]);
     });
     return () => {
@@ -52,13 +58,13 @@ export default function MessageSender({ friendUserName, userName }: Props) {
       messageId: Math.random().toString(),
       messageBy: userName,
       messageTo: decodeURIComponent(friendUserName),
-      messageText: messageRef.current?.value!,
+      messageText: message,
       messageTime: Date.now(),
       messageType: "text",
     };
     socket.emit("private_message", finalMessage);
+    setMessage((prev) => "");
   };
-
   return (
     <>
       <div className="bg-bg_dark h-full overflow-y-scroll px-16">
@@ -74,7 +80,10 @@ export default function MessageSender({ friendUserName, userName }: Props) {
         className="bg-primary  flex justify-center items-center"
       >
         <input
-          ref={messageRef}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setMessage(e.target.value)
+          }
+          value={message}
           className=" my-3  w-[550px] rounded-lg  py-2 outline-none border border-transparent  hover:border-white/40 focus:border-blue-500 px-3 bg-[#181818] transition-colors duration-200"
           type="text"
           placeholder="type a message"
