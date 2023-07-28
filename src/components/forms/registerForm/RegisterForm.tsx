@@ -18,7 +18,7 @@ export default function RegisterForm() {
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerValidation),
   });
-  const submitForm: SubmitHandler<RegisterFormSchema> = (data) => {
+  const submitForm: SubmitHandler<RegisterFormSchema> = async (data) => {
     return fetch("/api/register", {
       method: "POST",
 
@@ -41,14 +41,14 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
-      className="flex flex-col gap-10 items-center py-10 w-80"
+      className="flex flex-col gap-6 items-center py-10 w-80"
     >
       <h1>Register Your Account</h1>
       <FormInput
         type="text"
         register={register}
         registerValue="userName"
-        placeholder="create username"
+        placeholder="username"
         registerReq={true}
         error={errors.userName?.message}
       />

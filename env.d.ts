@@ -6,5 +6,7 @@ namespace NodeJS {
     JWT_SECRET: string;
     API_KEY: string;
     ENCRYPTION_KEY: string;
+    S3_BUCKET_NAME: string;
+    S3_BUCKET_REGION: string;
   }
 }

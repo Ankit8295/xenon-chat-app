@@ -67,7 +67,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
   };
   return (
     <>
-      <div className="bg-bg_dark h-full overflow-y-scroll px-16">
+      <div className="bg-transparent h-full overflow-y-scroll px-16">
         <MessageArea
           friendUserName={friendUserName}
           userName={userName}
