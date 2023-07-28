@@ -18,7 +18,7 @@ export default function Page({ params }: Params) {
   const { data, isLoading } = useQuery({
     queryKey: [decodeURIComponent(params.friendId)],
     queryFn: () => searchFriend(decodeURIComponent(params.friendId)),
-    enabled: !!params.friendId && !!userName,
+    enabled: !!params.friendId,
     refetchOnWindowFocus: false,
   });
 

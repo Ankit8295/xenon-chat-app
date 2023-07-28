@@ -2,7 +2,6 @@
 import SideBar from "@/src/components/friends-list/SideBar";
 import { socket } from "@/src/lib/socket";
 import useQueryFunction from "@/src/lib/useQueries";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 type Props = {
@@ -12,12 +11,13 @@ type Props = {
 export default function Layout({ children }: Props) {
   const { userName } = useQueryFunction();
   useEffect(() => {
-    socket.connect();
+    if (userName) socket.connect();
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [userName]);
+
   if (userName)
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">

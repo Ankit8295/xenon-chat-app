@@ -15,31 +15,35 @@ type Props = {
 export default function MessageSender({ friendUserName, userName }: Props) {
   const messageRef = useRef<HTMLInputElement>(null);
 
-  // const [allMessages, setAllMessages] = useState<MessageType[]>([]);
+  const [allMessages, setAllMessages] = useState<MessageType[]>([]);
 
-  // const { getMessages } = useQueryFunction();
+  const { getMessages } = useQueryFunction();
 
-  // const { data } = useQuery({
-  //   queryKey: [`${friendUserName}-messages`],
-  //   queryFn: () => getMessages(friendUserName),
-  //   enabled: !!userName,
-  //   retry: 0,
-  //   refetchOnWindowFocus: false,
-  // });
+  const { data } = useQuery({
+    queryKey: [`${friendUserName}-messages`],
+    queryFn: () => getMessages(friendUserName),
+    enabled: !!userName,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
+
   useEffect(() => {
     socket.emit("join", [friendUserName, userName].sort().join("-"));
   }, []);
 
-  // useEffect(() => {
-  //   const friendMessages = data?.data || [];
-  //   setAllMessages(() => friendMessages);
-  // }, [data]);
+  useEffect(() => {
+    const friendMessages = data?.data || [];
+    setAllMessages(() => friendMessages);
+  }, [data]);
 
   useEffect(() => {
     socket.on("recieve_message", (data: MessageType) => {
       console.log(data);
-      // setAllMessages((prev) => [...prev, data]);
+      setAllMessages((prev) => [...prev, data]);
     });
+    return () => {
+      socket.off("recieve_message");
+    };
   }, []);
 
   const submitHandler = async (e: FormEvent) => {
@@ -52,7 +56,6 @@ export default function MessageSender({ friendUserName, userName }: Props) {
       messageTime: Date.now(),
       messageType: "text",
     };
-
     socket.emit("private_message", finalMessage);
   };
 
@@ -62,7 +65,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
         <MessageArea
           friendUserName={friendUserName}
           userName={userName}
-          // message={allMessages as any}
+          message={allMessages as any}
         />
       </div>
 
