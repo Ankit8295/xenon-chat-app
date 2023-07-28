@@ -18,11 +18,9 @@ export default function Page({ params }: Params) {
   const { data, isLoading } = useQuery({
     queryKey: [decodeURIComponent(params.friendId)],
     queryFn: () => searchFriend(decodeURIComponent(params.friendId)),
-    enabled: !!params.friendId,
+    enabled: !!params.friendId && !!userName,
     refetchOnWindowFocus: false,
   });
-
-
 
   if (isLoading)
     return <h2 className="w-full text-center m-auto">Loading User Data...</h2>;
