@@ -42,7 +42,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
-      className="flex flex-col w-[90%] justify-center min-h-[350px] items-center gap-10 pt-3 text-black text-sm"
+      className="flex flex-col w-[90%] max-lg:w-full h-[350px] justify-center max-lg:justify-start items-center gap-8 pt-5 max-lg:pt-10 text-black text-sm"
     >
       <FormInput
         type="text"

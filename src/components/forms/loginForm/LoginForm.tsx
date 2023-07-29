@@ -35,7 +35,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="flex flex-col w-[90%] h-[350px] justify-center items-center gap-10 pt-5 text-black text-sm"
+      className="flex flex-col w-[90%] max-lg:w-full h-[350px] justify-start max-lg:justify-start items-center gap-10 pt-5 max-lg:pt-14 text-black text-sm"
     >
       <FormInput
         type="text"
