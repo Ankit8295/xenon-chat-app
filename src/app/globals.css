@@ -22,7 +22,7 @@
     background-size: cover;
   }
   ::-webkit-scrollbar {
-    width: 2px;
+    width: 3px;
     background-color: #c4c9e2;
   }
 

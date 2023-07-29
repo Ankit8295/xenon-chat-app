@@ -3,7 +3,7 @@ interface SignOptions {
   expiresIn?: string | number;
 }
 const default_signOptions: SignOptions = {
-  expiresIn: "1h",
+  expiresIn: "72h",
 };
 export function createJwt(
   payload: JwtPayload,

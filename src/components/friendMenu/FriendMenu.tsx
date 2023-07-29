@@ -9,7 +9,7 @@ export default function FriendMenu() {
     <div className="relative">
       <div
         onClick={() => setActive((prev) => !prev)}
-        className={`cursor-pointer w-[30px] h-[30px] rounded-[50%] p-2 flex items-center justify-center ${
+        className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-300 ${
           active ? "bg-blue-500" : ""
         }`}
       >
@@ -21,7 +21,7 @@ export default function FriendMenu() {
         id="dropDown"
         className={`${
           active
-            ? "absolute transition-all duration-200 origin-top-right whitespace-nowrap right-5 top-[110%] flex flex-col items-start text-xs bg-hover_color rounded-md"
+            ? "absolute transition-all duration-300 origin-top-right whitespace-nowrap right-5 top-[110%] flex flex-col items-start text-xs bg-hover_color rounded-md"
             : "hidden"
         } `}
       >

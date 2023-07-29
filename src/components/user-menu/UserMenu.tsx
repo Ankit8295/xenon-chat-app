@@ -41,7 +41,7 @@ export default function UserMenu() {
               dispatch({ type: "SET_SearchFriend", payload: "" });
               dispatch({ type: "SET_ShowAddFriendTab", payload: false });
             }}
-            className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-200 ${
+            className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-300 ${
               showAddFriendTab ? "bg-blue-500" : ""
             }`}
           >
@@ -50,7 +50,7 @@ export default function UserMenu() {
         ) : (
           <div
             onClick={() => setActive((prev) => !prev)}
-            className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-200 ${
+            className={`flex flex-col items-center justify-center p-2 gap-1 w-[35px] h-[35px]  cursor-pointer rounded-[50%] transition-colors duration-300 ${
               active ? "bg-blue-500" : ""
             }`}
           >
@@ -61,7 +61,7 @@ export default function UserMenu() {
           id="dropDown"
           className={`${
             active
-              ? "absolute transition-all duration-200 origin-top-left left-5 top-[110%] flex flex-col text-xs bg-bg_dark rounded-md"
+              ? "absolute transition-all duration-300 origin-top-left left-5 top-[110%] flex flex-col text-xs bg-bg_dark rounded-md"
               : "hidden"
           } `}
         >
@@ -87,7 +87,7 @@ export default function UserMenu() {
       </div>
       <form
         onSubmit={(e) => submitForm(e)}
-        className="w-full flex gap-1 border border-transparent rounded-2xl hover:border-white/40 focus:border-blue-500 pl-3 overflow-hidden bg-[#181818] transition-colors duration-200"
+        className="w-full flex gap-1 border border-transparent rounded-2xl hover:border-white/40 focus:border-blue-500 pl-3 overflow-hidden bg-[#181818] transition-colors duration-300"
       >
         <input
           type="search"

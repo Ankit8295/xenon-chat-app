@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import Loading from "../ui/button/Loading";
 
 export default function AddFriend() {
   const dispatch = useAppDispatch();
@@ -27,7 +28,12 @@ export default function AddFriend() {
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
 
   if (isLoading)
-    return <h2 className="w-full text-center p-3">Searching...</h2>;
+    return (
+      <div className="w-full flex justify-center items-center p-3 gap-2">
+        <Loading />
+        Seaching...
+      </div>
+    );
   if (searchFriendData?.status === 200)
     return (
       <div className="flex items-center justify-between bg-primary w-full p-3 ">
