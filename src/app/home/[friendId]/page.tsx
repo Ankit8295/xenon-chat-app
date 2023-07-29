@@ -58,7 +58,7 @@ export default function Page({ params }: Params) {
   if (friend && friendMessages)
     return (
       <div className="h-full w-full flex flex-col justify-between">
-        <div className="bg-primary py-3 px-4 flex items-center justify-between">
+        <div className="bg-black/50 py-3 px-4 flex items-center justify-between">
           <span className="capitalize">{friend.fullName}</span>
           <FriendMenu />
         </div>

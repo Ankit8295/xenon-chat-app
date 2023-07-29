@@ -1,23 +1,24 @@
 "use client";
+
 import {
   RegisterFormSchema,
   registerValidation,
 } from "@/src/utils/types/loginForm";
-import { SubmitHandler, useForm } from "react-hook-form";
-import FormInput from "../components/form-input/FormInput";
-import PrimaryButton from "../../ui/button/PrimaryButton";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AsyncButton } from "../../ui/button/AsyncButton";
+import FormInput from "../components/form-input/FormInput";
 
 export default function RegisterForm() {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerValidation),
   });
+
   const submitForm: SubmitHandler<RegisterFormSchema> = async (data) => {
     return fetch("/api/register", {
       method: "POST",
@@ -32,23 +33,22 @@ export default function RegisterForm() {
         password: data.password,
       }),
     })
-      .then((res) => {
+      .then(() => {
         reset();
-        return res;
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
-      className="flex flex-col gap-6 items-center py-10 w-80"
+      className="flex flex-col w-[90%] justify-center min-h-[350px] items-center gap-10 pt-3 text-black text-sm"
     >
-      <h1>Register Your Account</h1>
       <FormInput
         type="text"
         register={register}
         registerValue="userName"
-        placeholder="username"
+        placeholder="Create Username"
         registerReq={true}
         error={errors.userName?.message}
       />
@@ -56,7 +56,7 @@ export default function RegisterForm() {
         type="text"
         register={register}
         registerValue="fullName"
-        placeholder="Name"
+        placeholder="Full Name"
         registerReq={true}
         error={errors.fullName?.message}
       />
@@ -65,7 +65,7 @@ export default function RegisterForm() {
         register={register}
         registerValue="emailId"
         registerReq={true}
-        placeholder="Email"
+        placeholder="Email Address"
         error={errors.emailId?.message}
       />
       <FormInput
@@ -73,17 +73,16 @@ export default function RegisterForm() {
         register={register}
         registerValue="password"
         registerReq={true}
-        placeholder="password"
+        placeholder="Create Password"
         error={errors.password?.message}
       />
-      <PrimaryButton type="submit">Continue</PrimaryButton>
-      <div>
-        already have an account ?
-        <Link href={"/login"} className="px-2 text-blue-600 cursor-pointer">
-          log in
-        </Link>
-        here
-      </div>
+      <AsyncButton
+        loading={isSubmitting}
+        type="submit"
+        label="Sign Up"
+        loadingLabel="Creating Account"
+        customStyles="min-h-[42px] my-4 max-lg:self-center"
+      />
     </form>
   );
 }

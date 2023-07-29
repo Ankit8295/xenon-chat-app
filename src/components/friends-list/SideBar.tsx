@@ -8,7 +8,7 @@ export default function SideBar() {
   const { showAddFriendTab } = useAppState();
 
   return (
-    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-[#212121] p-2 overflow-hidden ">
+    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-black/50 p-2 overflow-hidden ">
       <div className="flex flex-col items-start gap-2 w-full">
         <UserMenu />
 

@@ -19,17 +19,21 @@ export default function FormInput({
   placeholder,
 }: Props) {
   return (
-    <label className="w-full">
+    <label className="w-full relative">
       {label && <p className="flex justify-between gap-2 w-full">{label}</p>}
       <input
         type={type}
-        className="border border-hero text-base text-black flex-1 w-full rounded p-2 active:outline-hero focus:outline-hero"
+        className="border-b-2 border-b-black/40 focus:border-b-blue-500 text-base outline-none transition-colors duration-300 text-black flex-1 w-full p-1 "
         {...register(registerValue, {
           required: registerReq,
         })}
         placeholder={placeholder}
       />
-      {error && <span className="text-red-500">{error.toString()}</span>}
+      {error && (
+        <span className="text-red-500 absolute left-0 top-full">
+          {error.toString()}
+        </span>
+      )}
     </label>
   );
 }

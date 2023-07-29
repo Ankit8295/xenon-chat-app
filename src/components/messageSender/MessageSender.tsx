@@ -77,7 +77,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
       <form
         onSubmit={submitHandler}
-        className="bg-primary  flex justify-center items-center"
+        className="flex justify-center items-center"
       >
         <input
           onChange={(e: ChangeEvent<HTMLInputElement>) =>

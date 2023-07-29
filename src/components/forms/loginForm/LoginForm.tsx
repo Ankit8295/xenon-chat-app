@@ -1,23 +1,24 @@
 "use client";
+
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import PrimaryButton from "../../ui/button/PrimaryButton";
-import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
-import { SubmitHandler, useForm } from "react-hook-form";
-import FormInput from "../components/form-input/FormInput";
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AsyncButton } from "../../ui/button/AsyncButton";
+import FormInput from "../components/form-input/FormInput";
+import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
+
   const url = searchParams?.get("callbackUrl") || "/home";
+
   const paramError = searchParams?.get("error");
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginValidation),
   });
@@ -30,12 +31,12 @@ export default function LoginForm() {
       callbackUrl: url,
     });
   };
+
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="flex flex-col gap-10 items-center  py-10 w-80"
+      className="flex flex-col w-[90%] h-[350px] justify-center items-center gap-10 pt-5 text-black text-sm"
     >
-      <h1 className="">Log in to your account</h1>
       <FormInput
         type="text"
         register={register}
@@ -44,22 +45,21 @@ export default function LoginForm() {
         error={errors.userName?.message}
       />
       <FormInput
-        type="text"
+        type="password"
         register={register}
         registerValue="password"
         placeholder="Enter Your Password"
         error={errors.password?.message}
       />
-      <PrimaryButton type="submit">
-        {paramError ? "Retry with Valid Credentials" : "Continue"}
-      </PrimaryButton>
-      <div>
-        don&apos;t have an account ?
-        <Link href={"/register"} className="px-2 text-blue-600 cursor-pointer">
-          register
-        </Link>
-        here
-      </div>
+      <AsyncButton
+        loading={isSubmitting}
+        loadingLabel="Wait"
+        type="submit"
+        label="Log In"
+        customStyles="min-h-[42px] my-4 max-lg:self-center"
+        error={paramError ? true : false}
+        errorLabel="Retry with valid credentials"
+      />
     </form>
   );
 }
