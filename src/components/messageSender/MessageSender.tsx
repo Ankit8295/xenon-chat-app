@@ -68,7 +68,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
   };
   return (
     <>
-      <div className="bg-transparent h-full overflow-y-scroll px-16">
+      <div className="bg-transparent h-full overflow-y-scroll px-6">
         <MessageArea
           friendUserName={friendUserName}
           userName={userName}
@@ -78,14 +78,14 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
       <form
         onSubmit={submitHandler}
-        className="flex justify-center items-center"
+        className="flex justify-center items-center px-3"
       >
         <input
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setMessage(e.target.value)
           }
           value={message}
-          className=" my-3  w-[550px] rounded-lg  py-2 outline-none border border-transparent  hover:border-white/40 focus:border-blue-500 px-3 bg-[#181818] transition-colors duration-300"
+          className=" my-3  w-[500px] rounded-lg  py-2 outline-none border border-transparent  hover:border-white/40 focus:border-blue-500 px-2 bg-[#181818] transition-colors duration-300"
           type="text"
           placeholder="type a message"
         />

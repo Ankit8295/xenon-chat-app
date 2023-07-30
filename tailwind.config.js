@@ -7,9 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "hero-pattern": "url('/img/vercel.svg')",
-      },
       colors: {
         hover_color: "#2b2b2b",
         primary: "#212121",

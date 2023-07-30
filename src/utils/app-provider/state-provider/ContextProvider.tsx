@@ -7,9 +7,9 @@ import {
   useContext,
   useReducer,
 } from "react";
-import { Action, State } from "./stateTypes";
-import initialState from "./initialState";
 import reducer from "./reducer";
+import initialState from "./initialState";
+import { Action, State } from "./stateTypes";
 
 type Props = {
   children: ReactNode;
@@ -34,4 +34,5 @@ export default function ContextProvider({ children }: Props) {
 }
 
 export const useAppState = () => useContext(StateContext);
+
 export const useAppDispatch = () => useContext(DispatchContext);

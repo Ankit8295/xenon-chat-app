@@ -1,12 +1,11 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
-import userImg from "@/public/userProfile.webp";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
-import useQueryFunction from "@/src/lib/useQueries";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
 
 export default function FriendList() {
   const querClient = useQueryClient();
@@ -17,6 +16,7 @@ export default function FriendList() {
     status: number;
     data: UserDb[];
   }>(["userFriends"]);
+
   return (
     <>
       {friendLists?.data.length ? (

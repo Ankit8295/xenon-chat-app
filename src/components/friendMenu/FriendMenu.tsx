@@ -1,9 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function FriendMenu() {
   const [active, setActive] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   return (
     <div className="relative">
@@ -26,7 +29,10 @@ export default function FriendMenu() {
         } `}
       >
         <span
-          onClick={() => setActive(false)}
+          onClick={() => {
+            setActive(false);
+            dispatch({ type: "SET_ShowFrenProfile", payload: true });
+          }}
           className="px-5 w-full py-3 hover:bg-primary cursor-pointer"
         >
           Friend Info

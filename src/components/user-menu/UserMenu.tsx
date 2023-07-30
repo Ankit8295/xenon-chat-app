@@ -66,7 +66,10 @@ export default function UserMenu() {
           } `}
         >
           <span
-            onClick={() => setActive(false)}
+            onClick={() => {
+              setActive(false);
+              dispatch({ type: "SET_ShowUserProfile", payload: true });
+            }}
             className="px-7 py-3 hover:bg-hover_color cursor-pointer"
           >
             Profile

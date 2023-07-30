@@ -7,6 +7,8 @@ import useQueryFunction from "@/src/lib/useQueries";
 import { UserDb } from "@/src/utils/types/types";
 import Loading from "@/src/components/ui/loading/Loading";
 import { useEffect, useState } from "react";
+import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import FriendProfile from "@/src/components/friendProfile/FriendProfile";
 
 type Params = {
   params: {
@@ -17,6 +19,7 @@ type Params = {
 export default function Page({ params }: Params) {
   const querClient = useQueryClient();
 
+  const { showFrenProfile } = useAppState();
   const friendUserName = decodeURIComponent(params.friendId);
 
   const { userName, getMessages } = useQueryFunction();
@@ -57,12 +60,15 @@ export default function Page({ params }: Params) {
 
   if (friend && friendMessages)
     return (
-      <div className="h-full w-full flex flex-col justify-between">
-        <div className="bg-black/50 py-3 px-4 flex items-center justify-between">
-          <span className="capitalize">{friend.fullName}</span>
-          <FriendMenu />
+      <div className={`h-full w-full flex overflow-hidden grid-flow-col`}>
+        <div className="flex-1 flex flex-col justify-between">
+          <div className="bg-black/50 py-3 px-4 flex items-center justify-between">
+            <span className="capitalize">{friend.fullName}</span>
+            <FriendMenu />
+          </div>
+          <MessageSender friendUserName={friendUserName} userName={userName!} />
         </div>
-        <MessageSender friendUserName={friendUserName} userName={userName!} />
+        {showFrenProfile && <FriendProfile />}
       </div>
     );
   else

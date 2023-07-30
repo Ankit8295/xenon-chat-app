@@ -11,9 +11,9 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userName, getFriends } = useQueryFunction();
-
-  const { data: friendData } = useQuery({
+  const { userName, getFriends, apiUrl } = useQueryFunction();
+  console.log(apiUrl);
+  const { data: friendsData } = useQuery({
     queryKey: ["userFriends"],
     queryFn: () => getFriends(),
     enabled: !!userName,
@@ -29,7 +29,7 @@ export default function Layout({ children }: Props) {
     };
   }, [userName]);
 
-  if (friendData)
+  if (friendsData)
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
         <SideBar />
