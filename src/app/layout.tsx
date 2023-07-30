@@ -15,7 +15,7 @@ export const revalidate = 30;
 
 export const metadata = {
   title: "Link-App",
-  description: "make new friends with link app",
+  description: "Make new friends with link app",
 };
 
 export default function RootLayout({

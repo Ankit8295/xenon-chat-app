@@ -12,7 +12,7 @@ export default function UserProfile() {
         onClick={() =>
           dispatch({ type: "SET_ShowUserProfile", payload: false })
         }
-        className="bg-black/50  cursor-pointer py-3 pl-4 flex items-center justify-between"
+        className=" cursor-pointer py-3 pl-4 flex items-center justify-between"
       >
         <div className="flex flex-col items-center justify-center p-2">
           <ArrowIcon direction="left" />

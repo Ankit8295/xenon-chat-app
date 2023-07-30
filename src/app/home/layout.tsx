@@ -33,7 +33,7 @@ export default function Layout({ children }: Props) {
     return (
       <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
         <SideBar />
-        <div className="flex flex-[5] h-full flex-col items-start w-full bg-transparent">
+        <div className="flex flex-[5] h-full flex-col items-start w-full">
           {children}
         </div>
       </div>

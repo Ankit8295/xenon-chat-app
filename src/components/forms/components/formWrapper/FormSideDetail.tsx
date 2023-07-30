@@ -8,7 +8,7 @@ type Props = {
 
 export default function FormSideDetail({ formType, href }: Props) {
   return (
-    <div className="flex-1 text-black flex flex-col items-start  justify-between min-h-[350px] max-lg:min-h-max gap-16">
+    <div className="flex-1 text-black/80 dark:text-white flex flex-col items-start  justify-between min-h-[350px] max-lg:min-h-max gap-16">
       <div>
         <h1 className=" text-4xl max-lg:text-2xl text-start">
           {formType === "login" ? "Hello," : "Welcome to,"}
@@ -16,7 +16,7 @@ export default function FormSideDetail({ formType, href }: Props) {
         <h2 className="text-5xl  text-start font-bold">
           {formType === "login" ? "Welcome Back!" : "Create Account"}
         </h2>
-        <span className="text-sm text-black/70 max-lg:hidden">
+        <span className="text-sm text-black/80 dark:text-white max-lg:hidden">
           {formType === "login"
             ? "Please enter your log in details."
             : "Please enter all required details."}

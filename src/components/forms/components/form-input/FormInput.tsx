@@ -23,7 +23,7 @@ export default function FormInput({
       {label && <p className="flex justify-between gap-2 w-full">{label}</p>}
       <input
         type={type}
-        className="border-b-2 border-b-black/40 focus:border-b-blue-500 text-base outline-none transition-colors duration-300 text-black flex-1 w-full p-1 "
+        className="border-b-2 border-primary_light/50  bg-bg_light dark:bg-bg_dark border-b-black/40  text-base outline-none transition-colors duration-300 text-black/80 dark:text-white flex-1 w-full p-1 "
         {...register(registerValue, {
           required: registerReq,
         })}

@@ -16,7 +16,7 @@ export default function FriendProfile({ friendData }: Props) {
         onClick={() =>
           dispatch({ type: "SET_ShowFrenProfile", payload: false })
         }
-        className="bg-black/50  cursor-pointer py-3 pl-4 flex items-center justify-between"
+        className="cursor-pointer py-4 pl-4 flex items-center justify-between"
       >
         <div className="flex flex-col items-center justify-center p-2">
           <ArrowIcon direction="left" />
@@ -34,13 +34,15 @@ export default function FriendProfile({ friendData }: Props) {
           <span className="capitalize leading-3 text-lg">
             {friendData.fullName}
           </span>
-          <span className="text-xs text-white/50">{friendData.emailId}</span>
+          <span className="text-sm text-black/70 dark:text-white/50">
+            {friendData.emailId}
+          </span>
         </div>
         <div className="w-full flex flex-col gap-2 p-5 ">
-          <span className="text-xl text-white/50">About</span>
-          <span className="text-lg">
-            {friendData.about ? friendData.about : "Online"}
+          <span className="text-xl text-black/70 dark:text-white/50">
+            About
           </span>
+          <span className="text-lg">{friendData?.about}</span>
         </div>
       </div>
     </>

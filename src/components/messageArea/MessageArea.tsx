@@ -1,5 +1,7 @@
 "use client";
 import { MessageType } from "@/src/utils/types/types";
+import { ReactNode } from "react";
+import { Message } from "./Message";
 
 type Props = {
   userName: string;
@@ -10,23 +12,11 @@ type Props = {
 export default function MessageArea({ userName, message = [] }: Props) {
   return (
     <div className="flex w-full flex-col gap-5 py-5 items-start">
-      {message?.map((msg, i) =>
-        userName !== msg.messageBy ? (
-          <span
-            key={i}
-            className={`text-sm font-light  max-w-[40%] break-words h-auto rounded-lg  flex p-2 bg-hover_color self-start `}
-          >
-            {msg.messageText}
-          </span>
-        ) : (
-          <span
-            key={i}
-            className={`text-sm font-light break-words max-w-[40%] h-auto  rounded-lg flex p-2 bg-hover_color self-end`}
-          >
-            {msg.messageText}
-          </span>
-        )
-      )}
+      {message?.map((msg, i) => (
+        <Message key={i} align={userName !== msg.messageBy ? "left" : "right"}>
+          {msg.messageText}
+        </Message>
+      ))}
     </div>
   );
 }

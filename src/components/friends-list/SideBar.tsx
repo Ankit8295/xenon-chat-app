@@ -9,7 +9,7 @@ export default function SideBar() {
   const { showAddFriendTab, showUserProfile } = useAppState();
 
   return (
-    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-black/50 p-2 overflow-hidden ">
+    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-bg_light dark:bg-bg_dark p-2 overflow-hidden border-r border-primary_light dark:border-primary_dark">
       {showUserProfile ? (
         <UserProfile />
       ) : (
@@ -21,7 +21,7 @@ export default function SideBar() {
             </div>
           ) : (
             <>
-              <h2 className="ml-3 px-3 pt-2 rounded-md border-b-2 w-max border-b-blue-500 cursor-pointer hover:bg-[#2b2b2b]">
+              <h2 className="ml-3 px-3 pt-2 rounded-md border-b-2 w-max border-b-blue-500 cursor-pointer hover:bg-hover_light dark:hover:bg-hover_dark">
                 Chats
               </h2>
               <div className="flex flex-col items-start w-full">

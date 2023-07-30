@@ -74,7 +74,7 @@ export default function Page({ params }: Params) {
             showFrenProfile ? "w-3/5" : "w-full"
           }  flex flex-col justify-between transition-all duration-500`}
         >
-          <div className="bg-black/50 py-3 pl-4 flex items-center justify-between">
+          <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
             <div
               className="flex gap-2 items-center cursor-pointer"
               onClick={() =>
@@ -100,7 +100,7 @@ export default function Page({ params }: Params) {
         <div
           className={`${
             showFrenProfile ? "w-2/5" : "w-0 opacity-0"
-          }    transition-all duration-500`}
+          }    transition-all duration-500 bg-bg_light dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
         >
           <FriendProfile friendData={friend} />
         </div>

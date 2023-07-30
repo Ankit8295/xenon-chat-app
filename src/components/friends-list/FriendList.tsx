@@ -33,8 +33,8 @@ export default function FriendList() {
             href={`/home/${list.userName}`}
             className={`${
               pathname.includes(list.userName)
-                ? "bg-blue-500"
-                : "hover:bg-[#2b2b2b] "
+                ? "bg-primary_light dark:bg-primary_dark"
+                : "hover:bg-hover_light dark:hover:bg-hover_dark"
             }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
             key={list.userName}
             onClick={() =>
