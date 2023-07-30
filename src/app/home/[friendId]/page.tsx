@@ -1,14 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import FriendMenu from "@/src/components/friendMenu/FriendMenu";
-import MessageSender from "@/src/components/messageSender/MessageSender";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import useQueryFunction from "@/src/lib/useQueries";
-import { UserDb } from "@/src/utils/types/types";
-import Loading from "@/src/components/ui/loading/Loading";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import userImg from "@/public/userProfile.webp";
+import { UserDb } from "@/src/utils/types/types";
+import useQueryFunction from "@/src/lib/useQueries";
+import Loading from "@/src/components/ui/loading/Loading";
+import FriendMenu from "@/src/components/friendMenu/FriendMenu";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import MessageSender from "@/src/components/messageSender/MessageSender";
 import FriendProfile from "@/src/components/friendProfile/FriendProfile";
+import {
+  useAppDispatch,
+  useAppState,
+} from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type Params = {
   params: {
@@ -20,6 +25,9 @@ export default function Page({ params }: Params) {
   const querClient = useQueryClient();
 
   const { showFrenProfile } = useAppState();
+
+  const dispatch = useAppDispatch();
+
   const friendUserName = decodeURIComponent(params.friendId);
 
   const { userName, getMessages } = useQueryFunction();
@@ -61,14 +69,41 @@ export default function Page({ params }: Params) {
   if (friend && friendMessages)
     return (
       <div className={`h-full w-full flex overflow-hidden grid-flow-col`}>
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="bg-black/50 py-3 px-4 flex items-center justify-between">
-            <span className="capitalize">{friend.fullName}</span>
+        <div
+          className={`${
+            showFrenProfile ? "w-3/5" : "w-full"
+          }  flex flex-col justify-between transition-all duration-500`}
+        >
+          <div className="bg-black/50 py-3 pl-4 flex items-center justify-between">
+            <div
+              className="flex gap-2 items-center cursor-pointer"
+              onClick={() =>
+                dispatch({
+                  type: "SET_ShowFrenProfile",
+                  payload: !showFrenProfile,
+                })
+              }
+            >
+              <Image
+                src={userImg}
+                alt="user_profile_img"
+                width={50}
+                height={50}
+                className=" object-cover rounded-[50%]"
+              />
+              <span className="capitalize">{friend.fullName}</span>
+            </div>
             <FriendMenu />
           </div>
           <MessageSender friendUserName={friendUserName} userName={userName!} />
         </div>
-        {showFrenProfile && <FriendProfile />}
+        <div
+          className={`${
+            showFrenProfile ? "w-2/5" : "w-0 opacity-0"
+          }    transition-all duration-500`}
+        >
+          <FriendProfile friendData={friend} />
+        </div>
       </div>
     );
   else

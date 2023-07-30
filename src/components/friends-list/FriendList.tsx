@@ -6,11 +6,19 @@ import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
+import {
+  useAppDispatch,
+  useAppState,
+} from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function FriendList() {
   const querClient = useQueryClient();
 
   const pathname = usePathname();
+
+  const { showFrenProfile } = useAppState();
+
+  const dispatch = useAppDispatch();
 
   const friendLists = querClient.getQueryData<{
     status: number;
@@ -29,6 +37,10 @@ export default function FriendList() {
                 : "hover:bg-[#2b2b2b] "
             }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
             key={list.userName}
+            onClick={() =>
+              showFrenProfile &&
+              dispatch({ type: "SET_ShowFrenProfile", payload: false })
+            }
           >
             <Image
               src={userImg}

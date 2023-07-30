@@ -11,8 +11,8 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userName, getFriends, apiUrl } = useQueryFunction();
-  console.log(apiUrl);
+  const { userName, getFriends } = useQueryFunction();
+
   const { data: friendsData } = useQuery({
     queryKey: ["userFriends"],
     queryFn: () => getFriends(),

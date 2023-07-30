@@ -8,12 +8,9 @@ export default function useQueryFunction() {
 
   const userName = data?.user?.userName;
 
-  const apiUrl = process.env.NEXT_API_URL;
-  console.log(apiUrl);
-
   async function searchFriend(friendUserName?: string) {
     const res = await axios({
-      url: `${process.env.NEXT_API_URL}search-friend`,
+      url: `http://localhost:3000/api/search-friend`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +25,7 @@ export default function useQueryFunction() {
   }
 
   async function getFriends() {
-    const res = await axios(`${process.env.NEXT_API_URL}get-friends`, {
+    const res = await axios(`http://localhost:3000/api/get-friends`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +39,7 @@ export default function useQueryFunction() {
   }
 
   async function addFriend(friendUserName: string) {
-    const res = await axios(`${process.env.NEXT_API_URL}add-friend`, {
+    const res = await axios(`http://localhost:3000/api/add-friend`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +54,7 @@ export default function useQueryFunction() {
   }
 
   async function getMessages(friendName: String) {
-    const res = await axios(`${process.env.NEXT_API_URL}get-messages`, {
+    const res = await axios(`http://localhost:3000/api/get-messages`, {
       method: "GET",
       headers: {
         authorization: `${token}`,
@@ -77,6 +74,5 @@ export default function useQueryFunction() {
     getFriends,
     addFriend,
     getMessages,
-    apiUrl,
   };
 }
