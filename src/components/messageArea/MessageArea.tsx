@@ -1,6 +1,5 @@
 "use client";
 import { MessageType } from "@/src/utils/types/types";
-import { ReactNode } from "react";
 import { Message } from "./Message";
 
 type Props = {

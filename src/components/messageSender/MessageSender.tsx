@@ -95,7 +95,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
       <form
         onSubmit={submitHandler}
-        className="flex justify-center items-center px-3 gap-1"
+        className="max-w-[60%] my-3 bg-transparent min-w-[60%] mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
       >
         <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300">
           <div onClick={() => setShowEmoji((prev) => !prev)}>
@@ -120,13 +120,16 @@ export default function MessageSender({ friendUserName, userName }: Props) {
             setMessage(e.target.value)
           }
           value={message}
-          className=" my-3  w-[500px] rounded-lg  py-2 outline-none border border-transparent hover:border-primary_dark/60 dark:hover:border-primary_light/50 bg-hover_light dark:bg-hover_dark px-2 transition-colors duration-300"
+          className="bg-hover_light dark:bg-hover_dark outline-none border-none w-full text-sm"
           type="text"
-          placeholder="type a message"
+          placeholder="Message"
+          required
         />
-        <button type="submit">
-          <SendMessageIcon />
-        </button>
+        {message.length > 0 && (
+          <button type="submit">
+            <SendMessageIcon />
+          </button>
+        )}
       </form>
     </>
   );
