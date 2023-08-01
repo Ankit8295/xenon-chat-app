@@ -20,7 +20,7 @@ export default function RegisterForm() {
   });
 
   const submitForm: SubmitHandler<RegisterFormSchema> = async (data) => {
-    return fetch("/api/register", {
+    return fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/register`, {
       method: "POST",
 
       headers: {

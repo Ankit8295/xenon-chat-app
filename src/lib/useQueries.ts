@@ -10,7 +10,7 @@ export default function useQueryFunction() {
 
   async function searchFriend(friendUserName?: string) {
     const res = await axios({
-      url: `http://localhost:3000/api/search-friend`,
+      url: `${process.env.NEXTAUTH_URL}/api/search-friend`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -25,45 +25,54 @@ export default function useQueryFunction() {
   }
 
   async function getFriends() {
-    const res = await axios(`http://localhost:3000/api/get-friends`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `${token}`,
-      },
-      data: JSON.stringify({
-        userName: userName,
-      }),
-    });
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-friends`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${token}`,
+        },
+        data: JSON.stringify({
+          userName: userName,
+        }),
+      }
+    );
     return { status: res.data.status, data: res.data.data };
   }
 
   async function addFriend(friendUserName: string) {
-    const res = await axios(`http://localhost:3000/api/add-friend`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `${token}`,
-      },
-      data: JSON.stringify({
-        friendUserName: friendUserName,
-        userName: userName,
-      }),
-    });
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/add-friend`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${token}`,
+        },
+        data: JSON.stringify({
+          friendUserName: friendUserName,
+          userName: userName,
+        }),
+      }
+    );
     return { status: res.status, data: res.data };
   }
 
   async function getMessages(friendName: String) {
-    const res = await axios(`http://localhost:3000/api/get-messages`, {
-      method: "GET",
-      headers: {
-        authorization: `${token}`,
-      },
-      params: {
-        userName: userName,
-        friendName: friendName,
-      },
-    });
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-messages`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `${token}`,
+        },
+        params: {
+          userName: userName,
+          friendName: friendName,
+        },
+      }
+    );
     return { status: res.data.status, data: res.data.data };
   }
 
