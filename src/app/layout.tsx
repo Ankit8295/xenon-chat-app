@@ -1,9 +1,7 @@
-"use client";
 import "./globals.css";
 import PageWrapper from "../components/ui/PageWrapper";
-import AppProvider from "../utils/app-provider/AppProvider";
-import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
+import AppProvider from "../utils/app-provider/AppProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,11 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider>
-          <AppProvider>
-            <PageWrapper>{children}</PageWrapper>
-          </AppProvider>
-        </SessionProvider>
+        <AppProvider>
+          <PageWrapper>{children}</PageWrapper>
+        </AppProvider>
       </body>
     </html>
   );
