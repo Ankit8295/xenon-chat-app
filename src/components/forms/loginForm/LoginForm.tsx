@@ -1,5 +1,4 @@
 "use client";
-
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,8 +13,6 @@ export default function LoginForm() {
   const url =
     searchParams?.get("callbackUrl") ||
     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`;
-
-  console.log(url);
 
   const paramError = searchParams?.get("error");
 
