@@ -1,13 +1,10 @@
 namespace NodeJS {
   interface ProcessEnv {
-    NEXTAUTH_SECRET: string;
-    NEXTAUTH_URL: string;
-    MONGODB_URI: string;
-    NEXT_API_URL: string;
     JWT_SECRET: string;
-    API_KEY: string;
+    MONGODB_URI: string;
+    NEXTAUTH_URL: string;
     ENCRYPTION_KEY: string;
-    S3_BUCKET_NAME: string;
-    S3_BUCKET_REGION: string;
+    NEXTAUTH_SECRET: string;
+    NEXT_PUBLIC_NEXTAUTH_URL: string;
   }
 }

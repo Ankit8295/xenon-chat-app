@@ -13,7 +13,7 @@ export default function LoginForm() {
 
   const url =
     searchParams?.get("callbackUrl") ||
-    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`;
+    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`;
 
   const paramError = searchParams?.get("error");
 
