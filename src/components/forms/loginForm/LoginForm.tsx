@@ -15,6 +15,8 @@ export default function LoginForm() {
     searchParams?.get("callbackUrl") ||
     `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`;
 
+  console.log(url);
+
   const paramError = searchParams?.get("error");
 
   const {
