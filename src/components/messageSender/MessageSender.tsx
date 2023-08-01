@@ -85,17 +85,16 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
   return (
     <>
-      <div className="h-full overflow-y-scroll px-6">
+      <div className="h-full overflow-y-scroll px-6 max-lg:px-3">
         <MessageArea
           friendUserName={friendUserName}
           userName={userName}
           message={allMessages as any}
         />
       </div>
-
       <form
         onSubmit={submitHandler}
-        className="max-w-[60%] my-3 bg-transparent min-w-[60%] mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
+        className="max-w-[60%] max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
       >
         <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300">
           <div onClick={() => setShowEmoji((prev) => !prev)}>

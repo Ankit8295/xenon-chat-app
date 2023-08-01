@@ -14,6 +14,8 @@ import {
   useAppDispatch,
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import ArrowIcon from "@/src/components/icons/Icons";
+import Link from "next/link";
 
 type Params = {
   params: {
@@ -68,30 +70,35 @@ export default function Page({ params }: Params) {
 
   if (friend && friendMessages)
     return (
-      <div className={`h-full w-full flex overflow-hidden grid-flow-col`}>
+      <div className={`h-full w-full flex overflow-hidden  relative`}>
         <div
           className={`${
-            showFrenProfile ? "w-3/5" : "w-full"
+            showFrenProfile ? "w-full lg:w-3/5" : "w-full"
           }  flex flex-col justify-between transition-all duration-500`}
         >
           <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
-            <div
-              className="flex gap-2 items-center cursor-pointer"
-              onClick={() =>
-                dispatch({
-                  type: "SET_ShowFrenProfile",
-                  payload: !showFrenProfile,
-                })
-              }
-            >
-              <Image
-                src={userImg}
-                alt="user_profile_img"
-                width={50}
-                height={50}
-                className=" object-cover rounded-[50%]"
-              />
-              <span className="capitalize">{friend.fullName}</span>
+            <div className="flex gap-5 items-center">
+              <Link href="/home" className="cursor-pointer">
+                <ArrowIcon direction="left" />
+              </Link>
+              <div
+                className="flex gap-2 items-center cursor-pointer"
+                onClick={() =>
+                  dispatch({
+                    type: "SET_ShowFrenProfile",
+                    payload: !showFrenProfile,
+                  })
+                }
+              >
+                <Image
+                  src={userImg}
+                  alt="user_profile_img"
+                  width={50}
+                  height={50}
+                  className=" object-cover rounded-[50%]"
+                />
+                <span className="capitalize">{friend.fullName}</span>
+              </div>
             </div>
             <FriendMenu />
           </div>
@@ -99,8 +106,10 @@ export default function Page({ params }: Params) {
         </div>
         <div
           className={`${
-            showFrenProfile ? "w-2/5" : "w-0 opacity-0"
-          }    transition-all duration-500 bg-bg_light dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
+            showFrenProfile
+              ? "max-lg:absolute lg:block w-full lg:w-2/5"
+              : "w-full hidden lg:block lg:w-0 opacity-0"
+          }    transition-all duration-500 bg-bg_light h-full dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
         >
           <FriendProfile friendData={friend} />
         </div>
