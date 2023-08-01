@@ -31,10 +31,12 @@ export default function Layout({ children }: Props) {
 
   if (friendsData)
     return (
-      <div className="w-full max-h-screen h-screen flex max-w-[1650px]">
-        <SideBar />
-        <div className="flex flex-[5] h-full flex-col items-start w-full">
+      <div className="w-full max-h-screen h-screen flex flex-row-reverse max-w-[1650px]">
+        <div className="peer flex flex-[5] h-full flex-col items-start w-full">
           {children}
+        </div>
+        <div className="peer-empty:block hidden max-lg:w-full lg:flex-[2]  lg:block">
+          <SideBar />
         </div>
       </div>
     );

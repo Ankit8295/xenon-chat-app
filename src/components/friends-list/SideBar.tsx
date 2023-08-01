@@ -9,7 +9,7 @@ export default function SideBar() {
   const { showAddFriendTab, showUserProfile } = useAppState();
 
   return (
-    <div className="flex-[2] flex flex-col items-center w-full gap-4 bg-bg_light dark:bg-bg_dark p-2 overflow-hidden border-r border-primary_light dark:border-primary_dark">
+    <div className="flex-[2] h-full flex flex-col items-center w-full gap-4 bg-bg_light dark:bg-bg_dark p-2 overflow-hidden border-r border-primary_light dark:border-primary_dark">
       {showUserProfile ? (
         <UserProfile />
       ) : (
