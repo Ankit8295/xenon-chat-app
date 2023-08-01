@@ -11,7 +11,9 @@ import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
 export default function LoginForm() {
   const searchParams = useSearchParams();
 
-  const url = searchParams?.get("callbackUrl") || "/home";
+  const url =
+    searchParams?.get("callbackUrl") ||
+    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`;
 
   const paramError = searchParams?.get("error");
 
