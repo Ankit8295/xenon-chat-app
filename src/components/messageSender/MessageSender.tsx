@@ -2,6 +2,7 @@
 "use client";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { v4 as uuidv4 } from "uuid";
 import { socket } from "@/src/lib/socket";
 import { EmojiIcon, SendMessageIcon } from "../icons/Icons";
 import MessageArea from "../messageArea/MessageArea";
@@ -70,7 +71,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
     e.preventDefault();
 
     const finalMessage: MessageType = {
-      messageId: Math.random().toString(),
+      messageId: uuidv4().replace(/-/g, ""),
       messageBy: userName,
       messageTo: decodeURIComponent(friendUserName),
       messageText: message,

@@ -100,7 +100,7 @@ export default function Page({ params }: Params) {
                 <span className="capitalize">{friend.fullName}</span>
               </div>
             </div>
-            <FriendMenu />
+            <FriendMenu friendName={decodeURIComponent(params.friendId)} />
           </div>
           <MessageSender friendUserName={friendUserName} userName={userName!} />
         </div>

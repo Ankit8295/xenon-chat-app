@@ -10,7 +10,7 @@ export default function useQueryFunction() {
 
   async function searchFriend(friendUserName?: string) {
     const res = await axios({
-      url: `${process.env.NEXTAUTH_URL}/api/search-friend`,
+      url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/search-friend`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -76,6 +76,23 @@ export default function useQueryFunction() {
     return { status: res.data.status, data: res.data.data };
   }
 
+  async function clearChat(friendName: String) {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/clear-chat`,
+      {
+        method: "PATCH",
+        headers: {
+          authorization: `${token}`,
+        },
+        params: {
+          userName: userName,
+          friendName: friendName,
+        },
+      }
+    );
+    return { status: res.data.status, data: res.data.data };
+  }
+
   return {
     userName,
     token,
@@ -83,5 +100,6 @@ export default function useQueryFunction() {
     getFriends,
     addFriend,
     getMessages,
+    clearChat,
   };
 }

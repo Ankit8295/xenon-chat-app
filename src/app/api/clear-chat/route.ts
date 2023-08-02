@@ -1,9 +1,8 @@
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
-import { MessagesDb } from "@/src/utils/types/types";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function PATCH(request: Request) {
   const url = new URL(request.url);
 
   const userName = url.searchParams.get("userName");
@@ -32,22 +31,28 @@ export async function GET(request: Request) {
   if (friendName && userName) {
     const dataBase = await db();
 
-    const userMessages = await dataBase
+    const emptyForFren = await dataBase
       .collection("messages")
-      .findOne<MessagesDb>({ userName: userName });
+      .updateOne(
+        { userName: friendName },
+        { $unset: { [`messages.${userName}`]: "" } }
+      );
 
-    const friendMsg = userMessages?.messages?.[friendName];
-    if (friendMsg) {
+    const emptyForUser = await dataBase
+      .collection("messages")
+      .updateOne(
+        { userName: userName },
+        { $unset: { [`messages.${friendName}`]: "" } }
+      );
+
+    if (emptyForFren && emptyForUser) {
       return NextResponse.json({
         status: 200,
-        data: Object.values(friendMsg),
+        data: "chats cleared successfully",
       });
     }
-    return NextResponse.json({
-      status: 200,
-      data: [],
-    });
   }
+
   return NextResponse.json({
     status: 500,
     reason: "something went wrong",

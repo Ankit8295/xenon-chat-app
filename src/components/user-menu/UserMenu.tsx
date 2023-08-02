@@ -27,12 +27,19 @@ export default function UserMenu() {
     queryKey: ["searchFriend"],
     queryFn: () => searchFriend(friendUserName),
     enabled: false,
+    retry: 0,
   });
 
-  const submitForm = (e: any) => {
+  const submitForm = async (e: any) => {
     e.preventDefault();
-    if (friendUserName !== userName)
-      refetch().then((res) => queryClient.invalidateQueries(["userFriends"]));
+    if (friendUserName !== userName) {
+      await refetch();
+      return queryClient.invalidateQueries({
+        queryKey: [`${friendUserName}-messages`],
+        exact: true,
+        refetchType: "all",
+      });
+    }
   };
   return (
     <div className="px-4 py-1 flex justify-between gap-5 items-center w-full relative">
