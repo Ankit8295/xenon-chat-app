@@ -1,15 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import useQueryFunction from "@/src/lib/useQueries";
 import DropDownLink from "../user-menu/DropDownLink";
 import { DropDownWrapper } from "../user-menu/DropDownWrapper";
-import useQueryFunction from "@/src/lib/useQueries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function FriendMenu({ friendName }: { friendName: string }) {
   const querClient = useQueryClient();
-  console.log(friendName);
+
   const { clearChat } = useQueryFunction();
 
   const [active, setActive] = useState<boolean>(false);

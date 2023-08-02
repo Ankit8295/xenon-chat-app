@@ -1,13 +1,20 @@
 type Props = {
   direction?: "left" | "right" | "top" | "bottom";
   styles?: string | string[];
+  width?: string;
+  height?: string;
 };
 
-export default function ArrowIcon({ direction, styles }: Props) {
+export default function ArrowIcon({
+  direction,
+  styles,
+  height = "19",
+  width = "19",
+}: Props) {
   return (
     <svg
-      width="19"
-      height="19"
+      width={width}
+      height={height}
       viewBox="0 0 16 10"
       fill="none"
       className={` ${direction === "right" && "-rotate-90"} ${

@@ -1,58 +1,50 @@
-import { db } from "@/src/lib/mongodb";
-import { verifyJwt } from "@/src/lib/jwt";
 import { NextResponse } from "next/server";
+import verifyUserOnServer from "@/src/lib/verifyJWT";
+import { db } from "@/src/lib/mongodb";
 
 export async function PATCH(request: Request) {
   const url = new URL(request.url);
+
+  const messageId = await request.json();
 
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
 
-  const jwt = request.headers.get("authorization");
+  const verfiedUser = verifyUserOnServer(request);
 
-  if (!jwt) {
+  if (!verfiedUser) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
-      reason: "access token is not found",
+      reason: "access token is not valid or not found",
     });
   }
 
-  const verifyToken = verifyJwt(jwt);
-
-  if (!verifyToken) {
-    return NextResponse.json({
-      status: 401,
-      error: "unauthorized",
-      reason: "access token is not valid",
-    });
-  }
   if (friendName && userName) {
     const dataBase = await db();
 
-    const emptyForFren = await dataBase
+    const deleteForFren = await dataBase
       .collection("messages")
       .updateOne(
         { userName: friendName },
-        { $unset: { [`messages.${userName}`]: "" } }
+        { $unset: { [`messages.${userName}.${messageId}`]: "" } }
       );
 
-    const emptyForUser = await dataBase
+    const deleteForUser = await dataBase
       .collection("messages")
       .updateOne(
         { userName: userName },
-        { $unset: { [`messages.${friendName}`]: "" } }
+        { $unset: { [`messages.${friendName}.${messageId}`]: "" } }
       );
 
-    if (emptyForFren && emptyForUser) {
+    if (deleteForFren && deleteForUser) {
       return NextResponse.json({
         status: 200,
-        data: "chats cleared successfully",
+        data: "message deleted successfully",
       });
     }
   }
-
   return NextResponse.json({
     status: 500,
     reason: "something went wrong",

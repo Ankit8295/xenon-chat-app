@@ -73,7 +73,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
     const finalMessage: MessageType = {
       messageId: uuidv4().replace(/-/g, ""),
       messageBy: userName,
-      messageTo: decodeURIComponent(friendUserName),
+      messageTo: friendUserName,
       messageText: message,
       messageTime: Date.now(),
       messageType: "text",

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export default function DropDownLink({ children, onClick }: Props) {
