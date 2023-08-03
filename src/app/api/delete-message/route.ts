@@ -1,6 +1,7 @@
 import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
 import verifyUserOnServer from "@/src/lib/verifyJWT";
+import { MessageType, MessagesDb } from "@/src/utils/types/types";
 
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
@@ -23,13 +24,13 @@ export async function DELETE(request: Request) {
 
   if (friendName && userName) {
     const dataBase = await db();
-
-    const deleteForFren = await dataBase
+    const getMsg = await dataBase
       .collection("messages")
-      .updateOne(
-        { userName: friendName },
-        { $unset: { [`messages.${userName}.${messageId}`]: "" } }
+      .findOne<MessagesDb>(
+        { userName: userName },
+        { [`messages.${friendName}.${messageId}`]: messageId }
       );
+    const msg = getMsg?.messages[friendName]?.[messageId] as MessageType;
 
     const deleteForUser = await dataBase
       .collection("messages")
@@ -38,7 +39,16 @@ export async function DELETE(request: Request) {
         { $unset: { [`messages.${friendName}.${messageId}`]: "" } }
       );
 
-    if (deleteForFren && deleteForUser) {
+    if (msg.messageBy === userName) {
+      await dataBase
+        .collection("messages")
+        .updateOne(
+          { userName: friendName },
+          { $unset: { [`messages.${userName}.${messageId}`]: "" } }
+        );
+    }
+
+    if (deleteForUser) {
       return NextResponse.json({
         status: 200,
         data: "message deleted successfully",

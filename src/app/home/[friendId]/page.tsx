@@ -109,7 +109,7 @@ export default function Page({ params }: Params) {
             </div>
             <FriendMenu />
           </div>
-          <MessageSender friendUserName={friendUserName} userName={userName!} />
+          <MessageSender />
         </div>
         <div
           className={`${

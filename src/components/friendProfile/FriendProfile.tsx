@@ -10,6 +10,7 @@ type Props = {
 
 export default function FriendProfile({ friendData }: Props) {
   const dispatch = useAppDispatch();
+
   return (
     <>
       <div

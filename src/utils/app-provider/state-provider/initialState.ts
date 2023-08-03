@@ -7,6 +7,7 @@ const initialState: State = {
   showUserProfile: false,
   dialogFor: null,
   friendName: "",
+  deleteMsgId: "",
 };
 
 export default initialState;

@@ -10,6 +10,9 @@ function reducer(state: State, action: Action): State {
     case "SET_FriendName":
       return { ...state, friendName: payload };
 
+    case "SET_DeletMsgId":
+      return { ...state, deleteMsgId: payload };
+
     case "SET_ShowUserProfile":
       return { ...state, showUserProfile: payload };
 

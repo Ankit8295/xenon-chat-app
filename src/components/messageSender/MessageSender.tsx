@@ -9,12 +9,9 @@ import MessageArea from "../messageArea/MessageArea";
 import { MessageType } from "@/src/utils/types/types";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import useQueryFunction from "@/src/lib/useQueries";
+import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
-type Props = {
-  userName: string;
-  friendUserName: string;
-  message?: MessageType;
-};
 type EmojiData = {
   id: string;
   keywords: string[];
@@ -24,8 +21,12 @@ type EmojiData = {
   unified: string;
 };
 
-export default function MessageSender({ friendUserName, userName }: Props) {
+export default function MessageSender() {
   const queryClient = useQueryClient();
+
+  const { userName } = useQueryFunction();
+
+  const { friendName: friendUserName } = useAppState();
 
   const [message, setMessage] = useState<string>("");
 
@@ -76,7 +77,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
 
     const finalMessage: MessageType = {
       messageId: uuidv4().replace(/-/g, ""),
-      messageBy: userName,
+      messageBy: userName!,
       messageTo: friendUserName,
       messageText: message,
       messageTime: Date.now(),
@@ -91,11 +92,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
   return (
     <>
       <div className="h-full overflow-y-scroll px-6 max-lg:px-3">
-        <MessageArea
-          friendUserName={friendUserName}
-          userName={userName}
-          message={allMessages as any}
-        />
+        <MessageArea message={allMessages as any} />
       </div>
       <form
         onSubmit={submitHandler}

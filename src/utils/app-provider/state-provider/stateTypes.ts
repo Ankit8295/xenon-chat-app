@@ -7,6 +7,7 @@ export type State = {
   showFrenProfile: boolean;
   dialogFor: DialogFor | null;
   friendName: string;
+  deleteMsgId: string;
 };
 
 export type Action =
@@ -29,6 +30,10 @@ export type Action =
   | {
       type: "SET_Dialog";
       payload: DialogFor | null;
+    }
+  | {
+      type: "SET_DeletMsgId";
+      payload: string;
     }
   | {
       type: "SET_SearchFriend";

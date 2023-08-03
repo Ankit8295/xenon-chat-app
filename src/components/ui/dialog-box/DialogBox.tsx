@@ -6,7 +6,6 @@ import {
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import ButtonWrapper from "../button/ButtonWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { unknown } from "zod";
 import { redirect } from "next/navigation";
 
 type Props = {};
@@ -21,7 +20,7 @@ type ButtonType = {
   function: () => Promise<any>;
 };
 export default function DialogBox({}: Props) {
-  const { dialogFor, friendName } = useAppState();
+  const { dialogFor, friendName, deleteMsgId: messageId } = useAppState();
 
   const dispatch = useAppDispatch();
 
@@ -29,18 +28,26 @@ export default function DialogBox({}: Props) {
 
   const { clearChat, unfriend, deleteMessage } = useQueryFunction();
 
-  const { mutate: deleteMessageFn } = useMutation(deleteMessage, {
-    onSuccess: () => queryClient.invalidateQueries([`${friendName}-messages`]),
+  const { mutate: deleteMessageFn } = useMutation({
+    mutationFn: () => deleteMessage({ friendName, messageId }),
+    onSuccess: () => {
+      dispatch({ type: "SET_Dialog", payload: null });
+      queryClient.invalidateQueries([`${friendName}-messages`]);
+    },
   });
 
   const { mutate: clearChatFn } = useMutation({
     mutationFn: () => clearChat(friendName),
-    onSuccess: () => queryClient.invalidateQueries([`${friendName}-messages`]),
+    onSuccess: () => {
+      dispatch({ type: "SET_Dialog", payload: null });
+      queryClient.invalidateQueries([`${friendName}-messages`]);
+    },
   });
 
   const { mutate: unfriendFn } = useMutation({
     mutationFn: () => unfriend(friendName),
     onSuccess: () => {
+      dispatch({ type: "SET_Dialog", payload: null });
       queryClient.invalidateQueries([`userFriends`]);
       redirect("/home");
     },
@@ -51,7 +58,6 @@ export default function DialogBox({}: Props) {
       heading: "Delete Message",
       subHeading: "Are you sure you want to delete this message?",
       buttons: { heading: "Delete", function: deleteMessageFn },
-      extraButton: { heading: "Delete", function: deleteMessageFn },
     },
     ClearChat: {
       heading: "Clear Chat",
@@ -78,25 +84,11 @@ export default function DialogBox({}: Props) {
           <ButtonWrapper
             onClick={() => {
               headingData.buttons.function();
-              dispatch({ type: "SET_Dialog", payload: null });
             }}
             customStyles="hover:bg-red-500/10 text-red-500"
           >
             {headingData.buttons.heading}
           </ButtonWrapper>
-
-          {headingData.extraButton && (
-            <ButtonWrapper
-              onClick={() => {
-                headingData.extraButton?.function();
-                dispatch({ type: "SET_Dialog", payload: null });
-              }}
-              customStyles="hover:bg-red-500/10 text-red-500"
-            >
-              {headingData.extraButton.heading}
-            </ButtonWrapper>
-          )}
-
           <ButtonWrapper
             onClick={() => dispatch({ type: "SET_Dialog", payload: null })}
             customStyles="hover:bg-blue-500/10 text-blue-500"
