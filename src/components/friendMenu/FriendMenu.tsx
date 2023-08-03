@@ -1,30 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import useQueryFunction from "@/src/lib/useQueries";
 import DropDownLink from "../user-menu/DropDownLink";
 import { DropDownWrapper } from "../user-menu/DropDownWrapper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
-export default function FriendMenu({ friendName }: { friendName: string }) {
-  const querClient = useQueryClient();
-
-  const { clearChat, unfriend } = useQueryFunction();
-
+export default function FriendMenu() {
   const [active, setActive] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-
-  const { mutate } = useMutation({
-    mutationFn: () => clearChat(friendName),
-    onSuccess: () => querClient.invalidateQueries([`${friendName}-messages`]),
-  });
-
-  const { mutate: unfriendFn } = useMutation({
-    mutationFn: () => unfriend(friendName),
-    onSuccess: () => querClient.invalidateQueries([`userFriends`]),
-  });
 
   return (
     <div className="relative">
@@ -53,7 +37,7 @@ export default function FriendMenu({ friendName }: { friendName: string }) {
         <DropDownLink
           onClick={() => {
             setActive(false);
-            mutate();
+            dispatch({ type: "SET_Dialog", payload: "ClearChat" });
           }}
         >
           Clear Chat
@@ -61,7 +45,7 @@ export default function FriendMenu({ friendName }: { friendName: string }) {
         <DropDownLink
           onClick={() => {
             setActive(false);
-            unfriendFn();
+            dispatch({ type: "SET_Dialog", payload: "Unfriend" });
           }}
         >
           Unfriend

@@ -5,6 +5,8 @@ const initialState: State = {
   searchFriend: "",
   showFrenProfile: false,
   showUserProfile: false,
+  dialogFor: null,
+  friendName: "",
 };
 
 export default initialState;

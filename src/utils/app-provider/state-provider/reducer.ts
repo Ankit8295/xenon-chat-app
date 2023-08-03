@@ -7,6 +7,9 @@ function reducer(state: State, action: Action): State {
     case "SET_ShowAddFriendTab":
       return { ...state, showAddFriendTab: payload };
 
+    case "SET_FriendName":
+      return { ...state, friendName: payload };
+
     case "SET_ShowUserProfile":
       return { ...state, showUserProfile: payload };
 
@@ -15,6 +18,9 @@ function reducer(state: State, action: Action): State {
 
     case "SET_SearchFriend":
       return { ...state, searchFriend: payload };
+
+    case "SET_Dialog":
+      return { ...state, dialogFor: payload };
     default:
       return state;
   }

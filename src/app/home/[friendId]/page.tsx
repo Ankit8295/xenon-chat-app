@@ -43,6 +43,13 @@ export default function Page({ params }: Params) {
   });
 
   useEffect(() => {
+    dispatch({
+      type: "SET_FriendName",
+      payload: decodeURIComponent(params.friendId),
+    });
+  }, [params.friendId]);
+
+  useEffect(() => {
     const friendLists = querClient.getQueryData<{
       status: number;
       data: UserDb[];
@@ -100,7 +107,7 @@ export default function Page({ params }: Params) {
                 <span className="capitalize">{friend.fullName}</span>
               </div>
             </div>
-            <FriendMenu friendName={decodeURIComponent(params.friendId)} />
+            <FriendMenu />
           </div>
           <MessageSender friendUserName={friendUserName} userName={userName!} />
         </div>
