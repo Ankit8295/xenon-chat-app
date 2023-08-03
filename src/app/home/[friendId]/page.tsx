@@ -58,15 +58,15 @@ export default function Page({ params }: Params) {
     }
   }, []);
 
-  const { data: friendMessages, isFetching } = useQuery({
-    queryKey: [`${friendUserName}-messages`],
+  const { data: friendMessages, isLoading } = useQuery({
     queryFn: () => getMessages(friendUserName),
+    queryKey: [`${friendUserName}-messages`],
+    refetchOnWindowFocus: false,
     enabled: !!userName,
     retry: 0,
-    refetchOnWindowFocus: false,
   });
 
-  if (isFetching) return <Loading text="Loading User Data..." />;
+  if (isLoading) return <Loading text="Loading User Data..." />;
 
   if (friend && friendMessages)
     return (
@@ -78,7 +78,7 @@ export default function Page({ params }: Params) {
         >
           <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
             <div className="flex gap-5 items-center">
-              <Link href="/home" className="cursor-pointer">
+              <Link href="/home" className="cursor-pointer lg:hidden block">
                 <ArrowIcon direction="left" />
               </Link>
               <div

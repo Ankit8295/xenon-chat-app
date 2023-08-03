@@ -7,7 +7,7 @@ import { socket } from "@/src/lib/socket";
 import { EmojiIcon, SendMessageIcon } from "../icons/Icons";
 import MessageArea from "../messageArea/MessageArea";
 import { MessageType } from "@/src/utils/types/types";
-import { useQueryClient } from "@tanstack/react-query";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 type Props = {
@@ -42,6 +42,10 @@ export default function MessageSender({ friendUserName, userName }: Props) {
     },
   ]);
 
+  const isLoadinMsgs = useIsFetching({
+    queryKey: [`${friendUserName}-messages`],
+  });
+
   useEffect(() => {
     const friendMessages = queryClient.getQueryData<{
       status: number;
@@ -51,7 +55,7 @@ export default function MessageSender({ friendUserName, userName }: Props) {
     if (friendMessages) {
       setAllMessages((prev) => friendMessages?.data || prev);
     }
-  }, []);
+  }, [isLoadinMsgs]);
 
   useEffect(() => {
     socket.emit("join", [friendUserName, userName].sort().join("-"));

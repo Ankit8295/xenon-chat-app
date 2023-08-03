@@ -10,7 +10,7 @@ import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextP
 export default function FriendMenu({ friendName }: { friendName: string }) {
   const querClient = useQueryClient();
 
-  const { clearChat } = useQueryFunction();
+  const { clearChat, unfriend } = useQueryFunction();
 
   const [active, setActive] = useState<boolean>(false);
 
@@ -18,7 +18,12 @@ export default function FriendMenu({ friendName }: { friendName: string }) {
 
   const { mutate } = useMutation({
     mutationFn: () => clearChat(friendName),
-    onSuccess: () => querClient.refetchQueries([`${friendName}-messages`]),
+    onSuccess: () => querClient.invalidateQueries([`${friendName}-messages`]),
+  });
+
+  const { mutate: unfriendFn } = useMutation({
+    mutationFn: () => unfriend(friendName),
+    onSuccess: () => querClient.invalidateQueries([`userFriends`]),
   });
 
   return (
@@ -45,10 +50,21 @@ export default function FriendMenu({ friendName }: { friendName: string }) {
         <DropDownLink onClick={() => setActive(false)}>
           <Link href={"/home"}>Close Chat</Link>
         </DropDownLink>
-        <DropDownLink onClick={() => mutate()}>Clear Chat</DropDownLink>
-        <DropDownLink onClick={() => setActive(false)}>Unfriend</DropDownLink>
-        <DropDownLink onClick={() => setActive(false)}>
-          Report & Block
+        <DropDownLink
+          onClick={() => {
+            setActive(false);
+            mutate();
+          }}
+        >
+          Clear Chat
+        </DropDownLink>
+        <DropDownLink
+          onClick={() => {
+            setActive(false);
+            unfriendFn();
+          }}
+        >
+          Unfriend
         </DropDownLink>
       </DropDownWrapper>
     </div>

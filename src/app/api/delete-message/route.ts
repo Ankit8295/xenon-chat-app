@@ -1,17 +1,17 @@
+import { db } from "@/src/lib/mongodb";
 import { NextResponse } from "next/server";
 import verifyUserOnServer from "@/src/lib/verifyJWT";
-import { db } from "@/src/lib/mongodb";
 
-export async function PATCH(request: Request) {
+export async function DELETE(request: Request) {
   const url = new URL(request.url);
 
   const messageId = await request.json();
 
+  const verfiedUser = verifyUserOnServer(request);
+
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
-
-  const verfiedUser = verifyUserOnServer(request);
 
   if (!verfiedUser) {
     return NextResponse.json({

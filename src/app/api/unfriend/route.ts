@@ -1,35 +1,34 @@
 import { db } from "@/src/lib/mongodb";
-import { verifyJwt } from "@/src/lib/jwt";
 import { NextResponse } from "next/server";
+import verifyUserOnServer from "@/src/lib/verifyJWT";
 
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
+
+  const verifyUser = verifyUserOnServer(request);
 
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
 
-  const jwt = request.headers.get("authorization");
-
-  if (!jwt) {
+  if (!verifyUser) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
-      reason: "access token is not found",
+      reason: "access token is not valid or not found",
     });
   }
 
-  const verifyToken = verifyJwt(jwt);
-
-  if (!verifyToken) {
-    return NextResponse.json({
-      status: 401,
-      error: "unauthorized",
-      reason: "access token is not valid",
-    });
-  }
-  if (friendName && userName) {
+  if (userName && friendName) {
     const dataBase = await db();
+
+    const deleteFromFren = await dataBase
+      .collection("friends")
+      .updateOne({ userName: userName }, { $pull: { friends: friendName } });
+
+    const deleteFromUser = await dataBase
+      .collection("friends")
+      .updateOne({ userName: friendName }, { $pull: { friends: userName } });
 
     const emptyForFren = await dataBase
       .collection("messages")
@@ -45,14 +44,13 @@ export async function DELETE(request: Request) {
         { $unset: { [`messages.${friendName}`]: "" } }
       );
 
-    if (emptyForFren && emptyForUser) {
+    if (deleteFromFren && deleteFromUser && emptyForUser && emptyForFren) {
       return NextResponse.json({
         status: 200,
-        data: "chats cleared successfully",
+        data: "friend removed successfully",
       });
     }
   }
-
   return NextResponse.json({
     status: 500,
     reason: "something went wrong",

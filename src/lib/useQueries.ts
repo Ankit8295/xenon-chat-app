@@ -80,7 +80,7 @@ export default function useQueryFunction() {
     const res = await axios(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/clear-chat`,
       {
-        method: "PATCH",
+        method: "DELETE",
         headers: {
           authorization: `${token}`,
         },
@@ -92,6 +92,7 @@ export default function useQueryFunction() {
     );
     return { status: res.data.status, data: res.data.data };
   }
+
   async function deleteMessage({
     friendName,
     messageId,
@@ -102,7 +103,7 @@ export default function useQueryFunction() {
     const res = await axios(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/delete-message`,
       {
-        method: "PATCH",
+        method: "DELETE",
         headers: {
           authorization: `${token}`,
         },
@@ -111,6 +112,23 @@ export default function useQueryFunction() {
           friendName: friendName,
         },
         data: JSON.stringify(messageId),
+      }
+    );
+    return { status: res.data.status, data: res.data.data };
+  }
+
+  async function unfriend(friendName: string) {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/unfriend`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `${token}`,
+        },
+        params: {
+          userName: userName,
+          friendName: friendName,
+        },
       }
     );
     return { status: res.data.status, data: res.data.data };
@@ -125,5 +143,6 @@ export default function useQueryFunction() {
     getMessages,
     clearChat,
     deleteMessage,
+    unfriend,
   };
 }

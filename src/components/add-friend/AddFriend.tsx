@@ -23,6 +23,7 @@ export default function AddFriend() {
 
   const { mutate } = useMutation({
     mutationFn: () => addFriend(searchFriendData?.data?.userName!),
+    onSuccess: () => queryClient.invalidateQueries(["userFriends"]),
   });
 
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
