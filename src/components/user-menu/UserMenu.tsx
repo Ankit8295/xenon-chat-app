@@ -41,6 +41,7 @@ export default function UserMenu() {
       });
     }
   };
+
   return (
     <div className="px-4 py-1 flex justify-between gap-5 items-center w-full relative">
       <div className="relative">
@@ -73,7 +74,14 @@ export default function UserMenu() {
           >
             Profile
           </DropDownLink>
-          <DropDownLink onClick={() => setActive(false)}>Settings</DropDownLink>
+          <DropDownLink
+            onClick={() => {
+              setActive(false);
+              dispatch({ type: "SET_Dialog", payload: "DeleteAccount" });
+            }}
+          >
+            Delete Account
+          </DropDownLink>
           <DropDownLink onClick={() => signOut()}>Log Out</DropDownLink>
         </DropDownWrapper>
       </div>

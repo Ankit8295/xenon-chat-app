@@ -7,7 +7,9 @@ import {
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { DialogFor } from "@/src/utils/app-provider/state-provider/stateTypes";
 
 type ButtonType = {
   heading: string;
@@ -28,7 +30,8 @@ export default function DialogBox() {
 
   const queryClient = useQueryClient();
 
-  const { clearChat, unfriend, deleteMessage } = useQueryFunction();
+  const { clearChat, unfriend, deleteMessage, deleteAccount } =
+    useQueryFunction();
 
   const { dialogFor, friendName, deleteMsgId: messageId } = useAppState();
 
@@ -38,6 +41,10 @@ export default function DialogBox() {
         queryClient.invalidateQueries([`${friendName}-messages`])
       ),
     onSuccess: () => dispatch({ type: "SET_Dialog", payload: null }),
+  });
+
+  const { mutate: deleteAccountFn } = useMutation(deleteAccount, {
+    onSuccess: () => signOut(),
   });
 
   const { mutate: clearChatFn, isLoading: clearing } = useMutation({
@@ -77,9 +84,14 @@ export default function DialogBox() {
       subHeading: "Are you sure you want to delete this message?",
       buttons: { heading: "Unfriend", function: unfriendFn },
     },
+    DeleteAccount: {
+      heading: "Delete Account",
+      subHeading: "Are you sure you want to delete this Account?",
+      buttons: { heading: "Delete", function: deleteAccountFn },
+    },
   };
 
-  const dialogBoxData = data[dialogFor!] as DialoagData;
+  const dialogBoxData = data[dialogFor as DialogFor] as DialoagData;
 
   return (
     <div className="absolute w-full h-full bg-black/20 flex items-center justify-center">

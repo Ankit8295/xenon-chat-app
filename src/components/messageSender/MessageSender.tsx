@@ -21,7 +21,11 @@ type EmojiData = {
   unified: string;
 };
 
-export default function MessageSender() {
+export default function MessageSender({
+  deletedAccount,
+}: {
+  deletedAccount: boolean;
+}) {
   const queryClient = useQueryClient();
 
   const { userName } = useQueryFunction();
@@ -94,44 +98,50 @@ export default function MessageSender() {
       <div className="h-full overflow-y-scroll px-6 max-lg:px-3">
         <MessageArea message={allMessages as any} />
       </div>
-      <form
-        onSubmit={submitHandler}
-        className="max-w-[60%] max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
-      >
-        <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300">
-          <div onClick={() => setShowEmoji((prev) => !prev)}>
-            <EmojiIcon />
-          </div>
-          {showEmoji && (
-            <div
-              className="absolute left-0 -top-[1150%]"
-              onMouseOut={() => setShowEmoji(false)}
-            >
-              <Picker
-                data={data}
-                onEmojiSelect={(e: EmojiData) =>
-                  setMessage((prev) => prev + e.native)
-                }
-              />
+      {!deletedAccount ? (
+        <form
+          onSubmit={submitHandler}
+          className="max-w-[60%] max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
+        >
+          <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300">
+            <div onClick={() => setShowEmoji((prev) => !prev)}>
+              <EmojiIcon />
             </div>
+            {showEmoji && (
+              <div
+                className="absolute left-0 -top-[1150%]"
+                onMouseOut={() => setShowEmoji(false)}
+              >
+                <Picker
+                  data={data}
+                  onEmojiSelect={(e: EmojiData) =>
+                    setMessage((prev) => prev + e.native)
+                  }
+                />
+              </div>
+            )}
+          </div>
+          <input
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setMessage(e.target.value)
+            }
+            value={message}
+            className="bg-hover_light dark:bg-hover_dark outline-none border-none w-full text-sm"
+            type="text"
+            placeholder="Message"
+            required
+          />
+          {message.length > 0 && (
+            <button type="submit">
+              <SendMessageIcon />
+            </button>
           )}
-        </div>
-        <input
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setMessage(e.target.value)
-          }
-          value={message}
-          className="bg-hover_light dark:bg-hover_dark outline-none border-none w-full text-sm"
-          type="text"
-          placeholder="Message"
-          required
-        />
-        {message.length > 0 && (
-          <button type="submit">
-            <SendMessageIcon />
-          </button>
-        )}
-      </form>
+        </form>
+      ) : (
+        <span className="max-w-[60%] text-black/70 dark:text-white/70  max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  ">
+          message not allowed, user account is deleted or removed
+        </span>
+      )}
     </>
   );
 }

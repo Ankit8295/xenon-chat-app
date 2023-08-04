@@ -173,6 +173,21 @@ export default function useQueryFunction() {
     );
     return { status: res.data.status, data: res.data.data };
   }
+  async function deleteAccount() {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/delete-account`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `${token}`,
+        },
+        params: {
+          userName: userName,
+        },
+      }
+    );
+    return { status: res.data.status, data: res.data.data };
+  }
 
   return {
     userName,
@@ -186,5 +201,6 @@ export default function useQueryFunction() {
     unfriend,
     getUserDetails,
     updateUserProfile,
+    deleteAccount,
   };
 }

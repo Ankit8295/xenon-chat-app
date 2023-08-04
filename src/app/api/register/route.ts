@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     emailId,
     fullName,
     userName,
-    about: "",
+    about: "Online",
     photo: "",
   };
 
@@ -32,13 +32,6 @@ export async function POST(request: Request) {
   const saveIdPass = await dataBase
     .collection("idPass")
     .insertOne({ userName, password: encryptPass });
-
-  const saveUserIds = await dataBase
-    .collection("userIds")
-    .updateOne(
-      { _id: new ObjectId("64be6a5a22d605fc63764d97") },
-      { $push: { ids: userName } }
-    );
 
   const createMessages = await dataBase.collection("messages").insertOne({
     userName: userName,
@@ -50,13 +43,7 @@ export async function POST(request: Request) {
     friends: [],
   });
 
-  if (
-    createdUser &&
-    saveUserIds &&
-    saveIdPass &&
-    createMessages &&
-    createFriends
-  ) {
+  if (createdUser && saveIdPass && createMessages && createFriends) {
     return NextResponse.json({
       status: 200,
       data: "user registered successfully",

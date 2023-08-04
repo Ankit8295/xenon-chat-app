@@ -45,6 +45,20 @@ export async function POST(request: Request) {
         .find<UserDb>({ userName: { $in: friendsId } })
         .toArray();
 
+      const missedIds: string[] = [];
+      friendsId.forEach((id) =>
+        friendsData.find((friends) => friends.userName === id)
+          ? null
+          : missedIds.push(id)
+      );
+      missedIds.forEach((id) =>
+        friendsData.push({
+          fullName: "Deleted Account",
+          userName: id,
+          emailId: "",
+        })
+      );
+
       return NextResponse.json({
         status: 200,
         data: friendsData,

@@ -1,4 +1,8 @@
-type DialogFor = "DeleteMessage" | "ClearChat" | "Unfriend";
+export type DialogFor =
+  | "DeleteMessage"
+  | "ClearChat"
+  | "Unfriend"
+  | "DeleteAccount";
 
 export type State = {
   showAddFriendTab: boolean;
