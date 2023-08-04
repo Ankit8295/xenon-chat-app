@@ -11,6 +11,7 @@ import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useQueryFunction from "@/src/lib/useQueries";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { encodeString } from "@/src/lib/encryptDecrypt";
 
 type EmojiData = {
   id: string;
@@ -83,7 +84,7 @@ export default function MessageSender({
       messageId: uuidv4().replace(/-/g, ""),
       messageBy: userName!,
       messageTo: friendUserName,
-      messageText: message,
+      messageText: encodeString(message),
       messageTime: Date.now(),
       messageType: "text",
     };

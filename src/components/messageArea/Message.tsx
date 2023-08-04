@@ -5,6 +5,7 @@ import { MessageType } from "@/src/utils/types/types";
 import { DropDownWrapper } from "../user-menu/DropDownWrapper";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import useQueryFunction from "@/src/lib/useQueries";
+import { decodeString } from "@/src/lib/encryptDecrypt";
 
 type Props = {
   message: MessageType;
@@ -25,7 +26,7 @@ export default function Message({ message: msg }: Props) {
           : "self-end rounded-tl-xl bg-primary_light dark:bg-blue-500"
       }`}
     >
-      <span className="py-2 text-sm">{msg.messageText}</span>
+      <span className="py-2 text-sm">{decodeString(msg.messageText)}</span>
       <span className="self-end text-[.6em] pb-[.1em] text-black/70  dark:text-white/60">
         {new Date(msg.messageTime).toLocaleTimeString("en-US", {
           hour: "numeric",

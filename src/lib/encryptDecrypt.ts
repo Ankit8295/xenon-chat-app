@@ -1,13 +1,15 @@
 import CryptoJS from "crypto-js";
+declare const crypto: any;
 
 const key = process.env.ENCRYPTION_KEY;
-export function encrypt(password: string) {
-  const encrypted = CryptoJS.AES.encrypt(password, key).toString();
+
+export function encrypt(string: string) {
+  const encrypted = CryptoJS.AES.encrypt(string, key).toString();
   return encrypted;
 }
 
-export function decrypt(encryptedPassword: string) {
-  const decrypted = CryptoJS.AES.decrypt(encryptedPassword, key).toString(
+export function decrypt(encryptedstring: string) {
+  const decrypted = CryptoJS.AES.decrypt(encryptedstring, key).toString(
     CryptoJS.enc.Utf8
   );
   return decrypted;
