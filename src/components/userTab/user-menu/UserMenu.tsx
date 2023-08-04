@@ -1,25 +1,25 @@
 "use client";
 import { useState } from "react";
-import ArrowIcon from "../icons/Icons";
+import ArrowIcon from "../../icons/Icons";
 import { signOut } from "next-auth/react";
 import useQueryFunction from "@/src/lib/useQueries";
-import HamburgerMenu from "../friends-list/HamburgerMenu";
+import HamburgerMenu from "../../sideNav/HamburgerMenu";
+import DropDownLink from "../../ui/dropdown/DropDownLink";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";
 import {
   useAppDispatch,
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import DropDownLink from "./DropDownLink";
-import { DropDownWrapper } from "./DropDownWrapper";
 
 export default function UserMenu() {
   const dispatch = useAppDispatch();
 
   const queryClient = useQueryClient();
 
-  const { searchFriend, userName } = useQueryFunction();
-
   const [active, setActive] = useState<boolean>(false);
+
+  const { searchFriend, userName } = useQueryFunction();
 
   const { showAddFriendTab, searchFriend: friendUserName } = useAppState();
 
@@ -104,12 +104,7 @@ export default function UserMenu() {
             dispatch({ type: "SET_SearchFriend", payload: e.target.value })
           }
         />
-        <button
-          type="submit"
-          className="px-2 hover:bg-primary_light  dark:hover:bg-primary_dark bg-hover_color"
-        >
-          Search
-        </button>
+        <button type="submit" />
       </form>
     </div>
   );

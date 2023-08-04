@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import DropDownLink from "../user-menu/DropDownLink";
-import { DropDownWrapper } from "../user-menu/DropDownWrapper";
+import DropDownLink from "../../ui/dropdown/DropDownLink";
+import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function FriendMenu() {

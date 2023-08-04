@@ -1,7 +1,7 @@
 "use client";
 import Loading from "../button/Loading";
 import useQueryFunction from "@/src/lib/useQueries";
-import ButtonWrapper from "../button/ButtonWrapper";
+import DialogBoxButton from "../button/DialogBoxButton";
 import {
   useAppDispatch,
   useAppState,
@@ -102,7 +102,7 @@ export default function DialogBox() {
         <h2 className="font-medium text-xl">{dialogBoxData.heading}</h2>
         <p>{dialogBoxData.subHeading}</p>
         <div className="self-end flex flex-col gap-1 items-end">
-          <ButtonWrapper
+          <DialogBoxButton
             onClick={() => {
               dialogBoxData.buttons.function();
             }}
@@ -111,13 +111,13 @@ export default function DialogBox() {
             } hover:bg-red-500/10 text-red-500`}
           >
             {loading ? <Loading /> : dialogBoxData.buttons.heading}
-          </ButtonWrapper>
-          <ButtonWrapper
+          </DialogBoxButton>
+          <DialogBoxButton
             onClick={() => dispatch({ type: "SET_Dialog", payload: null })}
             customStyles="hover:bg-blue-500/10 text-blue-500"
           >
             Cancel
-          </ButtonWrapper>
+          </DialogBoxButton>
         </div>
       </dialog>
     </div>

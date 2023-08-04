@@ -1,5 +1,4 @@
 import "./globals.css";
-import PageWrapper from "../components/ui/PageWrapper";
 import { Inter } from "next/font/google";
 import AppProvider from "../utils/app-provider/AppProvider";
 
@@ -25,7 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppProvider>
-          <PageWrapper>{children}</PageWrapper>
+          <main className="h-screen max-h-[100dvh] w-screen flex flex-col items-center my-auto">
+            {children}
+          </main>
         </AppProvider>
       </body>
     </html>

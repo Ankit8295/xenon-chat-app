@@ -1,21 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import useQueryFunction from "@/src/lib/useQueries";
-import Loading from "@/src/components/ui/loading/Loading";
-import FriendMenu from "@/src/components/friendMenu/FriendMenu";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import MessageSender from "@/src/components/messageSender/MessageSender";
-import FriendProfile from "@/src/components/friendProfile/FriendProfile";
-import {
-  useAppDispatch,
-  useAppState,
-} from "@/src/utils/app-provider/state-provider/ContextProvider";
 import ArrowIcon from "@/src/components/icons/Icons";
-import Link from "next/link";
+import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import FriendMenu from "@/src/components/friendTab/friendMenu/FriendMenu";
+import MessageSender from "@/src/components/friendTab/messageSender/MessageSender";
+import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
+import {
+  useAppState,
+  useAppDispatch,
+} from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type Params = {
   params: {
@@ -24,15 +24,15 @@ type Params = {
 };
 
 export default function Page({ params }: Params) {
+  const dispatch = useAppDispatch();
+
   const querClient = useQueryClient();
 
   const { showFrenProfile } = useAppState();
 
-  const dispatch = useAppDispatch();
+  const { userName, getMessages } = useQueryFunction();
 
   const friendUserName = decodeURIComponent(params.friendId);
-
-  const { userName, getMessages } = useQueryFunction();
 
   const [friend, setFriend] = useState<UserDb>({
     emailId: "",
@@ -48,6 +48,14 @@ export default function Page({ params }: Params) {
       payload: decodeURIComponent(params.friendId),
     });
   }, [params.friendId]);
+
+  const { data: friendMessages, isLoading } = useQuery({
+    queryFn: () => getMessages(friendUserName),
+    queryKey: [`${friendUserName}-messages`],
+    refetchOnWindowFocus: false,
+    enabled: !!userName,
+    retry: 0,
+  });
 
   useEffect(() => {
     const friendLists = querClient.getQueryData<{
@@ -65,15 +73,7 @@ export default function Page({ params }: Params) {
     }
   }, []);
 
-  const { data: friendMessages, isLoading } = useQuery({
-    queryFn: () => getMessages(friendUserName),
-    queryKey: [`${friendUserName}-messages`],
-    refetchOnWindowFocus: false,
-    enabled: !!userName,
-    retry: 0,
-  });
-
-  if (isLoading) return <Loading text="Loading User Data..." />;
+  if (isLoading) return <LoadingUi text="Loading User Data..." />;
 
   if (friend && friendMessages)
     return (

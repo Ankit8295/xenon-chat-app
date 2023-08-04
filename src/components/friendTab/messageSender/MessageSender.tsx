@@ -4,7 +4,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "@/src/lib/socket";
-import { EmojiIcon, SendMessageIcon } from "../icons/Icons";
+import { EmojiIcon, SendMessageIcon } from "../../icons/Icons";
 import MessageArea from "../messageArea/MessageArea";
 import { MessageType } from "@/src/utils/types/types";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";

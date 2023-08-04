@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode;
 };
 
-export default function ButtonWrapper({
+export default function DialogBoxButton({
   customStyles = "",
   type = "button",
   children,

@@ -12,19 +12,19 @@ import {
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function FriendList() {
-  const querClient = useQueryClient();
-
   const pathname = usePathname();
 
-  const { showFrenProfile } = useAppState();
-
   const dispatch = useAppDispatch();
+
+  const querClient = useQueryClient();
+
+  const { showFrenProfile } = useAppState();
 
   const friendLists = querClient.getQueryData<{
     status: number;
     data: UserDb[];
   }>(["userFriends"]);
-  console.log(friendLists);
+
   if (friendLists)
     return (
       <>

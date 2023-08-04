@@ -1,8 +1,8 @@
 "use client";
-import FriendList from "./FriendList";
-import UserMenu from "../user-menu/UserMenu";
-import AddFriend from "../add-friend/AddFriend";
-import UserProfile from "../user-profile/UserProfile";
+import UserMenu from "../userTab/user-menu/UserMenu";
+import FriendList from "../userTab/friends-list/FriendList";
+import UserProfile from "../userTab/user-profile/UserProfile";
+import SearchFriend from "../userTab/searchFriend/SearchFriend";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 export default function SideBar() {
@@ -17,7 +17,7 @@ export default function SideBar() {
           <UserMenu />
           {showAddFriendTab ? (
             <div className="flex flex-col items-start w-full">
-              <AddFriend />
+              <SearchFriend />
             </div>
           ) : (
             <>

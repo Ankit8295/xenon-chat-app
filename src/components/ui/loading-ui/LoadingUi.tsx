@@ -3,7 +3,7 @@ type Props = {
   text: string;
 };
 
-export default function Loading({ text }: Props) {
+export default function LoadingUi({ text }: Props) {
   return (
     <div className="h-[80%] invert dark:invert-0 w-full flex justify-center items-center">
       <div className="loader JS_on">

@@ -4,7 +4,7 @@ import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useState } from "react";
-import ArrowIcon, { EditIcon, SaveIcon } from "../icons/Icons";
+import ArrowIcon, { EditIcon, SaveIcon } from "../../icons/Icons";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import useQueryFunction from "@/src/lib/useQueries";
 

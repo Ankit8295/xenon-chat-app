@@ -1,20 +1,22 @@
+import Link from "next/link";
+import Image from "next/image";
+import Loading from "../../ui/button/Loading";
 import userImg from "@/public/userProfile.webp";
+import { UserDb } from "@/src/utils/types/types";
 import useQueryFunction from "@/src/lib/useQueries";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import { UserDb } from "@/src/utils/types/types";
 import {
   useIsFetching,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "next/link";
-import Loading from "../ui/button/Loading";
 
-export default function AddFriend() {
+export default function SearchFriend() {
   const dispatch = useAppDispatch();
-  const { addFriend } = useQueryFunction();
+
   const queryClient = useQueryClient();
+
+  const { addFriend } = useQueryFunction();
 
   const searchFriendData = queryClient.getQueryData<{
     status: number;

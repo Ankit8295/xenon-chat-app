@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ArrowIcon from "../icons/Icons";
-import DropDownLink from "../user-menu/DropDownLink";
+import ArrowIcon from "../../icons/Icons";
+import DropDownLink from "../../ui/dropdown/DropDownLink";
 import { MessageType } from "@/src/utils/types/types";
-import { DropDownWrapper } from "../user-menu/DropDownWrapper";
+import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import useQueryFunction from "@/src/lib/useQueries";
 import { decodeString } from "@/src/lib/encryptDecrypt";

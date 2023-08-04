@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ArrowIcon from "../icons/Icons";
+import ArrowIcon from "../../icons/Icons";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
@@ -17,13 +17,13 @@ export default function FriendProfile({ friendData }: Props) {
         onClick={() =>
           dispatch({ type: "SET_ShowFrenProfile", payload: false })
         }
-        className="cursor-pointer py-4 pl-4 flex items-center justify-between"
+        className="cursor-pointer pt-4 px-4 flex items-center justify-between"
       >
         <div className="flex flex-col items-center justify-center p-2">
           <ArrowIcon direction="left" />
         </div>
       </div>
-      <div className="w-full flex flex-col gap-5 items-center justify-start pt-10 ">
+      <div className="w-full flex flex-col gap-5 items-center justify-start pt-5 ">
         <Image
           src={userImg}
           alt="user_profile_img"
@@ -39,8 +39,8 @@ export default function FriendProfile({ friendData }: Props) {
             {friendData.emailId}
           </span>
         </div>
-        <div className="w-full flex flex-col gap-2 p-5 ">
-          <span className="text-xl text-black/70 dark:text-white/50">
+        <div className="w-full flex flex-col  px-5 ">
+          <span className="text-sm text-black/70 dark:text-white/50">
             About
           </span>
           <span className="text-lg">{friendData?.about}</span>

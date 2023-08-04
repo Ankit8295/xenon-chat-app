@@ -1,11 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { socket } from "@/src/lib/socket";
 import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
-import Loading from "@/src/components/ui/loading/Loading";
-import SideBar from "@/src/components/friends-list/SideBar";
-import ButtonWrapper from "@/src/components/ui/button/ButtonWrapper";
+import SideBar from "@/src/components/sideNav/SideBar";
+import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
 import DialogBox from "@/src/components/ui/dialog-box/DialogBox";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
@@ -14,9 +13,9 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userName, getFriends, getUserDetails } = useQueryFunction();
-
   const { dialogFor } = useAppState();
+
+  const { userName, getFriends, getUserDetails } = useQueryFunction();
 
   const { data: friendsList } = useQuery({
     queryKey: ["userFriends"],
@@ -55,5 +54,5 @@ export default function Layout({ children }: Props) {
         {dialogFor && <DialogBox />}
       </div>
     );
-  return <Loading text="Loading App..." />;
+  return <LoadingUi text="Loading App..." />;
 }
