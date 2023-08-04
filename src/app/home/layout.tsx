@@ -14,16 +14,25 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const { userName, getFriends } = useQueryFunction();
+  const { userName, getFriends, getUserDetails } = useQueryFunction();
 
   const { dialogFor } = useAppState();
 
-  const { data: friendsData } = useQuery({
+  const { data: friendsList } = useQuery({
     queryKey: ["userFriends"],
     queryFn: () => getFriends(),
     enabled: !!userName,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+  });
+
+  const { data: userData } = useQuery({
+    queryKey: ["userDetails"],
+    queryFn: () => getUserDetails(),
+    enabled: !!userName,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   useEffect(() => {
@@ -34,7 +43,7 @@ export default function Layout({ children }: Props) {
     };
   }, [userName]);
 
-  if (friendsData)
+  if (friendsList && userData)
     return (
       <div className="relative w-full max-h-screen h-screen flex flex-row-reverse max-w-[1650px]">
         <div className="peer flex flex-[5] h-full flex-col items-start w-full">

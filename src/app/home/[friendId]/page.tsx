@@ -16,6 +16,7 @@ import {
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import ArrowIcon from "@/src/components/icons/Icons";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 type Params = {
   params: {
@@ -78,6 +79,13 @@ export default function Page({ params }: Params) {
   if (friend && friendMessages)
     return (
       <div className={`h-full w-full flex overflow-hidden  relative`}>
+        <button
+          onClick={() => {
+            console.log("redirecting");
+          }}
+        >
+          Go home
+        </button>
         <div
           className={`${
             showFrenProfile ? "w-full lg:w-3/5" : "w-full"

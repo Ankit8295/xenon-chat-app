@@ -24,37 +24,39 @@ export default function FriendList() {
     status: number;
     data: UserDb[];
   }>(["userFriends"]);
-
-  return (
-    <>
-      {friendLists?.data.length ? (
-        friendLists?.data.map((list: FriendsListType) => (
-          <Link
-            href={`/home/${list.userName}`}
-            className={`${
-              pathname.includes(list.userName)
-                ? "bg-primary_light dark:bg-primary_dark"
-                : "hover:bg-hover_light dark:hover:bg-hover_dark"
-            }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
-            key={list.userName}
-            onClick={() =>
-              showFrenProfile &&
-              dispatch({ type: "SET_ShowFrenProfile", payload: false })
-            }
-          >
-            <Image
-              src={userImg}
-              alt="user_profile_img"
-              className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
-            />
-            {list.fullName}
-          </Link>
-        ))
-      ) : (
-        <div className="flex items-center gap-5 flex-col w-full py-5">
-          <h2>No Friends Found</h2>
-        </div>
-      )}
-    </>
-  );
+  console.log(friendLists);
+  if (friendLists)
+    return (
+      <>
+        {typeof friendLists?.data === "object" ? (
+          friendLists?.data.map((list: FriendsListType) => (
+            <Link
+              href={`/home/${list.userName}`}
+              className={`${
+                pathname.includes(list.userName)
+                  ? "bg-primary_light dark:bg-primary_dark"
+                  : "hover:bg-hover_light dark:hover:bg-hover_dark"
+              }  w-full cursor-pointer flex items-center gap-5  p-3 rounded-lg`}
+              key={list.userName}
+              onClick={() =>
+                showFrenProfile &&
+                dispatch({ type: "SET_ShowFrenProfile", payload: false })
+              }
+            >
+              <Image
+                src={userImg}
+                alt="user_profile_img"
+                className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
+              />
+              {list.fullName}
+            </Link>
+          ))
+        ) : (
+          <div className="flex items-center gap-5 flex-col w-full py-5">
+            <h2>No Friends Found</h2>
+          </div>
+        )}
+      </>
+    );
+  return <></>;
 }

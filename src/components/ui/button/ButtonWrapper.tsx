@@ -16,7 +16,7 @@ export default function ButtonWrapper({
   return (
     <button
       type={type}
-      className={`p-2  rounded-lg ${customStyles}`}
+      className={`p-2 flex justify-center items-center  rounded-lg min-w-[100px] min-h-[50px] ${customStyles}`}
       onClick={onClick}
     >
       {children}

@@ -134,6 +134,46 @@ export default function useQueryFunction() {
     return { status: res.data.status, data: res.data.data };
   }
 
+  async function getUserDetails() {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user-details`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `${token}`,
+        },
+        params: {
+          userName: userName,
+        },
+      }
+    );
+    return { status: res.data.status, data: res.data.data };
+  }
+  async function updateUserProfile({
+    data,
+    dataFor,
+  }: {
+    data?: string;
+    dataFor?: string;
+  }) {
+    const res = await axios(
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/update-user`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: `${token}`,
+        },
+        data: JSON.stringify({
+          [dataFor!]: data,
+        }),
+        params: {
+          userName: userName,
+        },
+      }
+    );
+    return { status: res.data.status, data: res.data.data };
+  }
+
   return {
     userName,
     token,
@@ -144,5 +184,7 @@ export default function useQueryFunction() {
     clearChat,
     deleteMessage,
     unfriend,
+    getUserDetails,
+    updateUserProfile,
   };
 }

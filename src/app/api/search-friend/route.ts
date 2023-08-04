@@ -8,10 +8,9 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
 
-  const friendUserName = url.searchParams.get("friendUserName");
   const userName = url.searchParams.get("userName");
 
-  const dataBase = await db();
+  const friendUserName = url.searchParams.get("friendUserName");
 
   if (!jwt) {
     return NextResponse.json({
@@ -31,6 +30,8 @@ export async function GET(request: Request) {
     });
   }
   if (userName && friendUserName) {
+    const dataBase = await db();
+
     const userDetails = await dataBase
       .collection("friends")
       .findOne<FriendsDb>({ userName: userName });

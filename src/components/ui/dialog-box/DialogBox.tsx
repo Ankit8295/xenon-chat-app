@@ -1,26 +1,28 @@
 "use client";
+import Loading from "../button/Loading";
 import useQueryFunction from "@/src/lib/useQueries";
+import ButtonWrapper from "../button/ButtonWrapper";
 import {
   useAppDispatch,
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import ButtonWrapper from "../button/ButtonWrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
-type Props = {};
+type ButtonType = {
+  heading: string;
+  function: () => Promise<any>;
+};
+
 type DialoagData = {
   heading: string;
   subHeading: string;
   buttons: ButtonType;
   extraButton?: ButtonType;
 };
-type ButtonType = {
-  heading: string;
-  function: () => Promise<any>;
-};
-export default function DialogBox({}: Props) {
-  const { dialogFor, friendName, deleteMsgId: messageId } = useAppState();
+
+export default function DialogBox() {
+  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
@@ -28,30 +30,36 @@ export default function DialogBox({}: Props) {
 
   const { clearChat, unfriend, deleteMessage } = useQueryFunction();
 
-  const { mutate: deleteMessageFn } = useMutation({
-    mutationFn: () => deleteMessage({ friendName, messageId }),
+  const { dialogFor, friendName, deleteMsgId: messageId } = useAppState();
+
+  const { mutate: deleteMessageFn, isLoading: deleting } = useMutation({
+    mutationFn: () =>
+      deleteMessage({ friendName, messageId }).then(() =>
+        queryClient.invalidateQueries([`${friendName}-messages`])
+      ),
+    onSuccess: () => dispatch({ type: "SET_Dialog", payload: null }),
+  });
+
+  const { mutate: clearChatFn, isLoading: clearing } = useMutation({
+    mutationFn: () =>
+      clearChat(friendName).then(() =>
+        queryClient.invalidateQueries([`${friendName}-messages`])
+      ),
+    onSuccess: () => dispatch({ type: "SET_Dialog", payload: null }),
+  });
+
+  const { mutate: unfriendFn, isLoading: unfriending } = useMutation({
+    mutationFn: () =>
+      unfriend(friendName).then(() => {
+        router.push("/home");
+        queryClient.invalidateQueries([`userFriends`]);
+      }),
     onSuccess: () => {
       dispatch({ type: "SET_Dialog", payload: null });
-      queryClient.invalidateQueries([`${friendName}-messages`]);
     },
   });
 
-  const { mutate: clearChatFn } = useMutation({
-    mutationFn: () => clearChat(friendName),
-    onSuccess: () => {
-      dispatch({ type: "SET_Dialog", payload: null });
-      queryClient.invalidateQueries([`${friendName}-messages`]);
-    },
-  });
-
-  const { mutate: unfriendFn } = useMutation({
-    mutationFn: () => unfriend(friendName),
-    onSuccess: () => {
-      dispatch({ type: "SET_Dialog", payload: null });
-      queryClient.invalidateQueries([`userFriends`]);
-      redirect("/home");
-    },
-  });
+  const loading = deleting || clearing || unfriending;
 
   const data = {
     DeleteMessage: {
@@ -70,7 +78,8 @@ export default function DialogBox({}: Props) {
       buttons: { heading: "Unfriend", function: unfriendFn },
     },
   };
-  const headingData = data[dialogFor!] as DialoagData;
+
+  const dialogBoxData = data[dialogFor!] as DialoagData;
 
   return (
     <div className="absolute w-full h-full bg-black/20 flex items-center justify-center">
@@ -78,16 +87,18 @@ export default function DialogBox({}: Props) {
         open={true}
         className="rounded-xl bg-primary_light  dark:bg-bg_dark text-black dark:text-white flex flex-col gap-4"
       >
-        <h2 className="font-medium text-xl">{headingData.heading}</h2>
-        <p>{headingData.subHeading}</p>
+        <h2 className="font-medium text-xl">{dialogBoxData.heading}</h2>
+        <p>{dialogBoxData.subHeading}</p>
         <div className="self-end flex flex-col gap-1 items-end">
           <ButtonWrapper
             onClick={() => {
-              headingData.buttons.function();
+              dialogBoxData.buttons.function();
             }}
-            customStyles="hover:bg-red-500/10 text-red-500"
+            customStyles={`${
+              loading ? "bg-red-500/10" : ""
+            } hover:bg-red-500/10 text-red-500`}
           >
-            {headingData.buttons.heading}
+            {loading ? <Loading /> : dialogBoxData.buttons.heading}
           </ButtonWrapper>
           <ButtonWrapper
             onClick={() => dispatch({ type: "SET_Dialog", payload: null })}
