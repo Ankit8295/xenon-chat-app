@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import DropDownLink from "../../ui/dropdown/DropDownLink";
-import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { DropDownWrapper } from "@/src/components/ui/dropdown/DropDownWrapper";
+import DropDownLink from "@/src/components/ui/dropdown/DropDownLink";
 
 export default function FriendMenu() {
   const [active, setActive] = useState<boolean>(false);

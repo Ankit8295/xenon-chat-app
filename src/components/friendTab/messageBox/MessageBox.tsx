@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { v4 as uuidv4 } from "uuid";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { v4 as uuidv4 } from "uuid";
 import { socket } from "@/src/lib/socket";
-import { EmojiIcon, SendMessageIcon } from "../../icons/Icons";
-import MessageArea from "../messageArea/MessageArea";
-import { MessageType } from "@/src/utils/types/types";
-import { useIsFetching, useQueryClient } from "@tanstack/react-query";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import MessageArea from "./components/MessageArea";
 import useQueryFunction from "@/src/lib/useQueries";
-import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { MessageType } from "@/src/utils/types/types";
 import { encodeString } from "@/src/lib/encryptDecrypt";
+import { EmojiIcon, SendMessageIcon } from "../../icons/Icons";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
+import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type EmojiData = {
   id: string;
@@ -22,7 +22,7 @@ type EmojiData = {
   unified: string;
 };
 
-export default function MessageSender({
+export default function MessageBox({
   deletedAccount,
 }: {
   deletedAccount: boolean;

@@ -1,4 +1,5 @@
 import Loading from "./Loading";
+
 type Props = {
   loading?: boolean;
   error?: boolean;
@@ -9,6 +10,7 @@ type Props = {
   onClick?: () => void;
   customStyles?: string;
 };
+
 export function AsyncButton({
   loading,
   error,

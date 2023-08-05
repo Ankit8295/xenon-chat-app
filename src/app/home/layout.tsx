@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { socket } from "@/src/lib/socket";
 import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
-import SideBar from "@/src/components/sideNav/SideBar";
-import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
+import SideBar from "@/src/components/userTab/SideBar";
 import DialogBox from "@/src/components/ui/dialog-box/DialogBox";
+import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type Props = {

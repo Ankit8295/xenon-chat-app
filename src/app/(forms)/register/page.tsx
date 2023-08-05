@@ -1,12 +1,11 @@
-import FormSideDetail from "@/src/components/forms/components/formWrapper/FormSideDetail";
-import FormWrapper from "@/src/components/forms/components/formWrapper/FormWrapper";
 import RegisterForm from "@/src/components/forms/registerForm/RegisterForm";
-import React from "react";
+import FormWrapper from "@/src/components/forms/components/formWrapper/FormWrapper";
+import FormSideDetail from "@/src/components/forms/components/formWrapper/FormSideDetail";
 
 export default function page() {
   return (
     <>
-      <FormSideDetail formType="register" href="/login" />
+      <FormSideDetail formType="register" />
       <FormWrapper>
         <RegisterForm />
       </FormWrapper>

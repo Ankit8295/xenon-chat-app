@@ -1,7 +1,7 @@
 import Image from "next/image";
-import ArrowIcon from "../../icons/Icons";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
+import ArrowIcon from "@/src/components/icons/Icons";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type Props = {

@@ -1,15 +1,15 @@
 "use client";
 import Loading from "../button/Loading";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import useQueryFunction from "@/src/lib/useQueries";
 import DialogBoxButton from "../button/DialogBoxButton";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { DialogFor } from "@/src/utils/app-provider/state-provider/stateTypes";
 import {
   useAppDispatch,
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { DialogFor } from "@/src/utils/app-provider/state-provider/stateTypes";
 
 type ButtonType = {
   heading: string;
@@ -43,9 +43,12 @@ export default function DialogBox() {
     onSuccess: () => dispatch({ type: "SET_Dialog", payload: null }),
   });
 
-  const { mutate: deleteAccountFn } = useMutation(deleteAccount, {
-    onSuccess: () => signOut(),
-  });
+  const { mutate: deleteAccountFn, isLoading: deletingAccount } = useMutation(
+    deleteAccount,
+    {
+      onSuccess: () => signOut(),
+    }
+  );
 
   const { mutate: clearChatFn, isLoading: clearing } = useMutation({
     mutationFn: () =>
@@ -66,7 +69,7 @@ export default function DialogBox() {
     },
   });
 
-  const loading = deleting || clearing || unfriending;
+  const loading = deleting || clearing || unfriending || deletingAccount;
 
   const data = {
     DeleteMessage: {

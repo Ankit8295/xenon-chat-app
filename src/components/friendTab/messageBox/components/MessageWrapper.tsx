@@ -1,17 +1,17 @@
 import { useState } from "react";
-import ArrowIcon from "../../icons/Icons";
-import DropDownLink from "../../ui/dropdown/DropDownLink";
-import { MessageType } from "@/src/utils/types/types";
-import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";
-import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import useQueryFunction from "@/src/lib/useQueries";
+import ArrowIcon from "@/src/components/icons/Icons";
+import { MessageType } from "@/src/utils/types/types";
 import { decodeString } from "@/src/lib/encryptDecrypt";
+import DropDownLink from "@/src/components/ui/dropdown/DropDownLink";
+import { DropDownWrapper } from "@/src/components/ui/dropdown/DropDownWrapper";
+import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 
 type Props = {
   message: MessageType;
 };
 
-export default function Message({ message: msg }: Props) {
+export default function MessageWrapper({ message: msg }: Props) {
   const { userName } = useQueryFunction();
 
   const [messageDropDown, setMessageDropDown] = useState<boolean>(false);
@@ -48,7 +48,6 @@ export default function Message({ message: msg }: Props) {
           active={messageDropDown}
           openTo={userName !== msg.messageBy ? "left" : "right"}
         >
-          <DropDownLink>Copy</DropDownLink>
           <DropDownLink
             onClick={() => {
               dispatch({ type: "SET_Dialog", payload: "DeleteMessage" });

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AsyncButton } from "../../ui/button/AsyncButton";
 import FormInput from "../components/form-input/FormInput";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const router = useRouter();

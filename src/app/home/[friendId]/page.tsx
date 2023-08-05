@@ -1,21 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import useQueryFunction from "@/src/lib/useQueries";
-import ArrowIcon from "@/src/components/icons/Icons";
 import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import FriendMenu from "@/src/components/friendTab/friendMenu/FriendMenu";
-import MessageSender from "@/src/components/friendTab/messageSender/MessageSender";
 import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
 import {
   useAppState,
   useAppDispatch,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import FriendHeader from "@/src/components/friendTab/friendHeader/FriendHeader";
+import MessageBox from "@/src/components/friendTab/messageBox/MessageBox";
 
 type Params = {
   params: {
@@ -83,33 +79,8 @@ export default function Page({ params }: Params) {
             showFrenProfile ? "w-full lg:w-3/5" : "w-full"
           }  flex flex-col justify-between transition-all duration-500`}
         >
-          <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
-            <div className="flex gap-5 items-center">
-              <Link href="/home" className="cursor-pointer lg:hidden block">
-                <ArrowIcon direction="left" />
-              </Link>
-              <div
-                className="flex gap-2 items-center cursor-pointer"
-                onClick={() =>
-                  dispatch({
-                    type: "SET_ShowFrenProfile",
-                    payload: !showFrenProfile,
-                  })
-                }
-              >
-                <Image
-                  src={userImg}
-                  alt="user_profile_img"
-                  width={50}
-                  height={50}
-                  className=" object-cover rounded-[50%]"
-                />
-                <span className="capitalize">{friend.fullName}</span>
-              </div>
-            </div>
-            <FriendMenu />
-          </div>
-          <MessageSender
+          <FriendHeader friendName={friend.fullName} />
+          <MessageBox
             deletedAccount={
               friend.fullName === "Deleted Account" ? true : false
             }

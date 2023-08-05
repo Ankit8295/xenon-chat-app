@@ -2,11 +2,11 @@
 import Image from "next/image";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useQueryFunction from "@/src/lib/useQueries";
 import { ChangeEvent, useEffect, useState } from "react";
 import ArrowIcon, { EditIcon, SaveIcon } from "../../icons/Icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import useQueryFunction from "@/src/lib/useQueries";
 
 export default function UserProfile() {
   const dispatch = useAppDispatch();

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import ArrowIcon from "../../icons/Icons";
 import { signOut } from "next-auth/react";
+import HamburgerMenu from "../HamburgerMenu";
 import useQueryFunction from "@/src/lib/useQueries";
-import HamburgerMenu from "../../sideNav/HamburgerMenu";
 import DropDownLink from "../../ui/dropdown/DropDownLink";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DropDownWrapper } from "../../ui/dropdown/DropDownWrapper";

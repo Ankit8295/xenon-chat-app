@@ -1,4 +1,4 @@
-import { FieldError, UseFormRegister } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 
 type Props = {
   label?: string;
