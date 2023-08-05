@@ -16,10 +16,17 @@ export default function MessageWrapper({ message: msg }: Props) {
 
   const [messageDropDown, setMessageDropDown] = useState<boolean>(false);
 
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
 
   return (
     <div
+      onMouseOver={() => setShowOptions(true)}
+      onMouseLeave={() => {
+        setShowOptions(false);
+        setMessageDropDown(false);
+      }}
       className={`relative font-light  max-w-[40%] max-lg:max-w-[75%] break-words h-auto rounded-b-xl   flex pl-3 pr-2 gap-2 items-center bg-bg_light dark:bg-bg_dark ${
         userName !== msg.messageBy
           ? " self-start rounded-tr-xl bg-bg_light dark:bg-primary_dark"
@@ -27,27 +34,42 @@ export default function MessageWrapper({ message: msg }: Props) {
       }`}
     >
       <span className="py-2 text-sm">{decodeString(msg.messageText)}</span>
-      <span className="self-end text-[.6em] pb-[.1em] text-black/70  dark:text-white/60">
+      <span className="self-end pb-1 text-[.6em]  text-black/70  leading-none dark:text-white/60">
         {new Date(msg.messageTime).toLocaleTimeString("en-US", {
           hour: "numeric",
           minute: "numeric",
           hour12: true,
         })}
       </span>
-      <div
-        className={`absolute cursor-pointer p-1 right-1 top-1  ${
-          userName !== msg.messageBy
-            ? "bg-bg_light dark:bg-primary_dark"
-            : "bg-primary_light dark:bg-blue-500"
-        }`}
-      >
-        <div onClick={() => setMessageDropDown((prev) => !prev)}>
-          <ArrowIcon direction="bottom" width="10" height="10" />
-        </div>
+      <div className="absolute right-2 top-1 flex flex-col">
+        {showOptions && (
+          <div
+            className="cursor-pointer "
+            onClick={() => setMessageDropDown((prev) => !prev)}
+          >
+            <ArrowIcon
+              direction="bottom"
+              width="11"
+              height="11"
+              styles={"opacity-70"}
+            />
+          </div>
+        )}
         <DropDownWrapper
-          active={messageDropDown}
+          active={messageDropDown && showOptions ? true : false}
           openTo={userName !== msg.messageBy ? "left" : "right"}
+          styles={`top-[180%] ${
+            userName !== msg.messageBy ? "left-1" : "right-1"
+          } `}
         >
+          <DropDownLink
+            onClick={() => {
+              navigator.clipboard.writeText(decodeString(msg.messageText));
+              setMessageDropDown(false);
+            }}
+          >
+            Copy
+          </DropDownLink>
           <DropDownLink
             onClick={() => {
               dispatch({ type: "SET_Dialog", payload: "DeleteMessage" });

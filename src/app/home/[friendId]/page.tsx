@@ -93,7 +93,7 @@ export default function Page({ params }: Params) {
               : "w-full hidden lg:block lg:w-0 opacity-0"
           }    transition-all duration-500 bg-bg_light h-full dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
         >
-          <FriendProfile friendData={friend} />
+          {showFrenProfile && <FriendProfile friendData={friend} />}
         </div>
       </div>
     );
