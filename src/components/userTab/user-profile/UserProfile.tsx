@@ -57,7 +57,7 @@ export default function UserProfile() {
           alt="user_profile_img"
           width={250}
           height={250}
-          className=" object-cover rounded-[50%]"
+          className="max-w-[250px] max-h-[250px] min-w-[250px] min-h-[250px] object-cover rounded-[50%] bg-blend-multiply"
         />
         <form className="w-full flex flex-col items-center gap-5">
           <label className="flex flex-col gap-2 items-start">

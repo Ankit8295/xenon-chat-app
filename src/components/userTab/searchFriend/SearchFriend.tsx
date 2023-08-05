@@ -10,6 +10,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AddFriend } from "../../ui/button/AddFriendButton";
 
 export default function SearchFriend() {
   const dispatch = useAppDispatch();
@@ -18,16 +19,21 @@ export default function SearchFriend() {
 
   const { addFriend } = useQueryFunction();
 
-  const searchFriendData = queryClient.getQueryData<{
+  let searchFriendData = queryClient.getQueryData<{
     status: number;
     data: UserDb;
   }>(["searchFriend"]);
 
-  const { mutate } = useMutation({
+  const { mutate, isLoading: isAdding } = useMutation({
     mutationFn: () =>
-      addFriend(searchFriendData?.data?.userName!).then(() =>
-        queryClient.invalidateQueries(["userFriends"])
-      ),
+      addFriend(searchFriendData?.data?.userName!).then(() => {
+        queryClient.invalidateQueries(["userFriends"]);
+        queryClient.removeQueries({ queryKey: ["searchFriend"] });
+      }),
+    onSuccess: () => {
+      dispatch({ type: "SET_ShowAddFriendTab", payload: false });
+      dispatch({ type: "SET_SearchFriend", payload: "" });
+    },
   });
 
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
@@ -46,13 +52,18 @@ export default function SearchFriend() {
           <Image
             src={userImg}
             alt="user_profile_img"
-            className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
+            className="p-1 rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] bg-blend-multiply"
           />
           {searchFriendData?.data?.fullName}
         </div>
-        <button className="border p-2" onClick={() => mutate()}>
-          Add
-        </button>
+        <AddFriend
+          type="button"
+          loading={isAdding}
+          onClick={() => mutate()}
+          label="Add"
+          loadingLabel="Adding"
+          customStyles="min-h-[42px] my-4 max-lg:self-center"
+        />
       </div>
     );
   if (searchFriendData?.status === 403) {
@@ -69,11 +80,12 @@ export default function SearchFriend() {
         <Link
           href={`/home/${searchFriendData?.data.userName}`}
           onClick={() => {
+            queryClient.removeQueries({ queryKey: ["searchFriend"] });
             dispatch({ type: "SET_SearchFriend", payload: "" });
             dispatch({ type: "SET_ShowAddFriendTab", payload: false });
           }}
         >
-          <button className="border p-2">Chat</button>
+          <AddFriend type="button" label="Chat" />
         </Link>
       </div>
     );

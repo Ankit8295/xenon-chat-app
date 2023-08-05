@@ -46,7 +46,7 @@ export default function FriendList() {
               <Image
                 src={userImg}
                 alt="user_profile_img"
-                className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
+                className="p-1 object-cover rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] bg-blend-multiply"
               />
               {list.fullName}
             </Link>

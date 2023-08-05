@@ -35,9 +35,7 @@ export default function FriendHeader({ friendName }: Props) {
           <Image
             src={userImg}
             alt="user_profile_img"
-            width={50}
-            height={50}
-            className=" object-cover rounded-[50%]"
+            className="max-w-[50px] max-h-[50px] min-w-[50px] min-h-[50px] object-cover rounded-[50%] bg-blend-multiply"
           />
           <span className="capitalize">{friendName}</span>
         </div>

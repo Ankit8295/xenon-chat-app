@@ -86,7 +86,7 @@ export default function UserMenu() {
         </DropDownWrapper>
       </div>
       <form
-        onSubmit={(e) => submitForm(e)}
+        onSubmit={submitForm}
         className="w-full flex gap-1 border border-primary_light/50 rounded-2xl hover:border-primary_dark/60 dark:hover:border-primary_light pl-3 overflow-hidden bg-hover_light dark:bg-hover_dark transition-colors duration-300"
       >
         <input
