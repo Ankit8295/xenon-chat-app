@@ -6,9 +6,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AsyncButton } from "../../ui/button/AsyncButton";
 import FormInput from "../components/form-input/FormInput";
 import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
+import { useState } from "react";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const url =
     searchParams?.get("callbackUrl") ||
@@ -19,18 +22,19 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginValidation),
   });
 
   const submit: SubmitHandler<LoginFormSchema> = async (data) => {
+    setIsSubmitting(true);
     return await signIn("credentials", {
       userName: data.userName,
       password: data.password,
       redirect: true,
       callbackUrl: url,
-    });
+    }).then(() => setIsSubmitting(false));
   };
 
   return (

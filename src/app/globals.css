@@ -28,4 +28,67 @@
     background-color: rgba(59, 130, 246, 0.8);
     border-radius: 2em;
   }
+  .loading {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    scale: 0.8;
+    overflow: hidden;
+  }
+  .loading > div {
+    position: absolute;
+    top: 2px;
+    left: 12px;
+    height: 8px;
+    width: 3px;
+    background-color: rgba(234, 234, 234, 0.3);
+    border-radius: 10px;
+    -webkit-transform-origin-y: 170%;
+    animation: throbber 1s linear infinite;
+  }
+  .loading :nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: 0ms;
+  }
+  .loading :nth-child(2) {
+    transform: rotate(40deg);
+    animation-delay: 125ms;
+  }
+  .loading :nth-child(3) {
+    transform: rotate(80deg);
+    animation-delay: 250ms;
+  }
+  .loading :nth-child(4) {
+    transform: rotate(120deg);
+    animation-delay: 375ms;
+  }
+  .loading :nth-child(5) {
+    transform: rotate(160deg);
+    animation-delay: 500ms;
+  }
+  .loading :nth-child(6) {
+    transform: rotate(200deg);
+    animation-delay: 625ms;
+  }
+  .loading :nth-child(7) {
+    transform: rotate(240deg);
+    animation-delay: 750ms;
+  }
+  .loading :nth-child(8) {
+    transform: rotate(280deg);
+    animation-delay: 875ms;
+  }
+  .loading :nth-child(9) {
+    transform: rotate(320deg);
+    animation-delay: 1000ms;
+  }
+
+  @keyframes throbber {
+    0% {
+      background-color: #808080;
+    }
+    100% {
+      background-color: white;
+    }
+  }
 }

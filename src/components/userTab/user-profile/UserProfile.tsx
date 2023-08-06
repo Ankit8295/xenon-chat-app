@@ -40,7 +40,7 @@ export default function UserProfile() {
   });
 
   return (
-    <div className="w-full p-10">
+    <div className="w-full">
       <div
         onClick={() =>
           dispatch({ type: "SET_ShowUserProfile", payload: false })

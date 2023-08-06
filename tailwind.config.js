@@ -15,17 +15,6 @@ module.exports = {
         bg_dark: "#171B1D",
         bg_light: "#F9F9F9",
       },
-      animation: {
-        from_top: "from_top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
-      },
-      keyframes: {
-        from_top: {
-          "0%": {
-            transform: translateY(0),
-          },
-          "100%": { transform: translateY("-100px") },
-        },
-      },
     },
   },
   plugins: [],
