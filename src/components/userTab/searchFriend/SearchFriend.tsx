@@ -52,7 +52,7 @@ export default function SearchFriend() {
           <Image
             src={userImg}
             alt="user_profile_img"
-            className="p-1 rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] mix-blend-multiply"
+            className="p-1 rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] "
           />
           {searchFriendData?.data?.fullName}
         </div>

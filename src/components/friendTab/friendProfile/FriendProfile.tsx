@@ -27,7 +27,7 @@ export default function FriendProfile({ friendData }: Props) {
         <Image
           src={userImg}
           alt="user_profile_img"
-          className="max-w-[250px] max-h-[250px] min-w-[250px] min-h-[250px] object-cover rounded-[50%] mix-blend-multiply"
+          className="max-w-[250px] max-h-[250px] min-w-[250px] min-h-[250px] object-cover rounded-[50%] "
         />
         <div className="flex flex-col items-center gap-1">
           <span className="capitalize leading-3 text-lg">
