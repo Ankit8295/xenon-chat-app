@@ -11,8 +11,8 @@ const inter = Inter({
 export const revalidate = 30;
 
 export const metadata = {
-  title: "Link-App",
-  description: "Make new friends with link app",
+  title: "Xenon ",
+  description: "Make new friends with Xenon Webapp",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppProvider>
-          <main className="h-screen max-h-[100dvh] w-screen flex flex-col items-center my-auto">
+          <main className="h-screen max-h-screen w-screen flex flex-col items-center my-auto">
             {children}
           </main>
         </AppProvider>
