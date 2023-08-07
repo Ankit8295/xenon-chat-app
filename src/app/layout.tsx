@@ -11,8 +11,8 @@ const inter = Inter({
 export const revalidate = 30;
 
 export const metadata = {
-  title: "Xenon ",
-  description: "Make new friends with Xenon Webapp",
+  title: "Xenon Chat",
+  description: "chat with friends with Xenon Chat",
 };
 
 export default function RootLayout({
