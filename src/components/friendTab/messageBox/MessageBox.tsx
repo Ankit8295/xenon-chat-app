@@ -33,8 +33,6 @@ export default function MessageBox({
 
   const [message, setMessage] = useState<string>("");
 
-  const [showEmoji, setShowEmoji] = useState<boolean>(false);
-
   const [allMessages, setAllMessages] = useState<MessageType[]>([
     {
       messageId: "",
@@ -102,11 +100,7 @@ export default function MessageBox({
           onSubmit={submitHandler}
           className="max-w-[60%] max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  bg-hover_light dark:bg-hover_dark px-2 "
         >
-          <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300">
-            <div onClick={() => setShowEmoji((prev) => !prev)}>
-              <EmojiIcon />
-            </div>
-          </div>
+          <div className="relative  p-2 bg-hover_light  dark:bg-hover_dark  rounded-lg cursor-pointer  transition-colors duration-300"></div>
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setMessage(e.target.value)
