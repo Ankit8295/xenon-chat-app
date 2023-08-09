@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import { socket } from "@/src/lib/socket";
 import MessageArea from "./components/MessageArea";
 import useQueryFunction from "@/src/lib/useQueries";
@@ -108,19 +106,6 @@ export default function MessageBox({
             <div onClick={() => setShowEmoji((prev) => !prev)}>
               <EmojiIcon />
             </div>
-            {showEmoji && (
-              <div
-                className="absolute left-0 -top-[1150%]"
-                onMouseOut={() => setShowEmoji(false)}
-              >
-                <Picker
-                  data={data}
-                  onEmojiSelect={(e: EmojiData) =>
-                    setMessage((prev) => prev + e.native)
-                  }
-                />
-              </div>
-            )}
           </div>
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
