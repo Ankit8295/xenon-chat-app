@@ -134,7 +134,7 @@ export default function useQueryFunction() {
     return { status: res.data.status, data: res.data.data };
   }
 
-  async function getUserDetails() {
+  async function getUserDetails(name?: string) {
     const res = await axios(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/user-details`,
       {
@@ -143,7 +143,7 @@ export default function useQueryFunction() {
           authorization: `${token}`,
         },
         params: {
-          userName: userName,
+          userName: name || userName,
         },
       }
     );

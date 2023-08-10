@@ -1,17 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useState } from "react";
-import { UserDb } from "@/src/utils/types/types";
+import { socket } from "@/src/lib/socket";
+import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
 import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
-import {
-  useAppState,
-  useAppDispatch,
-} from "@/src/utils/app-provider/state-provider/ContextProvider";
-import FriendHeader from "@/src/components/friendTab/friendHeader/FriendHeader";
 import MessageBox from "@/src/components/friendTab/messageBox/MessageBox";
+import FriendHeader from "@/src/components/friendTab/friendHeader/FriendHeader";
+import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
+import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { useEffect } from "react";
 
 type Params = {
   params: {
@@ -20,58 +17,34 @@ type Params = {
 };
 
 export default function Page({ params }: Params) {
-  const dispatch = useAppDispatch();
-
-  const querClient = useQueryClient();
-
   const { showFrenProfile } = useAppState();
 
-  const { userName, getMessages } = useQueryFunction();
+  const { getUserDetails, userName } = useQueryFunction();
 
   const friendUserName = decodeURIComponent(params.friendId);
 
-  const [friend, setFriend] = useState<UserDb>({
-    emailId: "",
-    userName: "",
-    fullName: "",
-    photo: "",
-    about: "",
-  });
-
   useEffect(() => {
-    dispatch({
-      type: "SET_FriendName",
-      payload: decodeURIComponent(params.friendId),
-    });
-  }, [params.friendId]);
+    if (userName && friendUserName) {
+      socket.emit("join", [friendUserName, userName].sort().join("-"));
+    }
+  }, [friendUserName]);
 
-  const { data: friendMessages, isLoading } = useQuery({
-    queryFn: () => getMessages(friendUserName),
-    queryKey: [`${friendUserName}-messages`],
+  const {
+    data: friendData,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["userDetails"],
+    queryFn: () => getUserDetails(friendUserName),
+    enabled: !!friendUserName,
     refetchOnWindowFocus: false,
-    enabled: !!userName,
     retry: 0,
   });
 
-  useEffect(() => {
-    const friendLists = querClient.getQueryData<{
-      status: number;
-      data: UserDb[];
-    }>(["userFriends"]);
-
-    if (friendLists) {
-      setFriend(
-        (prev) =>
-          friendLists?.data.find(
-            (friend) => friend.userName === friendUserName
-          ) || prev
-      );
-    }
-  }, []);
-
   if (isLoading) return <LoadingUi text="Loading User Data..." />;
 
-  if (friend && friendMessages)
+  if (isSuccess) {
+    const friend = friendData.data;
     return (
       <div className={`h-full w-full flex overflow-hidden  relative`}>
         <div
@@ -81,6 +54,7 @@ export default function Page({ params }: Params) {
         >
           <FriendHeader friendName={friend.fullName} />
           <MessageBox
+            friendUserName={friendUserName}
             deletedAccount={
               friend.fullName === "Deleted Account" ? true : false
             }
@@ -97,7 +71,7 @@ export default function Page({ params }: Params) {
         </div>
       </div>
     );
-  else
+  } else
     return (
       <h2 className="w-full text-center m-auto">Something Went Wrong....</h2>
     );

@@ -58,8 +58,8 @@ export default function MessageWrapper({ message: msg }: Props) {
         <DropDownWrapper
           active={messageDropDown && showOptions ? true : false}
           openTo={userName !== msg.messageBy ? "left" : "right"}
-          styles={`top-[180%] ${
-            userName !== msg.messageBy ? "left-1" : "right-1"
+          styles={`top-[150%] ${
+            userName !== msg.messageBy ? "-left-4" : "right-0"
           } `}
         >
           <DropDownLink

@@ -32,7 +32,6 @@ export default function UserProfile() {
 
       setAbout(userData?.data.about!);
     }
-    console.log(userData);
   }, []);
 
   const { mutate } = useMutation(updateUserProfile, {

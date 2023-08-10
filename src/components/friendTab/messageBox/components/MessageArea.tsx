@@ -6,6 +6,7 @@ type Props = {
 };
 
 export default function MessageArea({ message = [] }: Props) {
+  window.scrollTo();
   return (
     <div className="flex w-full flex-col gap-5 py-5 items-start">
       {message?.map((msg, i) => (
