@@ -1,1 +1,1 @@
-xenon chat application
+Xenon-chat application
