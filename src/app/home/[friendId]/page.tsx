@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { useEffect } from "react";
 import { socket } from "@/src/lib/socket";
 import { useQuery } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
@@ -8,7 +9,6 @@ import MessageBox from "@/src/components/friendTab/messageBox/MessageBox";
 import FriendHeader from "@/src/components/friendTab/friendHeader/FriendHeader";
 import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
 import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
-import { useEffect } from "react";
 
 type Params = {
   params: {
