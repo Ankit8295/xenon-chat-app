@@ -1,14 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { socket } from "@/src/lib/socket";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import useQueryFunction from "@/src/lib/useQueries";
-import LoadingUi from "@/src/components/ui/loading-ui/LoadingUi";
 import MessageBox from "@/src/components/friendTab/messageBox/MessageBox";
 import FriendHeader from "@/src/components/friendTab/friendHeader/FriendHeader";
 import FriendProfile from "@/src/components/friendTab/friendProfile/FriendProfile";
-import { useAppState } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import {
+  useAppDispatch,
+  useAppState,
+} from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { UserDb } from "@/src/utils/types/types";
 
 type Params = {
   params: {
@@ -17,11 +20,21 @@ type Params = {
 };
 
 export default function Page({ params }: Params) {
+  const queryClient = useQueryClient();
+
+  const dispatch = useAppDispatch();
+
+  const { userName } = useQueryFunction();
+
   const { showFrenProfile } = useAppState();
 
-  const { getUserDetails, userName } = useQueryFunction();
+  const [friend, setFriend] = useState<UserDb>();
 
   const friendUserName = decodeURIComponent(params.friendId);
+
+  useEffect(() => {
+    dispatch({ type: "SET_FriendName", payload: friendUserName });
+  }, [friendUserName]);
 
   useEffect(() => {
     if (userName && friendUserName) {
@@ -29,22 +42,23 @@ export default function Page({ params }: Params) {
     }
   }, [friendUserName]);
 
-  const {
-    data: friendData,
-    isLoading,
-    isSuccess,
-  } = useQuery({
-    queryKey: [`${friendUserName}-profile`],
-    queryFn: () => getUserDetails(friendUserName),
-    enabled: !!friendUserName,
-    refetchOnWindowFocus: false,
-    retry: 0,
-  });
+  useEffect(() => {
+    const friendLists = queryClient.getQueryData<{
+      status: number;
+      data: UserDb[];
+    }>(["userFriends"]);
 
-  if (isLoading) return <LoadingUi text="Loading User Data..." />;
+    if (friendLists) {
+      setFriend(
+        (prev) =>
+          friendLists?.data.find(
+            (friend) => friend.userName === friendUserName
+          ) ?? prev
+      );
+    }
+  }, []);
 
-  if (isSuccess) {
-    const friend = friendData.data;
+  if (friend) {
     return (
       <div className={`h-full w-full flex overflow-hidden  relative`}>
         <div
@@ -52,12 +66,10 @@ export default function Page({ params }: Params) {
             showFrenProfile ? "w-full lg:w-3/5" : "w-full"
           }  flex flex-col justify-between transition-all duration-500`}
         >
-          <FriendHeader friendName={friend.fullName} />
+          <FriendHeader friendName={friend?.fullName} />
           <MessageBox
             friendUserName={friendUserName}
-            deletedAccount={
-              friend.fullName === "Deleted Account" ? true : false
-            }
+            deletedAccount={friend.fullName === "Deleted Account"}
           />
         </div>
         <div

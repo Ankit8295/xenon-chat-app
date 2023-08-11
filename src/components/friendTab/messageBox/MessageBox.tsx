@@ -87,9 +87,10 @@ export default function MessageBox({
         messageType: "text",
       };
       socket.emit("private_message", finalMessage);
+      setMessage((prev) => "");
     }
-    setMessage((prev) => "");
   };
+
   if (isLoading) return <LoadingUi text="Loading Messages..." />;
 
   if (friendMessages) {
@@ -113,6 +114,7 @@ export default function MessageBox({
               className="outline-none border-none w-full text-sm  p-[.6em] bg-hover_light dark:bg-hover_dark  rounded-lg "
               type="text"
               placeholder="Message"
+              value={message}
               required
             />
             <button type="submit">
