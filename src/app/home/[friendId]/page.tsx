@@ -34,7 +34,7 @@ export default function Page({ params }: Params) {
     isLoading,
     isSuccess,
   } = useQuery({
-    queryKey: ["userDetails"],
+    queryKey: [`${friendUserName}-profile`],
     queryFn: () => getUserDetails(friendUserName),
     enabled: !!friendUserName,
     refetchOnWindowFocus: false,
