@@ -4,7 +4,7 @@ function isIOS(): boolean {
   const hasTouchSupport = navigator.maxTouchPoints > 1;
 
   return (
-    (/iPad|iPhone|iPod/.test(userAgent) ||
+    (/iPad|iPhone/.test(userAgent) ||
       (userAgent === "MacIntel" && hasTouchSupport)) &&
     !window.MSStream
   );

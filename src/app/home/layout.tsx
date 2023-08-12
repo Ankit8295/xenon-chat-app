@@ -44,11 +44,11 @@ export default function Layout({ children }: Props) {
 
   if (friendsList && userData)
     return (
-      <div className="relative w-full h-full flex flex-row-reverse max-w-[1650px]">
-        <div className="peer flex flex-[5] h-full flex-col items-start w-full">
+      <div className="relative h-screen w-screen flex flex-row-reverse max-w-[1650px]">
+        <div className="peer flex flex-[5] max-h-screen flex-col items-start w-full">
           {children}
         </div>
-        <div className="peer-empty:block hidden max-lg:w-full lg:flex-[2]  lg:block">
+        <div className="peer-empty:block max-h-screen hidden max-lg:w-full lg:flex-[2]  lg:block">
           <SideBar />
         </div>
         {dialogFor && <DialogBox />}
