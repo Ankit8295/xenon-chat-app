@@ -31,13 +31,18 @@ export default function ArrowIcon({
   );
 }
 
-export function SendMessageIcon() {
+export function SendMessageIcon({ direction }: Props) {
   return (
-    <svg height="30" viewBox="0 0 512 512" width="30">
+    <svg
+      height="20"
+      viewBox="0 0 512 512"
+      width="20"
+      className={`max-lg:-rotate-90 invert dark:invert-0`}
+    >
       <path
         id="PaperPlane"
         d="m51.7 29.2c-38.8 0-63.8 41.3-45.7 75.7l66.2 125.6 222.1 25.5-222.1 25.6-66.2 125.6c-18.1 34.4 6.8 75.7 45.7 75.7 7 0 14-1.4 20.5-4.2l409.8-177c40-17.3 40-74 0-91.3l-409.8-177c-6.5-2.8-13.5-4.2-20.5-4.2z"
-        fill="rgb(59, 130, 246)"
+        fill="rgb(255, 255, 255)"
       />
     </svg>
   );

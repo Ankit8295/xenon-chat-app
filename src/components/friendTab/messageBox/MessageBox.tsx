@@ -25,16 +25,7 @@ export default function MessageBox({
 
   const [message, setMessage] = useState<string>("");
 
-  const [allMessages, setAllMessages] = useState<MessageType[]>([
-    {
-      messageId: "",
-      messageBy: "",
-      messageTo: "",
-      messageText: "",
-      messageTime: 0,
-      messageType: "text",
-    },
-  ]);
+  const [allMessages, setAllMessages] = useState<MessageType[] | null>(null);
 
   const { data: friendMessages, isLoading } = useQuery({
     queryFn: () => getMessages(friendUserName),
@@ -69,7 +60,7 @@ export default function MessageBox({
 
   useEffect(() => {
     socket.on("recieve_message", (data: MessageType) => {
-      setAllMessages((prev) => [...prev, data]);
+      setAllMessages((prev) => (prev ? [...prev, data] : null));
     });
     return () => {
       socket.off("recieve_message");
@@ -97,29 +88,36 @@ export default function MessageBox({
   if (friendMessages) {
     return (
       <>
-        <div
-          ref={messagesBoxRef}
-          className="h-full overflow-y-scroll px-6 max-lg:px-3"
-        >
-          <MessageArea message={allMessages as any} />
-        </div>
+        {allMessages && (
+          <div
+            ref={messagesBoxRef}
+            className="h-full overflow-y-scroll px-6 max-lg:px-3"
+          >
+            <MessageArea message={allMessages as any} />
+          </div>
+        )}
         {!deletedAccount ? (
           <form
             onSubmit={submitHandler}
-            className="max-w-[60%] max-lg:min-w-[100%] min-w-[60%] my-3 max-lg:my-0 mx-auto flex justify-center items-center gap-1  outline-none border border-transparent "
+            className="max-w-[60%] max-lg:min-w-[100%] min-w-[60%] my-5  max-lg:my-0 mx-auto flex justify-center items-center gap-1  outline-none border border-transparent max-lg:bg-hover_light max-lg:dark:bg-hover_dark "
           >
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMessage(e.target.value)
               }
               {...getIOSInputEventHandlers()}
-              className="outline-none border-none w-full text-sm  p-[.6em] bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
+              className="outline-none border-none w-full text-sm  p-4 bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
               type="text"
               placeholder="Message"
               value={message}
               required
             />
-            <button type="submit">Send</button>
+            <button
+              type="submit"
+              className={`rounded-[50%] bg-blue-500 h-[45px] w-[55px] flex items-center justify-center `}
+            >
+              <SendMessageIcon />
+            </button>
           </form>
         ) : (
           <span className="max-w-[60%] text-black/70 dark:text-white/70  max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  ">

@@ -2,10 +2,10 @@ import MessageWrapper from "./MessageWrapper";
 import { MessageType } from "@/src/utils/types/types";
 
 type Props = {
-  message?: MessageType[];
+  message: MessageType[];
 };
 
-export default function MessageArea({ message = [] }: Props) {
+export default function MessageArea({ message }: Props) {
   return (
     <div className="flex w-full flex-col gap-5 py-5 items-start">
       {message?.map((msg) => (

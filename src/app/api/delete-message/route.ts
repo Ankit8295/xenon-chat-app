@@ -13,7 +13,6 @@ export async function DELETE(request: Request) {
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
-
   if (!verfiedUser) {
     return NextResponse.json({
       status: 401,

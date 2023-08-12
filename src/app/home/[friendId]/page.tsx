@@ -38,7 +38,10 @@ export default function Page({ params }: Params) {
 
   useEffect(() => {
     if (userName && friendUserName) {
-      socket.emit("join", [friendUserName, userName].sort().join("-"));
+      socket.emit(
+        "join",
+        [friendUserName, userName].sort((a, b) => a.localeCompare(b)).join("-")
+      );
     }
   }, [friendUserName]);
 
