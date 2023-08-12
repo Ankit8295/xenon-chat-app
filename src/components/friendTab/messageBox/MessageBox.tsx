@@ -2,14 +2,14 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "@/src/lib/socket";
+import { useQuery } from "@tanstack/react-query";
 import MessageArea from "./components/MessageArea";
+import { SendMessageIcon } from "../../icons/Icons";
 import useQueryFunction from "@/src/lib/useQueries";
+import LoadingUi from "../../ui/loading-ui/LoadingUi";
 import { MessageType } from "@/src/utils/types/types";
 import { encodeString } from "@/src/lib/encryptDecrypt";
-import { SendMessageIcon } from "../../icons/Icons";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import LoadingUi from "../../ui/loading-ui/LoadingUi";
 
 export default function MessageBox({
   deletedAccount,
@@ -105,21 +105,19 @@ export default function MessageBox({
         {!deletedAccount ? (
           <form
             onSubmit={submitHandler}
-            className="max-w-[60%] max-lg:min-w-[92.5%] min-w-[60%] my-3  mx-auto flex justify-center items-center gap-1  outline-none border border-transparent "
+            className="max-w-[60%] max-lg:min-w-[100%] min-w-[60%] my-3 max-lg:my-0 mx-auto flex justify-center items-center gap-1  outline-none border border-transparent "
           >
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMessage(e.target.value)
               }
-              className="outline-none border-none w-full text-sm  p-[.6em] bg-hover_light dark:bg-hover_dark  rounded-lg "
+              className="outline-none border-none w-full text-sm  p-[.6em] bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
               type="text"
               placeholder="Message"
               value={message}
               required
             />
-            <button type="submit">
-              <SendMessageIcon />
-            </button>
+            <button type="submit">Send</button>
           </form>
         ) : (
           <span className="max-w-[60%] text-black/70 dark:text-white/70  max-lg:min-w-[92.5%] min-w-[60%] my-3 bg-transparent  mx-auto flex justify-center items-center gap-1 rounded-lg  py-1 outline-none border border-transparent  ">

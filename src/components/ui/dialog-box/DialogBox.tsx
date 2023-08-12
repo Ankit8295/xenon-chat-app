@@ -100,7 +100,7 @@ export default function DialogBox() {
     <div className="absolute w-full h-full bg-black/20 flex items-center justify-center">
       <dialog
         open={true}
-        className="rounded-xl bg-primary_light  dark:bg-bg_dark text-black dark:text-white flex flex-col gap-4"
+        className="rounded-xl bg-primary_light max-lg:max-w-[90%] dark:bg-bg_dark text-black dark:text-white flex flex-col max-lg:gap-2 gap-4"
       >
         <h2 className="font-medium text-xl">{dialogBoxData.heading}</h2>
         <p>{dialogBoxData.subHeading}</p>

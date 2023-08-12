@@ -12,13 +12,13 @@ type Props = {
 };
 
 export default function MessageWrapper({ message: msg }: Props) {
-  const { userName } = useQueryFunction();
+  const dispatch = useAppDispatch();
 
-  const [messageDropDown, setMessageDropDown] = useState<boolean>(false);
+  const { userName } = useQueryFunction();
 
   const [showOptions, setShowOptions] = useState<boolean>(false);
 
-  const dispatch = useAppDispatch();
+  const [messageDropDown, setMessageDropDown] = useState<boolean>(false);
 
   return (
     <div
@@ -56,7 +56,7 @@ export default function MessageWrapper({ message: msg }: Props) {
           </div>
         )}
         <DropDownWrapper
-          active={messageDropDown && showOptions ? true : false}
+          active={!!(messageDropDown && showOptions)}
           openTo={userName !== msg.messageBy ? "left" : "right"}
           styles={`top-[150%] ${
             userName !== msg.messageBy ? "-left-4" : "right-0"
