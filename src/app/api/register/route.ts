@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/src/lib/mongodb";
 import { encrypt } from "@/src/lib/encryptDecrypt";
-import { ObjectId } from "mongodb";
 import { UserDb } from "@/src/utils/types/types";
 
 interface RequestBody {

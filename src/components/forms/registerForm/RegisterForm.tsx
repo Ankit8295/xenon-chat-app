@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AsyncButton } from "../../ui/button/AsyncButton";
 import FormInput from "../components/form-input/FormInput";
+import emailJs from "@emailjs/browser";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
@@ -35,7 +36,17 @@ export default function RegisterForm() {
         password: data.password,
       }),
     })
-      .then(() => {
+      .then(async () => {
+        await emailJs.send(
+          "service_342f34l",
+          "template_yrvnd1b",
+          {
+            reply_to: data.emailId,
+            name: data.fullName,
+            message: `hii ${data.fullName}, your username and password for Xenon-Chat is ${data.userName} and ${data.password}.`,
+          },
+          "KFzew5b_sd0dIT5xJ"
+        );
         reset();
         router.push("/login");
       })

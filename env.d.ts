@@ -6,5 +6,6 @@ namespace NodeJS {
     ENCRYPTION_KEY: string;
     NEXTAUTH_SECRET: string;
     NEXT_PUBLIC_NEXTAUTH_URL: string;
+    EMAIL_JS_KEY: string;
   }
 }
