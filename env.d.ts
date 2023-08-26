@@ -7,5 +7,6 @@ namespace NodeJS {
     NEXTAUTH_SECRET: string;
     NEXT_PUBLIC_NEXTAUTH_URL: string;
     EMAIL_JS_KEY: string;
+    NEXT_PUBLIC_SOCKET_SERVER: string;
   }
 }

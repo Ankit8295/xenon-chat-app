@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-export const socket = io("https://xenonchat.ankitdev.in:8443/", {
+export const socket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
   autoConnect: false,
   secure: true,
 });
