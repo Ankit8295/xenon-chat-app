@@ -86,7 +86,7 @@ export default function RegisterForm() {
         error={errors.emailId?.message || emailTaken}
       />
       <FormInput
-        type="text"
+        type="password"
         register={register}
         registerValue="password"
         registerReq={true}
