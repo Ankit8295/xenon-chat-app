@@ -26,6 +26,26 @@ export async function POST(request: Request) {
     photo: "",
   };
 
+  const userExist = (await dataBase
+    .collection("users")
+    .findOne({ userName: userName })) as any;
+
+  if (userExist)
+    return NextResponse.json({
+      status: 503,
+      data: "Username Already Taken!!!",
+    });
+
+  const emailExist = (await dataBase
+    .collection("users")
+    .findOne({ emailId: emailId })) as any;
+
+  if (emailExist)
+    return NextResponse.json({
+      status: 503,
+      data: "Email Already registered!!!",
+    });
+
   const createdUser = await dataBase.collection("users").insertOne(user);
 
   const saveIdPass = await dataBase
