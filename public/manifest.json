@@ -1,7 +1,7 @@
 {
-  "name": "Journal Dashboard",
-  "short_name": "JD",
-  "description": "Journal Dashboard for Ijrdo users",
+  "name": "Xenon Chat",
+  "short_name": "XC",
+  "description": "A live messaging web app",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
