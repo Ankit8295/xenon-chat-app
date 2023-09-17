@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { v4 as uuidv4 } from "uuid";
+import { v4 } from "uuid";
 import { socket } from "@/src/lib/socket";
 import { useQuery } from "@tanstack/react-query";
 import MessageArea from "./components/MessageArea";
@@ -71,7 +71,7 @@ export default function MessageBox({
     e.preventDefault();
     if (message.trim()) {
       const finalMessage: MessageType = {
-        messageId: uuidv4().replace(/-/g, ""),
+        messageId: v4().replace(/-/g, ""),
         messageBy: userName!,
         messageTo: friendUserName,
         messageText: encodeString(message),

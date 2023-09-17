@@ -16,7 +16,7 @@ type ButtonType = {
   function: () => Promise<any>;
 };
 
-type DialoagData = {
+type DialogData = {
   heading: string;
   subHeading: string;
   buttons: ButtonType;
@@ -43,12 +43,10 @@ export default function DialogBox() {
     onSuccess: () => dispatch({ type: "SET_Dialog", payload: null }),
   });
 
-  const { mutate: deleteAccountFn, isLoading: deletingAccount } = useMutation(
-    deleteAccount,
-    {
-      onSuccess: () => signOut(),
-    }
-  );
+  const { mutate: deleteAccountFn, isLoading: deletingAccount } = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => signOut(),
+  });
 
   const { mutate: clearChatFn, isLoading: clearing } = useMutation({
     mutationFn: () =>
@@ -94,7 +92,7 @@ export default function DialogBox() {
     },
   };
 
-  const dialogBoxData = data[dialogFor as DialogFor] as DialoagData;
+  const dialogBoxData = data[dialogFor as DialogFor] as DialogData;
 
   return (
     <div className="absolute w-full h-full bg-black/20 flex items-center justify-center">

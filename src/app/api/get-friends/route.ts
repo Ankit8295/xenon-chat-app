@@ -47,10 +47,10 @@ export async function POST(request: Request) {
 
       const deletedAccounts: string[] = [];
 
-      userFriends.forEach((userNames) =>
-        friendsData.find((friend) => friend.userName === userNames)
-          ? false
-          : deletedAccounts.push(userNames)
+      userFriends.forEach(
+        (userNames) =>
+          !friendsData.find((friend) => friend.userName === userNames) &&
+          deletedAccounts.push(userNames)
       );
 
       const deletedFriends = deletedAccounts.map((deletedUserName) => {
