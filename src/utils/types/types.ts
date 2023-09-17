@@ -7,14 +7,12 @@ export type MessageType = {
   messageType: "text" | "image" | "audio" | "video";
 };
 
-export type FriendsDb = {
-  userName: string;
-  friends: string[];
-};
 export type MessagesDb = {
   userName: string;
   messages: {
-    [key: string]: {};
+    [userId: string]: {
+      [messageId: string]: {};
+    };
   };
 };
 export type UserDb = {

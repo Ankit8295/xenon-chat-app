@@ -25,7 +25,7 @@ export default function SearchFriend() {
     status: number;
     data: UserDb[];
   }>(["searchFriend"]);
-
+  console.log(searchFriendData);
   const { mutate, isLoading: isAdding } = useMutation({
     mutationFn: addFriend,
     onSuccess: () => {

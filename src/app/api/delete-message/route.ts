@@ -8,12 +8,12 @@ export async function DELETE(request: Request) {
 
   const messageId = await request.json();
 
-  const verfiedUser = verifyUserOnServer(request);
+  const verifiedUser = verifyUserOnServer(request);
 
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
-  if (!verfiedUser) {
+  if (!verifiedUser) {
     return NextResponse.json({
       status: 401,
       error: "unauthorized",
@@ -29,6 +29,7 @@ export async function DELETE(request: Request) {
         { userName: userName },
         { [`messages.${friendName}.${messageId}`]: messageId }
       );
+
     const msg = getMsg?.messages[friendName]?.[messageId] as MessageType;
 
     const deleteForUser = await dataBase
