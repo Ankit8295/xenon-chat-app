@@ -16,7 +16,7 @@ export default function MessageBox({
   deletedAccount,
   friendUserName,
 }: {
-  deletedAccount: boolean;
+  deletedAccount?: boolean;
   friendUserName: string;
 }) {
   const messagesBoxRef = useRef<HTMLDivElement>(null);

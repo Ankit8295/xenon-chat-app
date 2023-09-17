@@ -5,7 +5,7 @@ import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextP
 import { DropDownWrapper } from "@/src/components/ui/dropdown/DropDownWrapper";
 import DropDownLink from "@/src/components/ui/dropdown/DropDownLink";
 
-export default function FriendMenu() {
+export default function FriendMenu({ deleted }: { deleted: boolean }) {
   const [active, setActive] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -23,25 +23,29 @@ export default function FriendMenu() {
         </svg>
       </div>
       <DropDownWrapper openTo="right" active={active}>
-        <DropDownLink
-          onClick={() => {
-            setActive(false);
-            dispatch({ type: "SET_ShowFrenProfile", payload: true });
-          }}
-        >
-          Friend Info
-        </DropDownLink>
+        {!deleted && (
+          <DropDownLink
+            onClick={() => {
+              setActive(false);
+              dispatch({ type: "SET_ShowFrenProfile", payload: true });
+            }}
+          >
+            Friend Info
+          </DropDownLink>
+        )}
         <DropDownLink onClick={() => setActive(false)}>
           <Link href={"/home"}>Close Chat</Link>
         </DropDownLink>
-        <DropDownLink
-          onClick={() => {
-            setActive(false);
-            dispatch({ type: "SET_Dialog", payload: "ClearChat" });
-          }}
-        >
-          Clear Chat
-        </DropDownLink>
+        {!deleted && (
+          <DropDownLink
+            onClick={() => {
+              setActive(false);
+              dispatch({ type: "SET_Dialog", payload: "ClearChat" });
+            }}
+          >
+            Clear Chat
+          </DropDownLink>
+        )}
         <DropDownLink
           onClick={() => {
             setActive(false);

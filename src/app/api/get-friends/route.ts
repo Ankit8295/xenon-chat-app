@@ -45,9 +45,27 @@ export async function POST(request: Request) {
         .find<UserDb>({ userName: { $in: userFriends } })
         .toArray();
 
+      const deletedAccounts: string[] = [];
+
+      userFriends.forEach((userNames) =>
+        friendsData.find((friend) => friend.userName === userNames)
+          ? false
+          : deletedAccounts.push(userNames)
+      );
+
+      const deletedFriends = deletedAccounts.map((deletedUserName) => {
+        return {
+          emailId: "",
+          userName: `deleted-${deletedUserName}`,
+          fullName: "Deleted Account",
+          photo: "",
+          about: "",
+        };
+      });
+
       return NextResponse.json({
         status: 200,
-        data: friendsData,
+        data: [...friendsData, ...deletedFriends],
       });
     }
 

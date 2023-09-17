@@ -3,8 +3,8 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomBytes } from "crypto";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const region = process.env.S3_REGION;
 const bucketName = process.env.S3_BUCKET_NAME;
@@ -33,13 +33,7 @@ export async function generateUploadLink(prevImgName: string) {
     Key: prevImageName,
   };
 
-  s3.send(new DeleteObjectCommand(deleteParams))
-    .then((data) => {
-      console.log("Image deleted successfully");
-    })
-    .catch((err) => {
-      console.error("Error deleting image:", err);
-    });
+  await s3.send(new DeleteObjectCommand(deleteParams));
 
   const command = new PutObjectCommand(putParams);
   const uploadLink = await getSignedUrl(s3, command, { expiresIn: 60 });

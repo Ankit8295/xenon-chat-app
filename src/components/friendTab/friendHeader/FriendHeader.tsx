@@ -10,14 +10,15 @@ import FriendMenu from "@/src/components/friendTab/friendHeader/components/Frien
 import { UserDb } from "@/src/utils/types/types";
 
 type Props = {
-  friendData: UserDb;
+  friendData?: UserDb;
+  deleted: boolean;
 };
 
-export default function FriendHeader({ friendData }: Props) {
+export default function FriendHeader({ friendData, deleted }: Props) {
   const dispatch = useAppDispatch();
 
   const { showFrenProfile } = useAppState();
-
+  console.log(deleted);
   return (
     <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 max-lg:pl-1 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
       <div className="flex gap-5 items-center">
@@ -34,16 +35,18 @@ export default function FriendHeader({ friendData }: Props) {
           }
         >
           <Image
-            src={friendData.photo || userImg}
+            src={friendData?.photo || userImg}
             alt="user_profile_img"
             width={50}
             height={50}
             className="max-w-[50px] max-h-[50px] min-w-[50px] min-h-[50px] object-cover rounded-[50%] "
           />
-          <span className="capitalize">{friendData.fullName}</span>
+          <span className="capitalize">
+            {deleted ? "Deleted Account" : friendData?.fullName}
+          </span>
         </div>
       </div>
-      <FriendMenu />
+      <FriendMenu deleted={deleted} />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import Loading from "../../ui/button/Loading";
 import userImg from "@/public/userProfile.webp";
@@ -10,33 +9,38 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { AddFriend } from "../../ui/button/AddFriendButton";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AsyncButton } from "../../ui/button/AsyncButton";
 
 export default function SearchFriend() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-
   const queryClient = useQueryClient();
-
+  const [userId, setUserId] = useState<string | null>(null);
   const { addFriend } = useQueryFunction();
 
   let searchFriendData = queryClient.getQueryData<{
     status: number;
     data: UserDb[];
   }>(["searchFriend"]);
-  console.log(searchFriendData);
-  const { mutate, isLoading: isAdding } = useMutation({
+
+  const {
+    mutate,
+    isLoading: isAdding,
+    isSuccess,
+  } = useMutation({
     mutationFn: addFriend,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["searchFriend"] });
+      queryClient.invalidateQueries({ queryKey: ["userFriends"] });
       dispatch({ type: "SET_SearchFriend", payload: "" });
       dispatch({ type: "SET_ShowAddFriendTab", payload: false });
+      router.push(`/home/${userId}`);
     },
   });
-
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
-
+  console.log(isAdding, isSuccess);
   if (isLoading)
     return (
       <div className="w-full flex justify-center items-center p-3 gap-2">
@@ -62,14 +66,16 @@ export default function SearchFriend() {
               />
               {friendData.fullName}
             </div>
-            <span
+            <AsyncButton
+              type="button"
+              label="Chat"
+              loading={friendData.userName === userId && isAdding}
+              customStyles="bg-hover_light dark:bg-hover_dark hover:bg-primary_light dark:hover:bg-primary_dark rounded  dark:text-white/80 text-black/80"
               onClick={() => {
+                setUserId(friendData.userName);
                 mutate(friendData.userName);
-                router.push(`/home/${friendData.userName}`);
               }}
-            >
-              <AddFriend type="button" label="Chat" />
-            </span>
+            />
           </div>
         ))}
       </div>
