@@ -57,12 +57,7 @@ export async function POST(request: Request) {
     messages: {},
   });
 
-  const createFriends = await dataBase.collection("friends").insertOne({
-    userName: userName,
-    friends: [],
-  });
-
-  if (createdUser && saveIdPass && createMessages && createFriends) {
+  if (createdUser && saveIdPass && createMessages) {
     return NextResponse.json({
       status: 200,
       data: "user registered successfully",

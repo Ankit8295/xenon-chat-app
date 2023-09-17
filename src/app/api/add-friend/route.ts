@@ -1,7 +1,7 @@
-import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
-import { FriendsDb } from "@/src/utils/types/types";
+import { verifyJwt } from "@/src/lib/jwt";
 import { NextResponse } from "next/server";
+import { MessagesDb } from "@/src/utils/types/types";
 
 type RequestBody = {
   friendUserName: string;
@@ -34,44 +34,39 @@ export async function POST(request: Request) {
   }
 
   const userDetails = await dataBase
-    .collection("friends")
-    .findOne<FriendsDb>({ userName: userName });
+    .collection("messages")
+    .findOne<MessagesDb>({ userName: userName });
 
-  const areTheyFriends = userDetails!.friends.includes(friendUserName)
-    ? true
-    : false;
+  if (userDetails) {
+    const friends = Object.keys(userDetails.messages);
 
-  if (areTheyFriends) {
-    return NextResponse.json({
-      status: 200,
-      data: "already friends",
-    });
-  }
+    const areTheyFriends = !!friends.includes(friendUserName);
 
-  if (!areTheyFriends) {
-    const addFriendToUser = await dataBase
-      .collection("friends")
-      .updateOne(
-        { userName: userName },
-        { $push: { friends: friendUserName } }
-      );
-
-    const addUserToFriend = await dataBase
-      .collection("friends")
-      .updateOne(
-        { userName: friendUserName },
-        { $push: { friends: userName } }
-      );
-
-    if (addFriendToUser && addUserToFriend) {
+    if (areTheyFriends) {
       return NextResponse.json({
         status: 200,
-        data: "friend added successfully",
+        data: "",
       });
-    } else
-      return NextResponse.json({
-        status: 500,
-        data: "something went wrong",
-      });
-  }
+    }
+    const messageCollection = dataBase.collection("messages");
+
+    messageCollection.findOneAndUpdate(
+      { userName: userName },
+      { $set: { [`messages.${friendUserName}`]: {} } }
+    );
+
+    messageCollection.findOneAndUpdate(
+      { userName: friendUserName },
+      { $set: { [`messages.${userName}`]: {} } }
+    );
+
+    return NextResponse.json({
+      status: 200,
+      data: "friend added successfully",
+    });
+  } else
+    return NextResponse.json({
+      status: 500,
+      data: "something went wrong",
+    });
 }

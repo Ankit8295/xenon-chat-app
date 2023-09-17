@@ -11,8 +11,10 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { AddFriend } from "../../ui/button/AddFriendButton";
+import { useRouter } from "next/navigation";
 
 export default function SearchFriend() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const queryClient = useQueryClient();
@@ -21,18 +23,15 @@ export default function SearchFriend() {
 
   let searchFriendData = queryClient.getQueryData<{
     status: number;
-    data: UserDb;
+    data: UserDb[];
   }>(["searchFriend"]);
 
   const { mutate, isLoading: isAdding } = useMutation({
-    mutationFn: () =>
-      addFriend(searchFriendData?.data?.userName!).then(() => {
-        queryClient.invalidateQueries(["userFriends"]);
-        queryClient.removeQueries({ queryKey: ["searchFriend"] });
-      }),
+    mutationFn: addFriend,
     onSuccess: () => {
-      dispatch({ type: "SET_ShowAddFriendTab", payload: false });
+      queryClient.removeQueries({ queryKey: ["searchFriend"] });
       dispatch({ type: "SET_SearchFriend", payload: "" });
+      dispatch({ type: "SET_ShowAddFriendTab", payload: false });
     },
   });
 
@@ -42,51 +41,37 @@ export default function SearchFriend() {
     return (
       <div className="w-full flex justify-center items-center p-3 gap-2">
         <Loading />
-        Seaching...
+        Searching...
       </div>
     );
-  if (searchFriendData?.status === 200)
+  if (searchFriendData?.status === 200) {
     return (
-      <div className="flex items-center justify-between bg-primary w-full p-3 ">
-        <div className="flex gap-2 items-center">
-          <Image
-            src={userImg}
-            alt="user_profile_img"
-            className="p-1 rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] "
-          />
-          {searchFriendData?.data?.fullName}
-        </div>
-        <AddFriend
-          type="button"
-          loading={isAdding}
-          onClick={() => mutate()}
-          label="Add"
-          loadingLabel="Adding"
-          customStyles="min-h-[42px] my-4 max-lg:self-center"
-        />
-      </div>
-    );
-  if (searchFriendData?.status === 403) {
-    return (
-      <div className="flex items-center justify-between bg-primary w-full p-3 ">
-        <div className="flex gap-2 items-center">
-          <Image
-            src={userImg}
-            alt="user_profile_img"
-            className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
-          />
-          {searchFriendData?.data?.fullName}
-        </div>
-        <Link
-          href={`/home/${searchFriendData?.data.userName}`}
-          onClick={() => {
-            queryClient.removeQueries({ queryKey: ["searchFriend"] });
-            dispatch({ type: "SET_SearchFriend", payload: "" });
-            dispatch({ type: "SET_ShowAddFriendTab", payload: false });
-          }}
-        >
-          <AddFriend type="button" label="Chat" />
-        </Link>
+      <div className="w-full flex flex-col gap-2 ">
+        {searchFriendData.data.map((friendData) => (
+          <div
+            key={friendData.userName}
+            className="flex items-center border rounded-lg border-white/20 justify-between bg-primary w-full p-3 "
+          >
+            <div className="flex gap-2 items-center">
+              <Image
+                src={friendData.photo || userImg}
+                alt="user_profile_img"
+                width={60}
+                height={60}
+                className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
+              />
+              {friendData.fullName}
+            </div>
+            <span
+              onClick={() => {
+                mutate(friendData.userName);
+                router.push(`/home/${friendData.userName}`);
+              }}
+            >
+              <AddFriend type="button" label="Chat" />
+            </span>
+          </div>
+        ))}
       </div>
     );
   }

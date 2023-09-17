@@ -22,35 +22,28 @@ export async function DELETE(request: Request) {
   if (userName && friendName) {
     const dataBase = await db();
 
-    const deleteFromFren = await dataBase
-      .collection("friends")
-      .updateOne({ userName: userName }, { $pull: { friends: friendName } });
-
-    const deleteFromUser = await dataBase
-      .collection("friends")
-      .updateOne({ userName: friendName }, { $pull: { friends: userName } });
-
-    const emptyForFren = await dataBase
-      .collection("messages")
-      .updateOne(
-        { userName: friendName },
-        { $unset: { [`messages.${userName}`]: "" } }
-      );
-
-    const emptyForUser = await dataBase
+    const deleteFromUserList = await dataBase
       .collection("messages")
       .updateOne(
         { userName: userName },
         { $unset: { [`messages.${friendName}`]: "" } }
       );
 
-    if (deleteFromFren && deleteFromUser && emptyForUser && emptyForFren) {
+    const deleteFromFrenList = await dataBase
+      .collection("messages")
+      .updateOne(
+        { userName: friendName },
+        { $unset: { [`messages.${userName}`]: "" } }
+      );
+
+    if (deleteFromUserList && deleteFromFrenList) {
       return NextResponse.json({
         status: 200,
         data: "friend removed successfully",
       });
     }
   }
+
   return NextResponse.json({
     status: 500,
     reason: "something went wrong",

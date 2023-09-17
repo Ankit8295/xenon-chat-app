@@ -25,19 +25,11 @@ export async function DELETE(request: Request) {
     const deleteUserMessages = await dataBase
       .collection("messages")
       .findOneAndDelete({ userName: userName });
-    const deleteUserFriends = await dataBase
-      .collection("friends")
-      .findOneAndDelete({ userName: userName });
     const deleteUserIdPass = await dataBase
       .collection("idPass")
       .findOneAndDelete({ userName: userName });
 
-    if (
-      deleteUserAccount &&
-      deleteUserMessages &&
-      deleteUserFriends &&
-      deleteUserIdPass
-    ) {
+    if (deleteUserAccount && deleteUserMessages && deleteUserIdPass) {
       return NextResponse.json({
         status: 200,
         data: "Account deleted successfully",

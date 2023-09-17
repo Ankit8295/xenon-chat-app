@@ -1,7 +1,7 @@
-import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
-import { FriendsDb, UserDb } from "@/src/utils/types/types";
 import { NextResponse } from "next/server";
+import { verifyJwt } from "@/src/lib/jwt";
+import { UserDb } from "@/src/utils/types/types";
 
 export async function GET(request: Request) {
   const jwt = request.headers.get("authorization");
@@ -32,21 +32,18 @@ export async function GET(request: Request) {
   if (userName && friendUserName) {
     const dataBase = await db();
 
-    const userDetails = await dataBase
-      .collection("friends")
-      .findOne<FriendsDb>({ userName: userName });
-
-    const areTheyFriends = userDetails!.friends.includes(friendUserName)
-      ? true
-      : false;
-
-    const user = await dataBase
+    const searchUserExists = await dataBase
       .collection("users")
-      .findOne<UserDb>({ userName: friendUserName });
+      .find<UserDb>({ fullName: { $regex: friendUserName, $options: "i" } })
+      .toArray();
 
-    if (areTheyFriends) return NextResponse.json({ status: 403, data: user });
-
-    if (user) return NextResponse.json({ status: 200, data: user });
+    if (searchUserExists) {
+      const friendsData = searchUserExists.filter(
+        (users) => users.userName !== userName
+      );
+      if (friendsData.length > 0)
+        return NextResponse.json({ status: 200, data: friendsData });
+    }
     return NextResponse.json({ status: 404, data: "friend not found" });
   }
   return NextResponse.json({ status: 500, data: "something went wrong" });
