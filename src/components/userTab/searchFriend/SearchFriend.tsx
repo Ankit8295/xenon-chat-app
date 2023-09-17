@@ -1,16 +1,16 @@
-import Image from "next/image";
-import Loading from "../../ui/button/Loading";
-import userImg from "@/public/userProfile.webp";
-import { UserDb } from "@/src/utils/types/types";
-import useQueryFunction from "@/src/lib/useQueries";
-import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import { useState } from "react";
 import {
   useIsFetching,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Image from "next/image";
+import Loading from "../../ui/button/Loading";
+import userImg from "@/public/userProfile.webp";
+import { UserDb } from "@/src/utils/types/types";
+import useQueryFunction from "@/src/lib/useQueries";
+import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import { AsyncButton } from "../../ui/button/AsyncButton";
 
 export default function SearchFriend() {
@@ -26,7 +26,7 @@ export default function SearchFriend() {
   }>(["searchFriend"]);
 
   const {
-    mutate,
+    mutate: addFriendMutation,
     isLoading: isAdding,
     isSuccess,
   } = useMutation({
@@ -39,8 +39,14 @@ export default function SearchFriend() {
       router.push(`/home/${userId}`);
     },
   });
+
   const isLoading = useIsFetching({ queryKey: ["searchFriend"] });
-  console.log(isAdding, isSuccess);
+
+  const searchHandler = (userName: string) => {
+    setUserId(userName);
+    addFriendMutation(userName);
+  };
+
   if (isLoading)
     return (
       <div className="w-full flex justify-center items-center p-3 gap-2">
@@ -48,6 +54,12 @@ export default function SearchFriend() {
         Searching...
       </div>
     );
+
+  if (searchFriendData?.status === 404)
+    return (
+      <h2 className="w-full text-center p-3">No Friend Found with this Id</h2>
+    );
+
   if (searchFriendData?.status === 200) {
     return (
       <div className="w-full flex flex-col gap-2 ">
@@ -71,19 +83,13 @@ export default function SearchFriend() {
               label="Chat"
               loading={friendData.userName === userId && isAdding}
               customStyles="bg-hover_light dark:bg-hover_dark hover:bg-primary_light dark:hover:bg-primary_dark rounded  dark:text-white/80 text-black/80"
-              onClick={() => {
-                setUserId(friendData.userName);
-                mutate(friendData.userName);
-              }}
+              onClick={() => searchHandler(friendData.userName)}
             />
           </div>
         ))}
       </div>
     );
   }
-  if (searchFriendData?.status === 404)
-    return (
-      <h2 className="w-full text-center p-3">No Friend Found with this Id</h2>
-    );
-  return <></>;
+
+  return null;
 }

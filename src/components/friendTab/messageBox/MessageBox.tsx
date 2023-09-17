@@ -10,7 +10,6 @@ import LoadingUi from "../../ui/loading-ui/LoadingUi";
 import { MessageType } from "@/src/utils/types/types";
 import { encodeString } from "@/src/lib/encryptDecrypt";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { getIOSInputEventHandlers } from "@/src/lib/isIos";
 
 export default function MessageBox({
   deletedAccount,
@@ -105,10 +104,10 @@ export default function MessageBox({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMessage(e.target.value)
               }
-              {...getIOSInputEventHandlers()}
               className="outline-none border-none w-full text-sm  p-4 bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
-              type="text"
+              type="search"
               placeholder="Message"
+              autoComplete="off"
               value={message}
               required
             />

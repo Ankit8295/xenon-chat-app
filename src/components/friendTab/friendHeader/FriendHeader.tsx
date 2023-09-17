@@ -18,7 +18,6 @@ export default function FriendHeader({ friendData, deleted }: Props) {
   const dispatch = useAppDispatch();
 
   const { showFrenProfile } = useAppState();
-  console.log(deleted);
   return (
     <div className="bg-bg_light dark:bg-bg_dark py-3 pl-4 max-lg:pl-1 flex items-center justify-between border-b border-primary_light dark:border-primary_dark">
       <div className="flex gap-5 items-center">

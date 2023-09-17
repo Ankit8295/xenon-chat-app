@@ -31,7 +31,6 @@ export default function Page({ params }: Params) {
     ? decodeURIComponent(params.friendId).split("deleted-")[1]
     : decodeURIComponent(params.friendId);
 
-  console.log(friendUserName);
   useEffect(() => {
     dispatch({ type: "SET_FriendName", payload: friendUserName });
   }, [friendUserName]);
@@ -44,7 +43,8 @@ export default function Page({ params }: Params) {
       );
     }
   }, [friendUserName]);
-  const { data } = useQuery({
+
+  const { data, error } = useQuery({
     queryKey: [`${friendUserName}-data`],
     queryFn: () => getUserDetails(friendUserName),
     enabled: !!friendUserName,
@@ -53,36 +53,27 @@ export default function Page({ params }: Params) {
     retry: 1,
   });
 
-  console.log(deleted);
-  if (data) {
-    return (
-      <div className={`h-full w-full flex overflow-hidden  relative`}>
-        <div
-          className={`${
-            showFrenProfile && !deleted ? "w-full lg:w-3/5" : "w-full"
-          }  flex flex-col justify-between transition-all duration-500`}
-        >
-          <FriendHeader deleted={deleted} friendData={data.data} />
-          <MessageBox
-            friendUserName={friendUserName}
-            deletedAccount={deleted}
-          />
-        </div>
-        <div
-          className={`${
-            showFrenProfile && !deleted
-              ? "max-lg:absolute lg:block w-full lg:w-2/5"
-              : "w-full hidden lg:block lg:w-0 opacity-0"
-          }    transition-all duration-500 bg-bg_light h-full dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
-        >
-          {showFrenProfile && !deleted && (
-            <FriendProfile friendData={data.data} />
-          )}
-        </div>
+  return (
+    <div className={`h-full w-full flex overflow-hidden  relative`}>
+      <div
+        className={`${
+          showFrenProfile && !deleted ? "w-full lg:w-3/5" : "w-full"
+        }  flex flex-col justify-between transition-all duration-500`}
+      >
+        <FriendHeader deleted={deleted} friendData={data?.data} />
+        <MessageBox friendUserName={friendUserName} deletedAccount={deleted} />
       </div>
-    );
-  } else
-    return (
-      <h2 className="w-full text-center m-auto">Something Went Wrong....</h2>
-    );
+      <div
+        className={`${
+          showFrenProfile && !deleted
+            ? "max-lg:absolute lg:block w-full lg:w-2/5"
+            : "w-full hidden lg:block lg:w-0 opacity-0"
+        }    transition-all duration-500 bg-bg_light h-full dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
+      >
+        {showFrenProfile && !deleted && (
+          <FriendProfile friendData={data?.data} />
+        )}
+      </div>
+    </div>
+  );
 }

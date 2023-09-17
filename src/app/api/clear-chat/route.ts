@@ -35,14 +35,14 @@ export async function DELETE(request: Request) {
       .collection("messages")
       .updateOne(
         { userName: friendName },
-        { $unset: { [`messages.${userName}`]: "" } }
+        { $set: { [`messages.${userName}`]: {} } }
       );
 
     const emptyForUser = await dataBase
       .collection("messages")
       .updateOne(
         { userName: userName },
-        { $unset: { [`messages.${friendName}`]: "" } }
+        { $set: { [`messages.${friendName}`]: {} } }
       );
 
     if (emptyForFren && emptyForUser) {
