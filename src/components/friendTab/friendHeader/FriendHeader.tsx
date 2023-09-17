@@ -7,12 +7,13 @@ import {
   useAppState,
 } from "@/src/utils/app-provider/state-provider/ContextProvider";
 import FriendMenu from "@/src/components/friendTab/friendHeader/components/FriendMenu";
+import { UserDb } from "@/src/utils/types/types";
 
 type Props = {
-  friendName: string;
+  friendData: UserDb;
 };
 
-export default function FriendHeader({ friendName }: Props) {
+export default function FriendHeader({ friendData }: Props) {
   const dispatch = useAppDispatch();
 
   const { showFrenProfile } = useAppState();
@@ -33,11 +34,13 @@ export default function FriendHeader({ friendName }: Props) {
           }
         >
           <Image
-            src={userImg}
+            src={friendData.photo || userImg}
             alt="user_profile_img"
+            width={50}
+            height={50}
             className="max-w-[50px] max-h-[50px] min-w-[50px] min-h-[50px] object-cover rounded-[50%] "
           />
-          <span className="capitalize">{friendName}</span>
+          <span className="capitalize">{friendData.fullName}</span>
         </div>
       </div>
       <FriendMenu />

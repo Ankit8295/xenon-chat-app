@@ -31,12 +31,10 @@ export default function Layout({ children }: Props) {
     enabled: !!userName,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    retry: 0,
   });
 
   useEffect(() => {
     if (userName) socket.connect();
-
     return () => {
       socket.disconnect();
     };

@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import { useQueryClient } from "@tanstack/react-query";
-import { FriendsListType } from "@/src/utils/types/apiReturnTypes";
 import {
   useAppDispatch,
   useAppState,
@@ -16,11 +15,11 @@ export default function FriendList() {
 
   const dispatch = useAppDispatch();
 
-  const querClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { showFrenProfile } = useAppState();
 
-  const friendLists = querClient.getQueryData<{
+  const friendLists = queryClient.getQueryData<{
     status: number;
     data: UserDb[];
   }>(["userFriends"]);
@@ -29,7 +28,7 @@ export default function FriendList() {
     return (
       <>
         {typeof friendLists?.data === "object" ? (
-          friendLists?.data.map((list: FriendsListType) => (
+          friendLists?.data.map((list: UserDb) => (
             <Link
               href={`/home/${list.userName}`}
               className={`${
@@ -44,7 +43,9 @@ export default function FriendList() {
               }
             >
               <Image
-                src={userImg}
+                src={list.photo || userImg}
+                width={60}
+                height={60}
                 alt="user_profile_img"
                 className="p-1 object-cover rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] "
               />

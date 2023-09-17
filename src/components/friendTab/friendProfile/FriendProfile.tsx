@@ -25,7 +25,9 @@ export default function FriendProfile({ friendData }: Props) {
       </div>
       <div className="w-full flex flex-col gap-5 items-center justify-start pt-5 ">
         <Image
-          src={userImg}
+          src={friendData.photo || userImg}
+          width={60}
+          height={60}
           alt="user_profile_img"
           className="max-w-[250px] max-h-[250px] min-w-[250px] min-h-[250px] object-cover rounded-[50%] "
         />

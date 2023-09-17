@@ -13,7 +13,9 @@ export type FriendsDb = {
 };
 export type MessagesDb = {
   userName: string;
-  messages: any;
+  messages: {
+    [key: string]: {};
+  };
 };
 export type UserDb = {
   emailId: string;

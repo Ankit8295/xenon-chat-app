@@ -1,1 +1,4 @@
-export type FriendsListType = { userName: string; fullName: string };
+export type FriendsListType = {
+  userName: string;
+  fullName: string;
+};

@@ -1,6 +1,6 @@
 import { verifyJwt } from "@/src/lib/jwt";
 import { db } from "@/src/lib/mongodb";
-import { FriendsDb, UserDb } from "@/src/utils/types/types";
+import { MessagesDb, UserDb } from "@/src/utils/types/types";
 import { NextResponse } from "next/server";
 
 type RequestBody = {
@@ -32,32 +32,18 @@ export async function POST(request: Request) {
 
   const dataBase = await db();
 
-  const userDetails = await dataBase
-    .collection("friends")
-    .findOne<FriendsDb>({ userName: userName });
+  const userMsgDetails = await dataBase
+    .collection("messages")
+    .findOne<MessagesDb>({ userName: userName });
 
-  if (userDetails) {
-    if (userDetails?.friends.length > 0) {
-      const friendsId = userDetails.friends;
+  if (userMsgDetails) {
+    const userFriends = Object.keys(userMsgDetails.messages);
 
+    if (userFriends.length > 0) {
       const friendsData = await dataBase
         .collection("users")
-        .find<UserDb>({ userName: { $in: friendsId } })
+        .find<UserDb>({ userName: { $in: userFriends } })
         .toArray();
-
-      const missedIds: string[] = [];
-      friendsId.forEach((id) =>
-        friendsData.find((friends) => friends.userName === id)
-          ? null
-          : missedIds.push(id)
-      );
-      missedIds.forEach((id) =>
-        friendsData.push({
-          fullName: "Deleted Account",
-          userName: id,
-          emailId: "",
-        })
-      );
 
       return NextResponse.json({
         status: 200,

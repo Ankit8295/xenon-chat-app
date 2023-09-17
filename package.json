@@ -13,6 +13,7 @@
     "@aws-sdk/s3-request-presigner": "^3.414.0",
     "@hookform/resolvers": "3.1.1",
     "@tanstack/react-query": "4.32.0",
+    "@tanstack/react-query-devtools": "^4.32.0",
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
