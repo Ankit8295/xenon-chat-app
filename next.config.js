@@ -9,6 +9,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ["xenonusers.s3.ap-south-1.amazonaws.com"],
+  },
 };
 
 module.exports = nextConfig;

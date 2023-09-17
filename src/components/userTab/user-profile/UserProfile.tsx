@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Image from "next/image";
-import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import useQueryFunction from "@/src/lib/useQueries";
 import { ChangeEvent, useEffect, useState } from "react";
 import ArrowIcon, { EditIcon, SaveIcon } from "../../icons/Icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "@/src/utils/app-provider/state-provider/ContextProvider";
+import ProfileImage from "./components/ProfileImage";
 
 export default function UserProfile() {
   const dispatch = useAppDispatch();
@@ -19,6 +18,8 @@ export default function UserProfile() {
 
   const [username, setUsername] = useState<string>("");
 
+  const [userPic, setUserPic] = useState<string>("");
+
   const [startEditingName, setStartEditingName] = useState<boolean>(false);
 
   const [startEditingAbout, setStartEditingAbout] = useState<boolean>(false);
@@ -29,8 +30,8 @@ export default function UserProfile() {
     );
     if (userData) {
       setUsername(userData?.data.fullName);
-
       setAbout(userData?.data.about!);
+      setUserPic(userData?.data.photo!);
     }
   }, []);
 
@@ -51,13 +52,7 @@ export default function UserProfile() {
         </div>
       </div>
       <div className="w-full flex flex-col gap-7 items-center justify-start pt-5 ">
-        <Image
-          src={userImg}
-          alt="user_profile_img"
-          width={250}
-          height={250}
-          className="max-w-[250px] max-h-[250px] min-w-[250px] min-h-[250px] object-cover rounded-[50%]"
-        />
+        <ProfileImage imageUrl={userPic} />
         <form className="w-full flex flex-col items-center gap-5">
           <label className="flex flex-col gap-2 items-start">
             <span className="text-xs text-black/70 dark:text-white/70">

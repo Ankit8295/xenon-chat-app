@@ -23,6 +23,28 @@ export default function useQueryFunction() {
     });
     return { status: res.data.status, data: res.data.data };
   }
+  async function updateUserProfilePic({
+    data,
+    prevImageName,
+  }: {
+    data: FormData;
+    prevImageName: string;
+  }) {
+    const res = await axios({
+      url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/gets3link`,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        authorization: token,
+      },
+      data: data,
+      params: {
+        userName: userName,
+        prevImageName,
+      },
+    });
+    return { status: res.data.status, data: res.data.data };
+  }
 
   async function getFriends() {
     const res = await axios(
@@ -59,7 +81,7 @@ export default function useQueryFunction() {
     return { status: res.status, data: res.data };
   }
 
-  async function getMessages(friendName: String) {
+  async function getMessages(friendName: string) {
     const res = await axios(
       `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-messages`,
       {
@@ -202,5 +224,6 @@ export default function useQueryFunction() {
     getUserDetails,
     updateUserProfile,
     deleteAccount,
+    updateUserProfilePic,
   };
 }
