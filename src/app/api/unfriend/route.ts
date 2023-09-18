@@ -22,21 +22,25 @@ export async function DELETE(request: Request) {
   if (userName && friendName) {
     const dataBase = await db();
 
-    const deleteFromUserList = await dataBase
+    const bulkWriteOpt = [
+      {
+        updateOne: {
+          filter: { userName: userName },
+          update: { $unset: { [`messages.${friendName}`]: "" } },
+        },
+      },
+      {
+        updateOne: {
+          filter: { userName: friendName },
+          update: { $unset: { [`messages.${userName}`]: "" } },
+        },
+      },
+    ];
+    const unfriendUser = await dataBase
       .collection("messages")
-      .updateOne(
-        { userName: userName },
-        { $unset: { [`messages.${friendName}`]: "" } }
-      );
+      .bulkWrite(bulkWriteOpt);
 
-    const deleteFromFrenList = await dataBase
-      .collection("messages")
-      .updateOne(
-        { userName: friendName },
-        { $unset: { [`messages.${userName}`]: "" } }
-      );
-
-    if (deleteFromUserList && deleteFromFrenList) {
+    if (unfriendUser.modifiedCount === 2) {
       return NextResponse.json({
         status: 200,
         data: "friend removed successfully",

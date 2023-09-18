@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 export async function DELETE(request: Request) {
   const url = new URL(request.url);
 
+  const jwt = request.headers.get("authorization");
+
   const userName = url.searchParams.get("userName");
 
   const friendName = url.searchParams.get("friendName");
-
-  const jwt = request.headers.get("authorization");
 
   if (!jwt) {
     return NextResponse.json({
@@ -28,24 +28,30 @@ export async function DELETE(request: Request) {
       reason: "access token is not valid",
     });
   }
+
   if (friendName && userName) {
     const dataBase = await db();
 
-    const emptyForFren = await dataBase
-      .collection("messages")
-      .updateOne(
-        { userName: friendName },
-        { $set: { [`messages.${userName}`]: {} } }
-      );
+    const bulkWriteOpt = [
+      {
+        updateOne: {
+          filter: { userName: friendName },
+          update: { $set: { [`messages.${userName}`]: {} } },
+        },
+      },
+      {
+        updateOne: {
+          filter: { userName: userName },
+          update: { $set: { [`messages.${friendName}`]: {} } },
+        },
+      },
+    ];
 
-    const emptyForUser = await dataBase
+    const isUpdated = await dataBase
       .collection("messages")
-      .updateOne(
-        { userName: userName },
-        { $set: { [`messages.${friendName}`]: {} } }
-      );
+      .bulkWrite(bulkWriteOpt);
 
-    if (emptyForFren && emptyForUser) {
+    if (isUpdated.modifiedCount === 2) {
       return NextResponse.json({
         status: 200,
         data: "chats cleared successfully",
