@@ -13,6 +13,11 @@ export const revalidate = 30;
 export const metadata = {
   title: "Xenon Chat",
   description: "chat with friends with Xenon Chat",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
