@@ -33,15 +33,17 @@ const authOptions: NextAuthOptions = {
       },
     }),
   ],
-
   session: {
     strategy: "jwt",
     maxAge: 259200,
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: "asdfjalkdsjflakjsdflkdskdsflklk",
   callbacks: {
     jwt: async ({ token, user }) => {
-      return { ...token, ...user };
+      return {
+        ...token,
+        ...user,
+      };
     },
 
     session: async ({ session, token }) => {
@@ -51,8 +53,8 @@ const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/login",
-    error: "/login",
+    signIn: "/",
+    error: "/",
   },
 };
 

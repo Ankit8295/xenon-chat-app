@@ -18,7 +18,7 @@ export default function Layout({ children }: Props) {
             ? "do not have an account ?"
             : " already have an account ?"}
           <Link
-            href={pathname.includes("login") ? "/register" : "/login"}
+            href={pathname.includes("login") ? "/register" : "/"}
             className="px-2 text-blue-600 cursor-pointer"
           >
             {pathname.includes("login") ? "sign up" : "Log In"}

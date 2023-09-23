@@ -51,7 +51,7 @@ export default function RegisterForm() {
           return setUserNameTaken(data.data);
         }
         reset();
-        router.push("/login");
+        router.push("/");
       })
       .catch((err) => console.log(err));
   };

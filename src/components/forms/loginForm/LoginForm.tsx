@@ -1,6 +1,7 @@
 "use client";
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import {} from "next/navigation";
+import { useSearchParams, redirect } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AsyncButton } from "../../ui/button/AsyncButton";
@@ -9,6 +10,8 @@ import { LoginFormSchema, loginValidation } from "@/src/utils/types/loginForm";
 import { useState } from "react";
 
 export default function LoginForm() {
+  const { status } = useSession();
+  console.log(status);
   const searchParams = useSearchParams();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -36,6 +39,14 @@ export default function LoginForm() {
       callbackUrl: url,
     }).then(() => setIsSubmitting(false));
   };
+
+  // if (status === "loading") {
+  //   return <></>;
+  // }
+
+  // if (status === "authenticated") {
+  //   redirect(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`);
+  // }
 
   return (
     <form
