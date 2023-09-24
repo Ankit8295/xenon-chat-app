@@ -23,6 +23,6 @@
   "display": "standalone",
   "start_url": "https://xenonchatt.ankitdev.in/",
   "scope": "/https://xenonchatt.ankitdev.in/",
-  "theme_color": "#ffffff",
+  "theme_color": "#000000",
   "background_color": "#000000"
 }
