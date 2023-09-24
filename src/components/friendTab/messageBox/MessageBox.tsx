@@ -104,10 +104,9 @@ export default function MessageBox({
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setMessage(e.target.value)
               }
-              className="outline-none border-none w-full text-sm  p-4 bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
-              type="search"
-              placeholder="Message"
-              autoComplete="off"
+              className="outline-none border-none w-full text-base p-5 bg-hover_light dark:bg-hover_dark max-lg:rounded-none  rounded-lg "
+              type="text"
+              placeholder="Type Message"
               value={message}
               required
             />

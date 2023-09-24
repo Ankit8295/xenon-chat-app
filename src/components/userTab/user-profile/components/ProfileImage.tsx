@@ -4,7 +4,6 @@ import defaultUserImage from "@/public/userProfile.webp";
 import { useEffect, useState } from "react";
 import useQueryFunction from "@/src/lib/useQueries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
 
 export default function ProfileImage({ imageUrl }: { imageUrl: string }) {
   const queryClient = useQueryClient();

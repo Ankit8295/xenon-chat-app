@@ -6,7 +6,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Loading from "../../ui/button/Loading";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
