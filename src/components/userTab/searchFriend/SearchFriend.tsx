@@ -62,11 +62,11 @@ export default function SearchFriend() {
 
   if (searchFriendData?.status === 200) {
     return (
-      <div className="w-full flex flex-col gap-2 ">
+      <div className="w-full flex flex-col gap-2 overflow-y-scroll h-screen pb-32 pr-2">
         {searchFriendData.data.map((friendData) => (
           <div
             key={friendData.userName}
-            className="flex items-center border rounded-lg border-white/20 justify-between bg-primary w-full p-3 "
+            className=" flex items-center border rounded-lg border-white/20 justify-between bg-primary w-full p-3 "
           >
             <div className="flex gap-2 items-center">
               <Image
@@ -74,7 +74,7 @@ export default function SearchFriend() {
                 alt="user_profile_img"
                 width={60}
                 height={60}
-                className="p-1 rounded-[50%] max-h[60px] max-w-[60px] min-h-[60px] min-w-[60px]"
+                className="p-1 rounded-[50%] max-h-[60px] max-w-[60px] min-h-[60px] min-w-[60px] object-cover"
               />
               {friendData.fullName}
             </div>

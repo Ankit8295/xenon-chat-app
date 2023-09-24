@@ -48,6 +48,7 @@ export default function UserMenu() {
         {showAddFriendTab ? (
           <div
             onClick={() => {
+              queryClient.removeQueries({ queryKey: ["searchFriend"] });
               dispatch({ type: "SET_SearchFriend", payload: "" });
               dispatch({ type: "SET_ShowAddFriendTab", payload: false });
             }}

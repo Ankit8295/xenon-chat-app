@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export default function LoginForm() {
   const { status } = useSession();
-  console.log(status);
+
   const searchParams = useSearchParams();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -39,14 +39,6 @@ export default function LoginForm() {
       callbackUrl: url,
     }).then(() => setIsSubmitting(false));
   };
-
-  // if (status === "loading") {
-  //   return <></>;
-  // }
-
-  // if (status === "authenticated") {
-  //   redirect(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/home`);
-  // }
 
   return (
     <form
