@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppProvider>
-          <main className="h-[100dvh] w-screen flex flex-col items-center my-auto">
+          <main className="h-screen max-h-screen w-screen flex flex-col items-center my-auto">
             {children}
           </main>
         </AppProvider>

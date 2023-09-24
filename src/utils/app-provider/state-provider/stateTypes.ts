@@ -36,7 +36,7 @@ export type Action =
       payload: DialogFor | null;
     }
   | {
-      type: "SET_DeletMsgId";
+      type: "SET_DeleteMsgId";
       payload: string;
     }
   | {

@@ -98,7 +98,7 @@ export default function MessageBox({
         {!deletedAccount ? (
           <form
             onSubmit={submitHandler}
-            className="max-w-[60%] max-lg:min-w-[100%] min-w-[60%] my-5  max-lg:my-0 mx-auto flex justify-center items-center gap-1  outline-none border border-transparent max-lg:bg-hover_light max-lg:dark:bg-hover_dark "
+            className="max-w-[60%] max-lg:min-w-[100%] max-lg:pb-3 max-lg:pr-1 min-w-[60%] my-5  max-lg:my-0 mx-auto flex justify-center items-center gap-1  outline-none border border-transparent max-lg:bg-hover_light max-lg:dark:bg-hover_dark "
           >
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
