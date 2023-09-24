@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import {
   useIsFetching,
@@ -69,8 +70,8 @@ export default function SearchFriend() {
             className=" flex items-center border rounded-lg border-white/20 justify-between bg-primary w-full p-3 "
           >
             <div className="flex gap-2 items-center">
-              <Image
-                src={friendData.photo || userImg}
+              <img
+                src={friendData.photo || userImg.src}
                 alt="user_profile_img"
                 width={60}
                 height={60}

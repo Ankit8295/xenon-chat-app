@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
 import ArrowIcon from "@/src/components/icons/Icons";
@@ -24,8 +24,8 @@ export default function FriendProfile({ friendData }: Props) {
         </div>
       </div>
       <div className="w-full flex flex-col gap-5 items-center justify-start pt-5 ">
-        <Image
-          src={friendData.photo || userImg}
+        <img
+          src={friendData.photo || userImg.src}
           width={60}
           height={60}
           alt="user_profile_img"

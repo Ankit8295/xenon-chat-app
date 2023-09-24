@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import userImg from "@/public/userProfile.webp";
 import { UserDb } from "@/src/utils/types/types";
@@ -42,8 +42,8 @@ export default function FriendList() {
                 dispatch({ type: "SET_ShowFrenProfile", payload: false })
               }
             >
-              <Image
-                src={list.photo || userImg}
+              <img
+                src={list.photo || userImg.src}
                 width={60}
                 height={60}
                 alt="user_profile_img"

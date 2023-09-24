@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import Image from "next/image";
 import userImg from "@/public/userProfile.webp";
 import ArrowIcon from "@/src/components/icons/Icons";
 import {
@@ -33,8 +33,8 @@ export default function FriendHeader({ friendData, deleted }: Props) {
             })
           }
         >
-          <Image
-            src={friendData?.photo || userImg}
+          <img
+            src={friendData?.photo || userImg.src}
             alt="user_profile_img"
             width={50}
             height={50}
