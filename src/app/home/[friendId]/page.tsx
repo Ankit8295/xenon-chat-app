@@ -10,10 +10,9 @@ type Params = {
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const paths = await fetch(
-    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/get-paths`,
-    { cache: "no-store" }
-  ).then((res) => res.json());
+  const paths = await fetch(`${process.env.NEXTAUTH_URL}/api/get-paths`, {
+    cache: "no-store",
+  }).then((res) => res.json());
   return paths.data.map((path: UserDb) => ({
     friendId: path,
   }));
