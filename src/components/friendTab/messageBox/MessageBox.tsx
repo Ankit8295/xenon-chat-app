@@ -109,7 +109,7 @@ export default function MessageBox({
             <div className="sticky flex items-center gap-3 z-30 top-1 left-1/2 -translate-x-1/2 w-max p-2 border border-white/30 rounded-md">
               Private
               <div
-                className={`relative w-[50px] h-[25px] select-none bg-white/40 rounded-[50px] transition-colors duration-300 ${
+                className={`relative w-[50px] h-[25px] select-none rounded-[50px] transition-colors duration-300 ${
                   isVanishMode ? "bg-green-400" : "bg-red-400"
                 }`}
               >
