@@ -5,6 +5,7 @@ const initialState: State = {
   searchFriend: "",
   showFrenProfile: false,
   showUserProfile: false,
+  isVanishMode: true,
   dialogFor: null,
   friendName: "",
   deleteMsgId: "",

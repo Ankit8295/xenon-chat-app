@@ -18,6 +18,8 @@ export default function MessageBox({
   deletedAccount?: boolean;
   friendUserName: string;
 }) {
+  const [isVanishMode, setIsVanishMode] = useState<boolean>(true);
+
   const messagesBoxRef = useRef<HTMLDivElement>(null);
 
   const { userName, getMessages } = useQueryFunction();
@@ -66,6 +68,15 @@ export default function MessageBox({
     };
   }, []);
 
+  useEffect(() => {
+    socket.on("on_Vanish_Mode", (data: boolean) => {
+      setIsVanishMode(data);
+    });
+    return () => {
+      socket.off("on_Vanish_Mode");
+    };
+  }, [isVanishMode]);
+
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
@@ -77,7 +88,10 @@ export default function MessageBox({
         messageTime: Date.now(),
         messageType: "text",
       };
-      socket.emit("private_message", finalMessage);
+      socket.emit("private_message", {
+        messageData: finalMessage,
+        vanish: isVanishMode,
+      });
       setMessage((prev) => "");
     }
   };
@@ -90,8 +104,37 @@ export default function MessageBox({
         {allMessages && (
           <div
             ref={messagesBoxRef}
-            className="h-full overflow-y-scroll px-6 max-lg:px-3"
+            className="h-full w-full relative overflow-y-scroll px-6 max-lg:px-3"
           >
+            <div className="sticky flex items-center gap-3 z-30 top-1 left-1/2 -translate-x-1/2 w-max p-2 border border-white/30 rounded-md">
+              Private
+              <div
+                className={`relative w-[50px] h-[25px] select-none bg-white/40 rounded-[50px] transition-colors duration-300 ${
+                  isVanishMode ? "bg-green-400" : "bg-red-400"
+                }`}
+              >
+                <label
+                  className={`${
+                    isVanishMode ? "after:translate-x-[25px]" : ""
+                  } absolute w-[50px] h-[25px] cursor-pointer transition-all duration-[0.3s] ease-[ease] rounded-[50px] left-0 top-0 after:content-[''] after:absolute after:w-[23px]  after:h-[23px] after:bg-white after:shadow-[0_1px_3px_rgba(0,0,0,0.3)] after:transition-all after:duration-[0.3s] after:ease-[ease] after:rounded-[50%] after:left-px after:top-px hover:after:shadow-[0_1px_3px_rgba(0,0,0,0.3)] `}
+                >
+                  <input
+                    onChange={() =>
+                      socket.emit("emit_vanish_mode", {
+                        roomId: [friendUserName, userName]
+                          .sort((a: any, b: any) => a.localeCompare(b))
+                          .join("-"),
+                        vanishMode: !isVanishMode,
+                      })
+                    }
+                    checked={isVanishMode}
+                    className="hidden"
+                    id="check-apple"
+                    type="checkbox"
+                  />
+                </label>
+              </div>
+            </div>
             <MessageArea message={allMessages as any} />
           </div>
         )}
