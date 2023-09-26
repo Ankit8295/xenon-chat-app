@@ -62,7 +62,7 @@ export default function FriendId({ friendId }: Props) {
       <div
         className={`${
           showFrenProfile && !deleted
-            ? "max-lg:absolute lg:block w-full lg:w-2/5"
+            ? "max-lg:absolute lg:block w-full z-50 lg:w-2/5"
             : "w-full hidden lg:block lg:w-0 opacity-0"
         }    transition-all duration-500 bg-bg_light h-full dark:bg-bg_dark border-l border-primary_light dark:border-primary_dark`}
       >
